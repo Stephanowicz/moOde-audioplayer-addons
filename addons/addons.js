@@ -15,7 +15,7 @@ $.getScript("addons/Stephanowicz/script.js");
 
 //--------------------------------------------------
 
-//----------- maybe working too :
+//----------- maybe too :
 //function loadScript(src) {
 //    return new Promise(function (resolve, reject) {
 //        let script = document.createElement('script');

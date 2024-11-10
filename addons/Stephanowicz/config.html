@@ -7,8 +7,9 @@
 		.settings {
 			padding-left: 10px;
 			padding-top: 5px;
+			font-size: calc(.45em + 2vmin);
 		}
-		#youtube-dl, #eq, #albumart, #lyrics, #random, #favorites, #repeat, #single, #browsertitle {
+		#youtube-dl, #eq, #albumart, #lyrics, #random, #favorites, #repeat, #single, #browsertitle, #playqueue, #browse2folder {
 			width: 19px;
 			height: 19px;
 			margin: 5px;
@@ -17,10 +18,77 @@
   			display: flex;
 			align-items: center;
 		}
+		#apply {
+			margin-left: 15px;
+			margin-top: 20px;
+			font-size: 18px;
+			line-height: 28px;
+		}
+		#logo {
+			width: 23vw;
+		}
+		#title {
+			position: relative;
+ 			font-size: 2.4vw;
+			top: -1vw;
+		}
+		#header {
+			position: relative;
+			padding-bottom: 1vh;
+			padding-left: 13px;
+		}
+		#moode {
+			position: relative;
+			font-size: 6.6vw;
+		}
+		/* The Modal (background) */
+		.modal-popup {
+		  display: none; /* Hidden by default */
+		  position: fixed; /* Stay in place */
+		  z-index: 1; /* Sit on top */
+		  left: 0;
+		  top: 0;
+		  width: 100%; /* Full width */
+		  height: 100%; /* Full height */
+		  overflow: auto; /* Enable scroll if needed */
+		  background-color: rgb(0,0,0); /* Fallback color */
+		  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+		}
+
+		/* Modal Content/Box */
+		.modal-popup-content {
+		  background-color: #161616;
+		  margin: 15% auto; /* 15% from the top and centered */
+		  padding: 13px;
+		  border: 1px solid #888;
+		  width: 32%; /* Could be more or less, depending on screen size */
+		  color: #d2d2d2;
+		  font-size: 2vw;
+		}
+
+		/* The Close Button */
+		.modal-popup-close {
+		  color: #aaa;
+		  float: right;
+		  font-size: 28px;
+		  font-weight: bold;
+		  top: -15px;
+		  position: relative;
+		}
+
+		.modal-popup-close:hover,
+		.modal-popup-close:focus {
+		  color: black;
+		  text-decoration: none;
+		  cursor: pointer;
+		}
 	  </style>
 	</head>
 	<body style="background-color: #1e272c;">
-
+		<div id="header">
+			<div id="moode">m<span style="color: #d35400">oO</span>de</div>
+			<div id="title">addons configuration</div>
+		</div>
 		<!-- Configfile -->
 		<div class="settings flex-container" id="cfg" style="padding-bottom: 10px;">
 			<div><i class="fa-regular fa-ban" aria-hidden="true" style="font-size: 18px;color: red;"></i></div>
@@ -114,54 +182,106 @@
 		<div class="settings">
 			<input type="checkbox" id="browsertitle" name="browsertitle" disabled> Show Songtitle, Albumname und Albumicon in Browsertitlebar
 		</div>
+		<!-- Browse to folder -->
+		<div class="settings">
+			<input type="checkbox" id="browse2folder" name="browse2folder" disabled> Contextmenue-option to browse to songfolder in folderview
+		</div>
+		<!-- playqueue -->
+		<div class="settings">
+			<input type="checkbox" id="playqueue" name="playqueue" disabled> Show total and remaining playtime below playlist
+		</div>
+
+		<!-- Modal -->
+		<div id="modal-popup" class="modal-popup">
+			<div class="modal-popup-content">
+				<div class="modal-popup-container">
+					<span onclick="document.getElementById('modal-popup').style.display='none'" class="modal-popup-close">&times;</span>
+					<p id="modal-text"></p>
+				</div>
+			</div>
+		</div>
 		
 		<script>
 			var cfgCheck;// = <?php echo json_encode($cfgCheck); ?>;
 			var cfgJson;// = <?php echo $json; ?>;
-			$(function () {$.getJSON('config.php?cmd=cfgCheck', function (data) {
+			
+			$(getCfg());
+			function getCfg() {
+				$.getJSON('config.php?cmd=cfgCheck', function (data) {
 					if (data) {
 						cfgCheck = data[0];
 						cfgJson = data[1];
 					}
 				}).done(function() {checkCfg()});
+			};
 				
-				function checkCfg(){
-					cfgCheck["cfg"] && $("#cfg").hide();
-					if(cfgCheck["ytdl"]){
-						$("#youtube-dl").prop('disabled', false);
-						$("#youtube-dl").prop('checked', cfgJson['ytdl']);
-						$("#youtube-dl_err").hide();
-					}
-					if(cfgCheck["getid3"]){
-						$("#getid3_check_err1").hide();
-						if(cfgCheck["getid3_ex"]){
-							$("#getid3_check_err2").hide();
-							$("#albumart").prop('disabled', false);
-							$("#albumart").prop('checked', cfgJson['albumart']);
+			function checkCfg(){
+				cfgCheck["cfg"] && $("#cfg").hide();
+				$("#youtube-dl").prop('disabled', !cfgCheck["ytdl"]);
+				$("#youtube-dl").prop('checked', cfgCheck["ytdl"] ? cfgJson['ytdl']:false);
+				cfgCheck["ytdl"] ? $("#youtube-dl_err").hide():$("#youtube-dl_err").show();
+				cfgCheck["getid3"] ? $("#getid3_check_err1").hide() : $("#getid3_check_err1").show();
+				(cfgCheck["getid3_ex"] & cfgCheck["getid3_ex"]) ? $("#getid3_check_err2").hide() : $("#getid3_check_err2").show();
+				$("#albumart").prop('disabled', !(cfgCheck["getid3_ex"] & cfgCheck["getid3_ex"]));
+				$("#albumart").prop('checked', (cfgCheck["getid3_ex"] & cfgCheck["getid3_ex"]) ? cfgJson['albumart']:false);
+				cfgCheck["xml"] && $("#lyrics_xml_err").hide();
+				cfgCheck["curl"] && $("#lyrics_curl_err").hide();
+				cfgCheck["dom"] && $("#lyrics_dom_err").hide();
+				cfgCheck["token"] && $("#token").hide();
+				$("#lyrics").prop('disabled', !cfgCheck["lyrics"]);
+				$("#lyrics").prop('checked', cfgCheck["lyrics"] ? cfgJson['lyrics']:false);
+				$("#eq").prop('disabled', false);
+				$("#eq").prop('checked', cfgJson['eq']);
+				$("#random").prop('disabled', false);
+				$("#random").prop('checked', cfgJson['random']);
+				$("#favorites").prop('disabled', false);
+				$("#favorites").prop('checked', cfgJson['fav']);
+				$("#repeat").prop('disabled', false);
+				$("#repeat").prop('checked', cfgJson['repeat']);
+				$("#single").prop('disabled', false);
+				$("#single").prop('checked', cfgJson['single']);
+				$("#browsertitle").prop('disabled', false);
+				$("#browsertitle").prop('checked', cfgJson['browsertitle']);
+				$("#playqueue").prop('disabled', false);
+				$("#playqueue").prop('checked', cfgJson['playqueue']);
+				$("#browse2folder").prop('disabled', false);
+				$("#browse2folder").prop('checked', cfgJson['browse2folder']);
+			}
+			function setCfg(){
+				var cfgArr = [];
+				cfgArr.push({
+					albumart: $("#albumart").prop('checked'),
+					playqueue: $("#playqueue").prop('checked'),
+					ytdl: $("#youtube-dl").prop('checked'),
+					lyrics: $("#lyrics").prop('checked'),
+					eq: $("#eq").prop('checked'),
+					browse2folder: $("#browse2folder").prop('checked'),
+					random: $("#random").prop('checked'),
+					fav: $("#favorites").prop('checked'),
+					repeat: $("#repeat").prop('checked'),
+					single: $("#single").prop('checked'),
+					browsertitle: $("#browsertitle").prop('checked')
+				});
+				
+				$.post('config.php?cmd=setCfg&jArr='+JSON.stringify(cfgArr[0],null,1))
+					.done(function(data) {
+						console.log("Data sent ", data);
+						if(data=="true"){
+							$("#modal-text").text("Settings have been applied");
 						}
-					}				
-					cfgCheck["xml"] && $("#lyrics_xml_err").hide();
-					cfgCheck["curl"] && $("#lyrics_curl_err").hide();
-					cfgCheck["dom"] && $("#lyrics_dom_err").hide();
-					cfgCheck["token"] && $("#token").hide();
-					if(cfgCheck["lyrics"]){
-						$("#lyrics").prop('disabled', false);
-						$("#lyrics").prop('checked', cfgJson['lyrics']);
-					}
-					$("#eq").prop('disabled', false);
-					$("#eq").prop('checked', cfgJson['eq']);
-					$("#random").prop('disabled', false);
-					$("#random").prop('checked', cfgJson['random']);
-					$("#favorites").prop('disabled', false);
-					$("#favorites").prop('checked', cfgJson['fav']);
-					$("#repeat").prop('disabled', false);
-					$("#repeat").prop('checked', cfgJson['repeat']);
-					$("#single").prop('disabled', false);
-					$("#single").prop('checked', cfgJson['single']);
-					$("#browsertitle").prop('disabled', false);
-					$("#browsertitle").prop('checked', cfgJson['browsertitle']);
-				}
-			});
-		</script>				
+						else{
+							$("#modal-text").html("Error!<br>Settings could not been saved");
+						}
+						$(".modal-popup").css("display","block");
+						getCfg();
+					});
+			}
+			window.onclick = function(event) {
+			  if (event.target == document.getElementById("modal-popup")) {
+			    $(".modal-popup").css("display","none");
+			  }
+			}
+		</script>
+		<button id="apply" onclick="setCfg()">Apply settings</button>
 	</body>
 </html>
