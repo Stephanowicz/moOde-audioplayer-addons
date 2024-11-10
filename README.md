@@ -79,5 +79,20 @@ after this add `<script src="addons/addons.js?t=1729607710734" defer></script>`
 ## Addons
 
 1. Extended Albumart
-	- Displays embedded images and files in albumfolder as thumbnails below albumcover and on the audioinfo page.  
-	A click opens the full image
+	- Displays embedded images and files in the albumfolder as thumbnails below albumcover and on the audioinfo page.  
+  	Below the albumcover 3 dots signalize that images are available  
+   	![Albumart](https://github.com/user-attachments/assets/b440306d-3184-414d-b4e3-e982eb6f92bb)   
+	a click on the dots opens the thumblist below  
+	![Albumart1](https://github.com/user-attachments/assets/78ee4bc8-3f58-4ffb-a7ca-05f5f1677a3e)  
+	a click on a thumb shows the image in albumview  
+	![Albumart2](https://github.com/user-attachments/assets/0c3c8a83-a8ea-4e1a-8f9f-a6624c5d1ecf)  
+	a doubleclick opens the image in a modal view  
+	![Albumart3](https://github.com/user-attachments/assets/13a53b84-bbfd-4eb8-a9b5-7f642cc6f84e)  
+	in the Audio Information modal, the images are listed with more info at the end of the file infos  
+	![Albumart4](https://github.com/user-attachments/assets/65110d36-3739-4e21-bda9-f7912e70faa9)  
+
+2. 
+
+	
+
+	
