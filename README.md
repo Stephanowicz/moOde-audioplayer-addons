@@ -14,7 +14,7 @@ It consists of:
 	- same functionality like the moode eq but with instant reaction without stopping playback 
 
 4. Songlyrics
-	- query lyrics of current song
+	- query lyrics of current song and display them in a modal
 
 5. Playbackmenue
 	- Add/remove items for playbackcontrol on mainscreen - "repeat", "random", "single", "random album", "add to favourites"
@@ -72,6 +72,12 @@ after this add `<script src="addons/addons.js?t=1729607710734" defer></script>`
 	- then create a [new API client](https://genius.com/api-clients/new)  
 	("App Website URL" and "Redirect URI" can be anything)
 	- finally generate a [client access token](https://genius.com/api-clients) by clicking "Generate Access Token"  
-	 -> add the **client access token** to **clientaccesstoken.txt** in the lyrics folder
+	 -> add the **client access token** to **clientaccesstoken.txt** in the lyrics folder */var/www/addons/Stephanowicz/lyrics*
 
 	The other addons don't have any further requirements
+
+## Addons
+
+1. Extended Albumart
+	- Displays embedded images and files in albumfolder as thumbnails below albumcover and on the audioinfo page.  
+	A click opens the full image
