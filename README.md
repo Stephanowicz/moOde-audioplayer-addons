@@ -80,6 +80,16 @@ after this add `<script src="addons/addons.js?t=1729607710734" defer></script>`
 
 ## Addons
 
+With /var/www/addons/Stephanowicz/**config.json** the addons can be dis-/enabled  
+You can also do that by the [config-page](http://moode9.local/addons/Stephanowicz/config.html)  `http://moode9.local/addons/Stephanowicz/config.html`  
+This page also checks if the requirements are met.  
+![image](https://github.com/user-attachments/assets/16158769-5fb1-4885-89e6-8118ae35164c)  
+Worst case:  
+![image](https://github.com/user-attachments/assets/de4dd19b-23fa-4461-b6bd-cf8b2654b32f)
+
+
+
+
 1. Extended Albumart
 	- Displays embedded images and files in the albumfolder as thumbnails below albumcover and on the audioinfo page.  
   	Below the albumcover 3 dots signalize that images are available  
