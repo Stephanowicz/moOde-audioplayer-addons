@@ -112,7 +112,7 @@ after this add `<script src="addons/addons.js?t=1729607710734" defer></script>`
 	*load & play* finally starts the playback
 	![image](https://github.com/user-attachments/assets/ae47a380-8083-45c1-82be-650f01aa0c17)  
 
-3. Graphics equalizer
+3. Graphics equalizer  
 	The equalizer has the same functionality like the moode eq but with instant reaction without stopping playback  
 	![image](https://github.com/user-attachments/assets/2af8d756-3970-47e4-a49d-5edcd8417aa5)  
 	You can save presets and reload them.  
@@ -143,11 +143,12 @@ after this add `<script src="addons/addons.js?t=1729607710734" defer></script>`
 	->  
 	![image](https://github.com/user-attachments/assets/00044b3e-9255-454d-913c-d0226c592425)  
 
-8. Show total and remainig playtime below playlist  
-	![image](https://github.com/user-attachments/assets/e9b5049d-a9b4-4ce8-8b68-6c51aa6bcc01)
+8. Show total and remainig/elapsed playtime below playlist  
+	- ![image](https://github.com/user-attachments/assets/e9b5049d-a9b4-4ce8-8b68-6c51aa6bcc01)
+ 	- remaining or elapsed playtime will be shown according to Your general display setting of showing playtime	
 
 
-
+That's it - have fun!
 
 
 	
