@@ -217,6 +217,7 @@
 			};
 				
 			function checkCfg(){
+				$("#apply").prop('disabled', !cfgCheck["cfg"]);
 				cfgCheck["cfg"] && $("#cfg").hide();
 				$("#youtube-dl").prop('disabled', !cfgCheck["ytdl"]);
 				$("#youtube-dl").prop('checked', cfgCheck["ytdl"] ? cfgJson['ytdl']:false);
@@ -283,6 +284,6 @@
 			  }
 			}
 		</script>
-		<button id="apply" onclick="setCfg()">Apply settings</button>
+		<button id="apply" onclick="setCfg()" disabled>Apply settings</button>
 	</body>
 </html>
