@@ -93,8 +93,9 @@
 		<div class="settings flex-container" id="cfg" style="padding-bottom: 10px;">
 			<div><i class="fa-regular fa-ban" aria-hidden="true" style="font-size: 18px;color: red;"></i></div>
 			<div>
-				<span style="padding-left: 19px;"><i><?php echo dirname(__FILE__).'/config.json' ?></i> is not writeable! </span><br>
-				<span style="padding-left: 19px;">Settings cannot be saved! </span>
+				<span style="padding-left: 19px;"><i>/var/www/addons/Stephanowicz/config.json</i> is not writeable! </span><br>
+				<span style="padding-left: 19px;">Settings cannot be saved! </span><br>
+				<span style="font-size: small;padding-left: 19px;"><i>sudo chmod 666 /var/www/addons/Stephanowicz/config.json</i></span>
 			</div>
 		</div>
 
@@ -153,7 +154,7 @@
 				
 		</div>
 			
-		<div class="settings flex-container" id="token" style="padding-bottom: 10px;">
+		<div class="settings flex-container" id="token" style="padding-bottom: 10px;font-size: small;">
 			<div><i class="fa-regular fa-ban" aria-hidden="true" style="font-size: 18px;color: red;"></i></div>
 			<div>
 				<span style="padding-left: 19px;">Genius lyrics: no client access token found! </span><br>
@@ -188,7 +189,7 @@
 		</div>
 		<!-- playqueue -->
 		<div class="settings">
-			<input type="checkbox" id="playqueue" name="playqueue" disabled> Show total and remaining playtime below playlist
+			<input type="checkbox" id="playqueue" name="playqueue" disabled> Show total and remaining playtime under playlist
 		</div>
 
 		<!-- Modal -->
