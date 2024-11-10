@@ -1,0 +1,154 @@
+<html>
+<head>
+<title>Youtube Audioplayback</title>
+<script type="text/javascript">
+
+	function getTimestring(){
+	  var d = new Date();
+	  return d.toLocaleTimeString();
+	}
+
+  function YTQuery() {
+	  var query,url;	  
+	  query = document.ytquery["querystring"].value;
+		query = query.replace(/\s+/g, "+");
+		url = "https://www.youtube.com/results?search_query=" + query;
+		window.open(url);
+	}
+	
+  function singleVid() {
+	  var url,opts;	  
+	  yturl = document.vidurl["yturl"].value;
+	  opts = document.vidurl["plopts"].value;
+		document.getElementById('log').innerHTML = "";
+		document.getElementById('mpdlog').innerHTML = "";
+		document.getElementById('ytplist').innerHTML = "";
+		document.getElementById('ytplaylist').style.display = "none";
+		createPLItem(yturl,opts);
+	}	
+	function createPLItem(url,opts)
+	{
+	  var xhttp;	  
+	  xhttp = new XMLHttpRequest();
+	  xhttp.onreadystatechange = function() {
+			if (this.readyState == 4 && this.status == 200) {
+				document.getElementById('mpdlog').innerHTML += getTimestring() + ": " + this.responseText + "<br />";
+				MPDPlaylist();
+			}
+	  };
+	  xhttp.open("GET", "addons/Stephanowicz/youtubeDL/youtube.php?yturl=" + url + "&plopts=" + opts, true);
+	  xhttp.send();
+	  document.getElementById('log').innerHTML += getTimestring() + ": creating playlistentry for: " + url + " (" + opts + ")<br />"; 
+	}
+	
+	function loadnplay () {
+	  var xhttp;
+	  xhttp = new XMLHttpRequest();
+	  xhttp.onreadystatechange = function() {
+			if (this.readyState == 4 && this.status == 200) {
+				document.getElementById('mpdlog').innerHTML = getTimestring() + ": " + this.responseText + "<br />"; 
+			}
+	  };
+	  xhttp.open("GET", "addons/Stephanowicz/youtubeDL/youtube.php?loadnplay", true);
+	  xhttp.send();
+		document.getElementById('log').innerHTML ="";
+	}
+	
+  function MPDPlaylist()
+  {
+	  var xhttp;
+	  xhttp = new XMLHttpRequest();
+	  xhttp.onreadystatechange = function() {
+			if (this.readyState == 4 && this.status == 200) {
+				document.getElementById('playlist').innerHTML = this.responseText;
+			}
+	  };
+	  xhttp.open("GET", "addons/Stephanowicz/youtubeDL/youtube.php?playlist", true);
+	  xhttp.send();
+  }
+
+  function createPlaylistfromArray(url=plArray[0][1],opts="clear",cnt=0)
+  {
+	  var xhttp;
+	  xhttp = new XMLHttpRequest();
+	  xhttp.onreadystatechange = function() {
+			if (this.readyState == 4 && this.status == 200) {
+				document.getElementById('mpdlog').innerHTML += getTimestring() + ": " + this.responseText + "<br />";
+				MPDPlaylist();
+			}
+	  };
+		if(cnt==0){
+			opts = document.formCreatePl["plopts"].value;
+			document.getElementById('log').innerHTML = "";
+			document.getElementById('mpdlog').innerHTML = "";
+		}
+	  xhttp.open("GET", "addons/Stephanowicz/youtubeDL/youtube.php?yturl=" + url + "&plopts=" + opts + "&index=" + (cnt+1) + "&length=" + plArray.length, true);
+	  xhttp.send();
+	  document.getElementById('log').innerHTML += getTimestring() + ": creating playlistentry ("+(cnt+1).toString()+"/"+(plArray.length).toString()+") for " + plArray[cnt][0] + " (" + opts + ")<br />"; 
+		cnt++;
+		if(cnt < plArray.length) {
+			setTimeout(createPlaylistfromArray,1500,plArray[cnt][1],"add",cnt);
+		}
+		else {
+			document.getElementById('ytplist').innerHTML="";
+			document.getElementById('ytplaylist').style.display = "none";
+		}
+	}
+	
+  function YTPlaylist()
+  {
+	  var xhttp,plurl;
+	  plurl = document.plurl["ytpl"].value;
+	  xhttp = new XMLHttpRequest();
+	  xhttp.onreadystatechange = function() {
+			if (this.readyState == 4 && this.status == 200) {
+				var plItems = JSON.parse(this.responseText);
+				plArray = Object.entries(plItems);
+				if(Array.isArray(plArray) && plArray.length > 0) {
+					plArray.forEach(item => {
+						document.getElementById('ytplist').innerHTML += item + "<br />";
+					});
+				}
+				else {document.getElementById('mpdlog').innerHTML = getTimestring() + ": no items!<br />";}
+			}
+	  };
+	  xhttp.open("GET", "addons/Stephanowicz/youtubeDL/youtube.php?ytpl=" + plurl, true);
+	  xhttp.send();
+		document.getElementById('ytplist').innerHTML="";
+		document.getElementById('ytplaylist').style.display = "block";
+		document.getElementById('log').innerHTML = getTimestring() + ": reading youtube playlist<br />";
+		document.getElementById('mpdlog').innerHTML = "";
+  }
+	
+	//https://www.youtube.com/results?search_query=kutless+full+album
+</script>
+</head>
+<body onload="MPDPlaylist()">
+<table>
+<tr>
+<td valign="top">Video-URL:</td><td><form name="vidurl" method="post" action="javascript:singleVid()"><input size="80" type="text" name="yturl"><input type="submit"></td><td valign="top"><input type="radio" name="plopts" value="add" checked>add to playlist</td><td valign="top"><input type="radio" name="plopts" value="clear">clear playlist<input type="radio" name="plopts" value="append">append<input type="radio" name="plopts" value="insert">insert</form></td>
+</tr>
+<tr>
+<td valign="top">Playlist-URL:</td><td><form name="plurl" method="post" action="javascript:YTPlaylist()"><input size="80" type="text" name="ytpl"><input type="submit"></form></td>
+</tr>
+<tr>
+<td valign="top">Youtube query:</td><td><form name="ytquery" method="post" action="javascript:YTQuery()"><input size="80" type="text" name="querystring"><input type="submit"></form></td>
+</tr></table><br />
+<table>
+<tr>
+<td valign="top"><div id="log"></div></td><td valign="top"><div id="mpdlog"></div></td>
+</tr>
+</table
+<br /><br />
+
+<div id="ytplaylist" style="display:none">
+"youtube playlist-items:   <form name="formCreatePl" method='post' action='javascript:createPlaylistfromArray()'><input type='submit' value='create playlist'><input type="radio" name="plopts" value="add" checked>add to playlist<input type="radio" name="plopts" value="clear">clear playlist</form><br />
+<div id="ytplist"></div>
+</div><br /><br />
+
+<form method="post" action="javascript:loadnplay()">youtube.m3u:     <input type="submit" value="load & play"><input type="hidden" name="loadnplay" value="go"></form>
+<div id="playlist"></div>
+
+</body>
+</html>
+

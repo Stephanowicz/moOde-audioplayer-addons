@@ -1,0 +1,108 @@
+<!--
+/**
+ * moOde audio player (C) 2014 Tim Curtis
+ * http://moodeaudio.org
+ *
+ * (C) 2021 Stephanowicz
+ * https://github.com/Stephanowicz
+ *
+ * This Program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3, or (at your option)
+ * any later version.
+ *
+ * This Program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * 2021-MM-DD TC moOde 7.x.x
+ *
+ */
+-->
+<div id="albumart-modal-dialog" class="modal-dialog modal-dialog-centered" style="margin-top: 0px; margin-left: auto; margin-right: auto; margin-bottom: 0px;">
+		<div id="albumart-modal-body" class="modal-body text-center" style="max-height:100vh">
+			<!-- <button type="button" class="close" data-dismiss="modal">&times;</button> -->
+			<div id="fullImg"><img id="slider" onclick="nextSlideImage()" style="object-fit:contain;height:95vh" src=" "></div>
+			<div id="dots" style="text-align:center"></div>
+		</div>
+</div>
+
+<script type="text/javascript">
+var	imgArray;
+curSlideIndex = 0;
+curCoverIndex = 0;
+curCoverViewIndex = 0;
+    document.getElementById('slider').src = imgArray[curSlideIndex][0];
+function nextSlideImage(imgIndex=curSlideIndex) {
+    if (!isNaN(parseInt(imgIndex))) { curSlideIndex = imgIndex; }
+    else { imgIndex = curSlideIndex; }
+    if (curSlideIndex >= imgArray.length) {
+	    curSlideIndex = 0;
+	    imgIndex = 0;
+	}
+    document.getElementById('slider').className += "fadeOut";
+    setTimeout(function() {
+        document.getElementById('slider').src = imgArray[imgIndex][0];
+        document.getElementById('slider').className = "";
+		resetActiveSlideDots();
+		document.getElementsByClassName("dot")[imgIndex].className += " dotactive";
+    },250);
+    curSlideIndex++;
+}
+function nextCoverImage(imgIndex=curCoverIndex) {
+    if (!isNaN(parseInt(imgIndex))) { curCoverIndex = imgIndex; }
+    else { imgIndex = curCoverIndex; }
+    if (curCoverIndex >= imgArray.length) {
+	    curCoverIndex = 0;
+	    imgIndex = 0;
+	}
+	$('#coverart-url').children()[0].classList.add("fadeOut");
+
+	setTimeout(function() {
+        $('#coverart-url').children()[0].src = imgArray[imgIndex][0];
+		$('#coverart-url').children()[0].classList.remove("fadeOut");
+		resetActiveCoverDots();
+//		document.getElementsByClassName("cover_art_dot")[imgIndex].className += " dotactive";
+    },250);
+    curCoverIndex++;
+}
+function nextCoverViewImage(imgIndex=curCoverViewIndex) {
+    if (!isNaN(parseInt(imgIndex))) { curCoverViewIndex = imgIndex; }
+    else { imgIndex = curCoverViewIndex; }
+    if (curCoverViewIndex >= imgArray.length) {
+		curCoverViewIndex = 0;
+		imgIndex = 0;
+	}
+	$('#ss-coverart-url').children()[0].classList.add("fadeOut");
+
+	setTimeout(function() {
+        $('#ss-coverart-url').children()[0].src = imgArray[imgIndex][0];
+		$('#ss-coverart-url').children()[0].classList.remove("fadeOut");
+	//	resetActiveCoverViewDots();
+	//	document.getElementsByClassName("coverview_art_dot")[imgIndex].className += " dotactive";
+    },250);
+    curCoverViewIndex++;
+}
+function resetActiveSlideDots() {
+	var dots = document.getElementsByClassName("dot");
+	for (i = 0; i < dots.length; i++) {
+			dots[i].className = dots[i].className.replace(" dotactive", "");
+	}
+}
+function resetActiveCoverDots() {
+	var dots = document.getElementsByClassName("cover_art_dot");
+	for (i = 0; i < dots.length; i++) {
+			dots[i].className = dots[i].className.replace(" dotactive", "");
+	}
+}
+function resetActiveCoverViewDots() {
+	var dots = document.getElementsByClassName("coverview_art_dot");
+	for (i = 0; i < dots.length; i++) {
+			dots[i].className = dots[i].className.replace(" dotactive", "");
+	}
+}
+</script>

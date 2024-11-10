@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	  <link rel="stylesheet" href="/css/styles.min.css">	  
+      <script src="alsamixer/public/js/jquery.min.js"></script>
+	  <style>
+		.settings {
+			padding-left: 10px;
+			padding-top: 5px;
+			font-size: calc(.45em + 2vmin);
+		}
+		#youtube-dl, #eq, #albumart, #lyrics, #random, #favorites, #repeat, #single, #browsertitle, #playqueue, #browse2folder {
+			width: 19px;
+			height: 19px;
+			margin: 5px;
+		}
+		.flex-container {
+  			display: flex;
+			align-items: center;
+		}
+		#apply {
+			margin-left: 15px;
+			margin-top: 20px;
+			font-size: 18px;
+			line-height: 28px;
+		}
+		#logo {
+			width: 23vw;
+		}
+		#title {
+			position: relative;
+ 			font-size: 2.4vw;
+			top: -1vw;
+		}
+		#header {
+			position: relative;
+			padding-bottom: 1vh;
+			padding-left: 13px;
+		}
+		#moode {
+			position: relative;
+			font-size: 6.6vw;
+		}
+		/* The Modal (background) */
+		.modal-popup {
+		  display: none; /* Hidden by default */
+		  position: fixed; /* Stay in place */
+		  z-index: 1; /* Sit on top */
+		  left: 0;
+		  top: 0;
+		  width: 100%; /* Full width */
+		  height: 100%; /* Full height */
+		  overflow: auto; /* Enable scroll if needed */
+		  background-color: rgb(0,0,0); /* Fallback color */
+		  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+		}
+
+		/* Modal Content/Box */
+		.modal-popup-content {
+		  background-color: #161616;
+		  margin: 15% auto; /* 15% from the top and centered */
+		  padding: 13px;
+		  border: 1px solid #888;
+		  width: 32%; /* Could be more or less, depending on screen size */
+		  color: #d2d2d2;
+		  font-size: 2vw;
+		}
+
+		/* The Close Button */
+		.modal-popup-close {
+		  color: #aaa;
+		  float: right;
+		  font-size: 28px;
+		  font-weight: bold;
+		  top: -15px;
+		  position: relative;
+		}
+
+		.modal-popup-close:hover,
+		.modal-popup-close:focus {
+		  color: black;
+		  text-decoration: none;
+		  cursor: pointer;
+		}
+	  </style>
+	</head>
+	<body style="background-color: #1e272c;">
+		<div id="header">
+			<div id="moode">m<span style="color: #d35400">oO</span>de</div>
+			<div id="title">addons configuration</div>
+		</div>
+		<!-- Configfile -->
+		<div class="settings flex-container" id="cfg" style="padding-bottom: 10px;">
+			<div><i class="fa-regular fa-ban" aria-hidden="true" style="font-size: 18px;color: red;"></i></div>
+			<div>
+				<span style="padding-left: 19px;"><i><?php echo dirname(__FILE__).'/config.json' ?></i> is not writeable! </span><br>
+				<span style="padding-left: 19px;">Settings cannot be saved! </span>
+			</div>
+		</div>
+
+		
+		<!-- Youtube audio-playback -->
+		<div class="settings" id="ytdl">
+			<input type="checkbox" id="youtube-dl" name="youtube-dl" disabled> Youtube audio-playback
+			<div id="youtube-dl_err">
+				<span id="youtube-dl_text" style="font-size: small;padding-left: 19px;">/usr/local/bin/youtube-dl </span>
+				<span id="youtube-dl_check"><i class="fa-regular fa-ban" aria-hidden="true" style="font-size: 18px;color: red;"></i></span><br>
+				<span id="youtube-dl_check_text" style="font-size: small;padding-left: 19px;">Install with: <i>sudo curl -L https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -o /usr/local/bin/youtube-dl</i><br></span>
+			</div>
+		</div>
+
+		<!-- Albumart -->
+		<div class="settings" id="getid3">
+			<input type="checkbox" id="albumart" name="albumart" disabled> Extended Albumart
+			<div id="getid3_check_err1">
+				<span id="getid3_text" style="font-size: small;padding-left: 19px;">/var/www/inc/getid3 </span>
+				<span id="getid3_check"><i class="fa-regular fa-ban" aria-hidden="true" style="font-size: 18px;color: red;"></i></span><br>
+				<span id="getid3_check_text" style="font-size: small;padding-left: 19px;">Install with: <i>wget -O ~/getid3.zip https://github.com/JamesHeinrich/getID3/archive/master.zip </i><br></span>
+				<span id="getid3_check_text1" style="font-size: small;padding-left: 19px;"><i>sudo 7z e ~/getid3.zip -aoa -o/var/www/inc/getid3/ getID3-master/getid3/*.php</i><br></span>
+			</div>
+			<div id="getid3_check_err2">
+				<span id="getid3_check_mod_text" style="font-size: small;padding-left: 19px;">Filepermissions 755 </span>
+				<span id="getid3_check_mod"><i class="fa-regular fa-ban" aria-hidden="true" style="font-size: 18px;color: red;"></i><br></span>
+				<span id="getid3_check_text2" style="font-size: small;padding-left: 19px;"><i>sudo chmod -R 755 /var/www/inc/getid3/</i><br></span>
+			</div>
+		</div>
+		
+		<!-- Graphics Equalizer -->
+		<div class="settings">
+			<input type="checkbox" id="eq" name="eq" disabled> Graphics Equalizer<br>
+		</div>
+
+		<!-- Lyrics -->
+		<div class="settings" id="songlyrics">
+			<input type="checkbox" id="lyrics" name="lyrics" disabled> Songlyrics
+			<div id="lyrics_xml_err">
+				<span id="lyrics_xml_text" style="font-size: small;padding-left: 19px;">php-xml </span>
+				<span id="lyrics_xml_check"><i class="fa-regular fa-ban" aria-hidden="true" style="font-size: 18px;color: red;"></i><br></span>
+				<span id="lyrics_xml_check_text" style="font-size: small;padding-left: 19px;">Install with: <i>sudo apt-get install php-xml</i><br></span>
+			</div>
+				
+			<div id="lyrics_curl_err">
+				<span id="lyrics_curl_text" style="font-size: small;padding-left: 19px;">php-curl </span>
+				<span id="lyrics_curl_check"><i class="fa-regular fa-ban" aria-hidden="true" style="font-size: 18px;color: red;"></i><br></span>
+				<span id="lyrics_curl_check_text" style="font-size: small;padding-left: 19px;">Install with: <i>sudo apt-get install php-curl</i><br></span>
+			</div>
+				
+			<div id="lyrics_dom_err">
+				<span id="lyrics_dom_text" style="font-size: small;padding-left: 19px;">php-curl </span>
+				<span id="lyrics_dom_check"><i class="fa-regular fa-ban" aria-hidden="true" style="font-size: 18px;color: red;"></i><br></span>
+				<span id="lyrics_dom_check_text" style="font-size: small;padding-left: 19px;">Install with: <i>sudo apt-get install php-dom</i><br></span>
+			</div>
+				
+		</div>
+			
+		<div class="settings flex-container" id="token" style="padding-bottom: 10px;">
+			<div><i class="fa-regular fa-ban" aria-hidden="true" style="font-size: 18px;color: red;"></i></div>
+			<div>
+				<span style="padding-left: 19px;">Genius lyrics: no client access token found! </span><br>
+				<span style="padding-left: 19px;">If You already have one You can insert it here: </span><br>
+				<span style="padding-left: 19px;">otherwise create a free account: http://genius.com/api-clients </span><br>
+				<span style="padding-left: 19px;">then create a new API client: https://genius.com/api-clients/new ("App Website URL" and "Redirect URI" can be anything)</span><br>
+				<span style="padding-left: 19px;">finally generate a client access token: https://genius.com/api-clients by clicking "Generate Access Token"</span><br>
+			</div>
+		</div>
+		
+		<!-- Playback-menu -->
+		<div class="settings">
+			<input type="checkbox" id="random" name="random" disabled> Playback-menue: Show "Random Album playback" button <i class="ralbum"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M475.31 364.144L288 256l187.31-108.144c5.74-3.314 7.706-10.653 4.392-16.392l-4-6.928c-3.314-5.74-10.653-7.706-16.392-4.392L272 228.287V12c0-6.627-5.373-12-12-12h-8c-6.627 0-12 5.373-12 12v216.287L52.69 120.144c-5.74-3.314-13.079-1.347-16.392 4.392l-4 6.928c-3.314 5.74-1.347 13.079 4.392 16.392L224 256 36.69 364.144c-5.74 3.314-7.706 10.653-4.392 16.392l4 6.928c3.314 5.74 10.653 7.706 16.392 4.392L240 283.713V500c0 6.627 5.373 12 12 12h8c6.627 0 12-5.373 12-12V283.713l187.31 108.143c5.74 3.314 13.079 1.347 16.392-4.392l4-6.928c3.314-5.74 1.347-13.079-4.392-16.392z"></path></svg></i><br>
+		</div>
+		<div class="settings">
+			<input type="checkbox" id="favorites" name="favorites" disabled> Playback-menue: Show "Add to favorites" button <i class="fal fa-heart sx"></i><br>
+		</div>
+		<div class="settings">
+			<input type="checkbox" id="repeat" name="repeat" disabled> Playback-menue: Show "Repeat playback" button <i class="fal fa-repeat"></i><br>
+		</div>
+		<div class="settings">
+			<input type="checkbox" id="single" name="single" disabled> Playback-menue: Show "Single playback" button <i class="fal fa-redo"></i><br>
+		</div>
+		
+		<!-- Browsertitle -->
+		<div class="settings">
+			<input type="checkbox" id="browsertitle" name="browsertitle" disabled> Show Songtitle, Albumname und Albumicon in Browsertitlebar
+		</div>
+		<!-- Browse to folder -->
+		<div class="settings">
+			<input type="checkbox" id="browse2folder" name="browse2folder" disabled> Contextmenue-option to browse to songfolder in folderview
+		</div>
+		<!-- playqueue -->
+		<div class="settings">
+			<input type="checkbox" id="playqueue" name="playqueue" disabled> Show total and remaining playtime under playlist
+		</div>
+
+		<!-- Modal -->
+		<div id="modal-popup" class="modal-popup">
+			<div class="modal-popup-content">
+				<div class="modal-popup-container">
+					<span onclick="document.getElementById('modal-popup').style.display='none'" class="modal-popup-close">&times;</span>
+					<p id="modal-text"></p>
+				</div>
+			</div>
+		</div>
+		
+		<script>
+			var cfgCheck;// = <?php echo json_encode($cfgCheck); ?>;
+			var cfgJson;// = <?php echo $json; ?>;
+			
+			$(getCfg());
+			function getCfg() {
+				$.getJSON('config.php?cmd=cfgCheck', function (data) {
+					if (data) {
+						cfgCheck = data[0];
+						cfgJson = data[1];
+					}
+				}).done(function() {checkCfg()});
+			};
+				
+			function checkCfg(){
+				cfgCheck["cfg"] && $("#cfg").hide();
+				$("#youtube-dl").prop('disabled', !cfgCheck["ytdl"]);
+				$("#youtube-dl").prop('checked', cfgCheck["ytdl"] ? cfgJson['ytdl']:false);
+				cfgCheck["ytdl"] ? $("#youtube-dl_err").hide():$("#youtube-dl_err").show();
+				cfgCheck["getid3"] ? $("#getid3_check_err1").hide() : $("#getid3_check_err1").show();
+				(cfgCheck["getid3_ex"] & cfgCheck["getid3_ex"]) ? $("#getid3_check_err2").hide() : $("#getid3_check_err2").show();
+				$("#albumart").prop('disabled', !(cfgCheck["getid3_ex"] & cfgCheck["getid3_ex"]));
+				$("#albumart").prop('checked', (cfgCheck["getid3_ex"] & cfgCheck["getid3_ex"]) ? cfgJson['albumart']:false);
+				cfgCheck["xml"] && $("#lyrics_xml_err").hide();
+				cfgCheck["curl"] && $("#lyrics_curl_err").hide();
+				cfgCheck["dom"] && $("#lyrics_dom_err").hide();
+				cfgCheck["token"] && $("#token").hide();
+				$("#lyrics").prop('disabled', !cfgCheck["lyrics"]);
+				$("#lyrics").prop('checked', cfgCheck["lyrics"] ? cfgJson['lyrics']:false);
+				$("#eq").prop('disabled', false);
+				$("#eq").prop('checked', cfgJson['eq']);
+				$("#random").prop('disabled', false);
+				$("#random").prop('checked', cfgJson['random']);
+				$("#favorites").prop('disabled', false);
+				$("#favorites").prop('checked', cfgJson['fav']);
+				$("#repeat").prop('disabled', false);
+				$("#repeat").prop('checked', cfgJson['repeat']);
+				$("#single").prop('disabled', false);
+				$("#single").prop('checked', cfgJson['single']);
+				$("#browsertitle").prop('disabled', false);
+				$("#browsertitle").prop('checked', cfgJson['browsertitle']);
+				$("#playqueue").prop('disabled', false);
+				$("#playqueue").prop('checked', cfgJson['playqueue']);
+				$("#browse2folder").prop('disabled', false);
+				$("#browse2folder").prop('checked', cfgJson['browse2folder']);
+			}
+			function setCfg(){
+				var cfgArr = [];
+				cfgArr.push({
+					albumart: $("#albumart").prop('checked'),
+					playqueue: $("#playqueue").prop('checked'),
+					ytdl: $("#youtube-dl").prop('checked'),
+					lyrics: $("#lyrics").prop('checked'),
+					eq: $("#eq").prop('checked'),
+					browse2folder: $("#browse2folder").prop('checked'),
+					random: $("#random").prop('checked'),
+					fav: $("#favorites").prop('checked'),
+					repeat: $("#repeat").prop('checked'),
+					single: $("#single").prop('checked'),
+					browsertitle: $("#browsertitle").prop('checked')
+				});
+				
+				$.post('config.php?cmd=setCfg&jArr='+JSON.stringify(cfgArr[0],null,1))
+					.done(function(data) {
+						console.log("Data sent ", data);
+						if(data=="true"){
+							$("#modal-text").text("Settings have been applied");
+						}
+						else{
+							$("#modal-text").html("Error!<br>Settings could not been saved");
+						}
+						$(".modal-popup").css("display","block");
+						getCfg();
+					});
+			}
+			window.onclick = function(event) {
+			  if (event.target == document.getElementById("modal-popup")) {
+			    $(".modal-popup").css("display","none");
+			  }
+			}
+		</script>
+		<button id="apply" onclick="setCfg()">Apply settings</button>
+	</body>
+</html>

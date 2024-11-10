@@ -1,0 +1,126 @@
+/* Multiple albumart images */
+#slider, #trackinfo_slider {
+	opacity: 1;
+	transition: opacity 0.2s,width 0.3s ease-in-out;
+}
+
+	#slider.fadeOut, #trackinfo_slider.fadeOut {
+		opacity: 0;
+	}
+
+img.coverart {
+	opacity: 1;
+	transition: opacity 0.2s,width 0.2s ease-in-out;
+}
+
+	img.coverart.fadeOut {
+		opacity: 0;
+	}
+
+.dot, .trackinfo_dot, .cover_art_dot, .coverview_art_dot {
+	cursor: pointer;
+	height: 5px;
+	width: 5px;
+	margin: 4px 5px 0px 0px;
+	background-color: #777;
+	border-radius: 50%;
+	display: inline-block;
+	transition: background-color 0.2s ease;
+}
+
+.dotactive {
+	background-color: #ccc;
+}
+
+.dot:hover, .trackinfo_dot:hover, .cover_art_dot:hover, .coverview_art_dot:hover {
+	background-color: #ddd;
+}
+
+img.coverart-resized {
+	height: 90%;
+	width: 90%;
+}
+
+@media (max-width:1600px) {
+	img.coverart-resized {
+		height: 85%;
+		width: 85%;
+	}
+}
+
+@media (max-width:1200px) {
+	img.coverart-resized {
+		height: 75%;
+		width: 75%;
+	}
+}
+
+@media (max-width:900px) {
+	img.coverart-resized {
+		height: 70%;
+		width: 70%;
+	}
+}
+
+@media (max-width:780px) {
+	img.coverart-resized {
+		height: 60%;
+		width: 60%;
+	}
+}
+
+@media (max-width:480px) {
+	img.coverart-resized {
+		height: 40%;
+		width: 40%;
+	}
+}
+
+#expandcover, #expandcoverview {
+	margin-left: 20px;
+	margin-top: -3px;
+	height: 11px;
+	/*vertical-align: baseline;*/
+	cursor: pointer;
+}
+
+/*#albumthumbs {
+    position: absolute;
+    float:right;    
+    right: 15px;
+    transition: opacity 0.3s ease-in-out, width 0.2s ease-in-out;
+    opacity: 0;
+    width: 0px;
+    overflow: hidden;
+}*/
+#albumthumbs_inidcator, #coverview_albumthumbs_inidcator {
+	height: 0px;
+	display: none;
+	cursor: pointer;
+}
+
+#albumthumbs, #coverview_albumthumbs {
+	transition: opacity 0.3s ease-in-out, height 0.2s ease-in-out;
+	opacity: 0;
+	height: 0px;
+	overflow: hidden;
+	margin-top: 5px;
+}
+
+	/*#albumthumbs img {
+    width: 30px;
+    cursor: pointer;
+    padding-bottom: 5px;
+    padding-right: 5px;
+}*/
+	#albumthumbs img, #coverview_albumthumbs img {
+		transition: height 0.2s ease-in-out;
+		height: 0px;
+		cursor: pointer;
+		padding-top: 5px;
+		padding-right: 5px;
+	}
+
+#albumart-modal, #trackinfo-albumart-modal {
+	min-width: 90vw;
+}

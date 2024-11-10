@@ -1,0 +1,13 @@
+{
+    "albumart": true,
+    "playqueue": true,
+    "ytdl": true,
+    "lyrics": true,
+    "eq": true,
+    "browse2folder": true,
+    "random": false,
+    "fav": false,
+    "repeat": true,
+    "single": true,
+    "browsertitle": true
+}
