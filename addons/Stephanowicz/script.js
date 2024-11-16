@@ -262,15 +262,21 @@ fetch('addons/Stephanowicz/config.json')
 			}
 			//-- add "repeat", "single" to button group 
 			if(addonsCfg['single']){
-				tempstr = '<button aria-label="Single" class="btn btn-cmd btn-toggle single" data-cmd="single"><i class="fal fa-redo"></i></button>';
+				tempstr = '<button class="btn btn-cmd btn-toggle1 single" data-cmd="single" aria-label="Single"><i class="fa-regular fa-sharp fa-redo"></i></button>';
 				$("button.random").after(tempstr);
 				$("#context-menu-playback > ul").find('[data-cmd="single"]').parent().addClass("hide")
 			}
 			if(addonsCfg['repeat']){
-				tempstr = '<button aria-label="Repeat" class="btn btn-cmd btn-toggle repeat" data-cmd="repeat"><i class="fal fa-repeat"></i></button>';
+				tempstr = '<button class="btn btn-cmd btn-toggle1 repeat" data-cmd="repeat" aria-label="Repeat"><i class="fa-regular fa-sharp fa-repeat"></i></button>';
 				$("button.random").after(tempstr);
 				$("#context-menu-playback > ul").find('[data-cmd="repeat"]').parent().addClass("hide")
 			}
+			$('.btn-toggle1').click(function(e) {
+				var cmd = $(this).data('cmd');
+				var toggleValue = $(this).hasClass('btn-primary') ? '0' : '1';
+				$('.' + cmd).toggleClass('btn-primary');
+				sendMpdCmd(cmd + ' ' + toggleValue);
+			});
 		});
 		
 	});
