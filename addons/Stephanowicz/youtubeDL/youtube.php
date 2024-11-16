@@ -53,7 +53,10 @@ function delytpl($values) {
   $plfile=shell_exec("cat /var/lib/mpd/playlists/ytpllist.txt");
   if($plfile!="")
   {
-    $pltitles=explode("\n",$plfile);
+    $pltitles_=explode("\n",$plfile);
+    foreach ($pltitles_ as $value) {
+        $pltitles[] = trim($value);
+    }
     $key = array_search($values, $pltitles);
     if ($key !== false) {
       unset($pltitles[$key]);
