@@ -13,6 +13,7 @@ It consists of:
 
 3. Graphics equalizer
 	- same functionality like the moode eq but with instant reaction without stopping playback 
+	(cudos to elovattibr's [Webmixer](https://github.com/elovattibr/webmixer/))
 
 4. Songlyrics
 	- query lyrics of current song and display them in a modal pop-up
