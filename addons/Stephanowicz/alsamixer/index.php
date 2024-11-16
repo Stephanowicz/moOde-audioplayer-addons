@@ -3,6 +3,7 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  * Copyright 2024 Stephanowicz 
  * https://github.com/Stephanowicz/moOde-audioplayer-addons
+ * based on elovattibr's Webmixer: https://github.com/elovattibr/webmixer/
 */
 -->
 <!DOCTYPE html> 
