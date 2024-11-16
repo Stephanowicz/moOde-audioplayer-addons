@@ -1,9 +1,10 @@
+<?php
 /*
  * SPDX-License-Identifier: GPL-3.0-or-later
  * Copyright 2024 Stephanowicz 
  * https://github.com/Stephanowicz/moOde-audioplayer-addons
 */
-<?php
+
 $yturl = "";
 if(isset($_REQUEST['yturl'])){
    createPLentry($_REQUEST['yturl'],$_REQUEST['plopts'],$_REQUEST['index'],$_REQUEST['length']);
