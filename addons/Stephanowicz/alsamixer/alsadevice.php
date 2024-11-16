@@ -1,10 +1,10 @@
+<?php
 /*
  * SPDX-License-Identifier: GPL-3.0-or-later
  * Copyright 2024 Stephanowicz 
  * https://github.com/Stephanowicz/moOde-audioplayer-addons
  * based on elovattibr's Webmixer: https://github.com/elovattibr/webmixer/
 */
-<?php    
     require_once dirname(__FILE__) . '/../../../inc/common.php';
     require_once dirname(__FILE__) . '/../../../inc/session.php';
     require_once dirname(__FILE__) . '/../../../inc/sql.php';
