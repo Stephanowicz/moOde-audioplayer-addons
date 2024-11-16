@@ -1,9 +1,9 @@
+<?php
 /*
  * SPDX-License-Identifier: GPL-3.0-or-later
  * Copyright 2024 Stephanowicz 
  * https://github.com/Stephanowicz/moOde-audioplayer-addons
 */
-<?php
 	switch ($_GET['cmd']) {
 	case 'cfgCheck':
 		$cfgCheck = array(
