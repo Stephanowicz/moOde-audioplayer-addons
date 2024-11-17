@@ -84,7 +84,6 @@ after this add `<script src="addons/addons.js?t=1729607710734" defer></script>`
 With /var/www/addons/Stephanowicz/**config.json** the addons can be dis-/enabled  
 You can also do that by the [config-page](http://moode9.local/addons/Stephanowicz/config.html)  `http://moode9.local/addons/Stephanowicz/config.html`  
 This page also checks if the requirements are met.  
-![image](https://github.com/user-attachments/assets/5b9a6477-4e60-42bd-8e81-5306c7b35656)  
 ![image](https://github.com/user-attachments/assets/3c1ad513-13cb-4f79-9dea-24143cfc6971)
   
 Worst case:  
