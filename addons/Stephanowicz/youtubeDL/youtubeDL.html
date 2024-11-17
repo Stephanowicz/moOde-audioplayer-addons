@@ -1,5 +1,5 @@
 <!--
-/*
+ **
  * SPDX-License-Identifier: GPL-3.0-or-later
  * Copyright 2024 Stephanowicz 
  * https://github.com/Stephanowicz/moOde-audioplayer-addons
@@ -93,7 +93,12 @@
 		log.innerHTML += getTimestring() + ": creating playlistentry (" + (cnt + 1).toString() + "/" + (plArray.length).toString() + ") for " + plArray[cnt][0] + " (" + opts + ")<br />";
 		cnt++;
 		if (cnt < plArray.length) {
-			setTimeout(createPlaylistfromArray, 1500, plArray[cnt][1], "add", cnt);
+			if(["append","insert"].includes(opts)){
+				setTimeout(createPlaylistfromArray, 1500, plArray[cnt][1], opts, cnt);
+			}
+			else{
+				setTimeout(createPlaylistfromArray, 1500, plArray[cnt][1], "add", cnt);
+			}
 		}
 		else {
 			document.getElementById('ytplist').innerHTML = "";
@@ -220,8 +225,8 @@
 		<div><input size="80" type="text" placeholder="Video-URL"  name="yturl" style="width: 67vw;margin-left:3px;" onkeyup=buttonState(this,$('#ytsinglequery'));><input type="submit" id="ytsinglequery" style="position: relative;top: -3px;margin-left:3px" disabled></div>
 		<div>
 			
-			<span><input type="radio" name="plopts" value="add" checked style="position: relative;top: -2px;">&nbsp;add to playlist&nbsp;</span>
-			<span><input type="radio" name="plopts" value="clear" style="position: relative;top: -2px;">&nbsp;clear playlist&nbsp;</span>
+			<span><input type="radio" name="plopts" value="add" checked style="position: relative;top: -2px;">&nbsp;add to youtube-playlist&nbsp;</span>
+			<span><input type="radio" name="plopts" value="clear" style="position: relative;top: -2px;">&nbsp;clear youtube-playlist&nbsp;</span>
 		</div>
 		<div>
 			<span><input type="radio" name="plopts" value="append" style="position: relative;top: -2px;">&nbsp;append to current playlist&nbsp;</span>
@@ -259,19 +264,19 @@
 	</tr>
 </table>
 <br />
-<br />
-
 <div id="ytplaylist" style="display:none">
 	<div>items found:&nbsp;<span id="ytplItemsfound"></span></div>
 	<div id="ytplist" style="max-height: 15vh; overflow: auto; margin-left:5px"></div>
-	<form name="formCreatePl" method='post' action='javascript:createPlaylistfromArray()' style="margin-top:12px;">
+	<form name="formCreatePl" method='post' action='javascript:createPlaylistfromArray()' style="margin-top:24px;">
 		<input type='submit' value='create playlist'>
-		<input type="radio" name="plopts" value="add" checked style="position: relative;top:-2px;margin-left:8px;">&nbsp;add to playlist&nbsp;
-		<input type="radio" name="plopts" value="clear" style="position: relative;top: -2px;margin-left:8px;">&nbsp;clear playlist
+		<div style="left: 104px;position: relative;top: -27px;">		
+			<input type="radio" name="plopts" value="add" checked style="position: relative;top:-2px;margin-left:8px;">&nbsp;add to youtube-playlist&nbsp;
+			<input type="radio" name="plopts" value="clear" style="position: relative;top: -2px;margin-left:8px;">&nbsp;clear youtube-playlist&nbsp;<br>
+			<input type="radio" name="plopts" value="append" style="position: relative;top: -2px;margin-left:8px;"><span style="font-style: italic;">&nbsp;append to current playlist&nbsp;</span>
+			<input type="radio" name="plopts" value="insert" style="position: relative;top: -2px;margin-left:8px;"><span style="font-style: italic;">&nbsp;insert after current playlist position&nbsp;</span>
+		</div>
 	</form>
 </div>
-<br />
-<br />
 
 <form method="post" action="javascript:loadnplay()">Playlist (youtube.m3u):<input type="submit" value="load & play" style="margin: 0px 0px 0px 15px;vertical-align: text-bottom;"><input type="hidden" name="loadnplay" value="go"></form>
 <div id="playlist"style="margin: 5px 0px 0px 5px;max-height: 20vh;overflow: auto;"></div>
