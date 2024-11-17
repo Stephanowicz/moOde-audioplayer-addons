@@ -90,6 +90,7 @@ function getImage($filename)
  }
 
  function webimage($index) {
+			$artwork = null;
 //			$res=shell_exec("youtube-dl --list-thumbnails $file|grep sddefault.jpg");
 //			if($res!=""){
 //				$thumbnails=explode("\n",$res);
@@ -97,26 +98,28 @@ function getImage($filename)
 //				$thumbnail = substr($thumbnails[0], strpos($thumbnails[0],"http"));
 //				echo $thumbnail."<br />";
 				$file = '/var/tmp/'.$index.'.jpg';
-				$filesize = filesize ($file);
-//				$imgheader = get_headers($thumbnail, 1);
-//				$filesize = $imgheader ["Content-Length"];
-//				if($filesize > 40*1024) {
-//					$img = file_get_contents($thumbnail);
-//					file_put_contents('/var/tmp/thumb.jpg',$img);
-				//	imagejpeg($img, 'thumb.jpg');
-//					$file = '/var/tmp/thumb.jpg';
+				if(is_file($file)){
+					$filesize = filesize ($file);
+	//				$imgheader = get_headers($thumbnail, 1);
+	//				$filesize = $imgheader ["Content-Length"];
+	//				if($filesize > 40*1024) {
+	//					$img = file_get_contents($thumbnail);
+	//					file_put_contents('/var/tmp/thumb.jpg',$img);
+					//	imagejpeg($img, 'thumb.jpg');
+	//					$file = '/var/tmp/thumb.jpg';
 
-				//	$width = imagesx($img);
-				//	$height = imagesy($img);
-					$image_info = getimagesize($file); 
-					list($width, $height, $image_type) = getimagesize($file);
-					if(($width > 300 && $height > 300) && ($width < 2000 && $height < 2000)) {
-						$fh = fopen($file, 'rb');
-						$imageData = fread($fh, $filesize);
-						fclose($fh);
-					//	$image_data = scaleImageFileToBlob($imageData, $width, $height, $image_type);
-						$artwork[] = array('data:'.$image_info['mime'].';charset=utf-8;base64,'.base64_encode($imageData),$image_info[3],basename($file));
-					}
+					//	$width = imagesx($img);
+					//	$height = imagesy($img);
+						$image_info = getimagesize($file); 
+						list($width, $height, $image_type) = getimagesize($file);
+						if(($width > 300 && $height > 300) && ($width < 2000 && $height < 2000)) {
+							$fh = fopen($file, 'rb');
+							$imageData = fread($fh, $filesize);
+							fclose($fh);
+						//	$image_data = scaleImageFileToBlob($imageData, $width, $height, $image_type);
+							$artwork[] = array('data:'.$image_info['mime'].';charset=utf-8;base64,'.base64_encode($imageData),$image_info[3],basename($file));
+						}
+				}
 //				}
 //				echo "Header: ".print_r($imgheader)."<br />";
 //				echo "Index: ".$index."<br />";
@@ -131,7 +134,6 @@ function getImage($filename)
 				return $artwork;
 			//}
 }
-
  function buildImageData($value){
 	$image_width = $value['image_width'];
 	$image_height = $value['image_height'];
