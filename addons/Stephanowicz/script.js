@@ -80,6 +80,7 @@ fetch('addons/Stephanowicz/config.json')
 				window.clearInterval(updatePlStatDisp)
 				updKnobAndTimeTrack_extended();
 				if (MPD.json['state'] === 'play') {
+					window.clearInterval(updatePlStatDisp)
 					updatePlStatDisp = setInterval(function () {
 						plStatDisp();
 					}, 1000);
@@ -132,6 +133,7 @@ fetch('addons/Stephanowicz/config.json')
 						else {
 							document.title = "moOde Audioplayer";
 						}
+						renderUI_extended();
 					}
 				});
 			}
