@@ -84,7 +84,24 @@
 			echo "false";
 		}
 		break;
-
+		
+	case 'setToken':
+		if(isset($_GET['geniustoken'])){
+			$fp = @fopen(dirname(__FILE__) . "/lyrics/clientaccesstoken.txt", "w");
+			if ($fp) {
+				fwrite($fp,$_GET['geniustoken']);
+				fclose($fp);
+				echo "true";
+			}
+			else{
+				echo "error";
+			}
+		}
+		else{
+			echo "false";
+		}
+		break;
+		
     default:
 		echo 'Unknown command';
 		break;
