@@ -15,6 +15,8 @@
 			"curl" => false,
 			"dom" => false,
 			"token" => false,
+			"token_perm" => false,
+			"geniustoken" => '',
 			"lyrics" => false
 		);
 		$cfg = dirname(__FILE__).'/config.json';
@@ -55,11 +57,16 @@
 		}
 		if($ClientAccessToken != ""){
 			$cfgCheck["token"] = true;
+		$cfgCheck["geniustoken"] = $ClientAccessToken;
 		}		
 		else {$found=false;}
 		if($found){
 			$cfgCheck["lyrics"] = true;
 		}		
+		$cfg = dirname(__FILE__).'/lyrics/clientaccesstoken.txt';
+		if(is_writable($cfg)) {		
+			$cfgCheck["token_perm"] = true;
+		}
 		$arrCfg=[];
 		$arrCfg[]=$cfgCheck;
 		$arrCfg[]=json_decode($json);
@@ -84,7 +91,7 @@
 			echo "false";
 		}
 		break;
-		
+
 	case 'setToken':
 		if(isset($_GET['geniustoken'])){
 			$fp = @fopen(dirname(__FILE__) . "/lyrics/clientaccesstoken.txt", "w");
