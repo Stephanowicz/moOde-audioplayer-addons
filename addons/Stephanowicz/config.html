@@ -16,7 +16,7 @@
 			padding-top: 5px;
 			font-size: calc(.45em + 2vmin);
 		}
-		#youtube-dl, #eq, #albumart, #lyrics, #random, #favorites, #repeat, #single, #browsertitle, #playqueue, #browse2folder {
+		#youtube-dl, #eq, #albumart, #lyrics, #random, #favorites, #repeat, #single, #ssStyle, #browsertitle, #playqueue, #browse2folder {
 			width: 19px;
 			height: 19px;
 			margin: 5px;
@@ -206,6 +206,9 @@
 		<div class="settings">
 			<input type="checkbox" id="single" name="single" disabled> Playback-menue: Show "Single playback" button <i class="fal fa-redo"></i><br>
 		</div>
+		<div class="settings">
+			<input type="checkbox" id="ssStyle" name="ssStyle" disabled> Screensaver Wide-mode: increase text-size<br>
+		</div>
 		
 		<!-- Browsertitle -->
 		<div class="settings">
@@ -289,6 +292,8 @@
 				$("#repeat").prop('checked', cfgJson['repeat']);
 				$("#single").prop('disabled', false);
 				$("#single").prop('checked', cfgJson['single']);
+				$("#ssStyle").prop('disabled', false);
+				$("#ssStyle").prop('checked', cfgJson['ssStyle']);
 				$("#browsertitle").prop('disabled', false);
 				$("#browsertitle").prop('checked', cfgJson['browsertitle']);
 				$("#playqueue").prop('disabled', false);
@@ -316,6 +321,7 @@
 					fav: $("#favorites").prop('checked'),
 					repeat: $("#repeat").prop('checked'),
 					single: $("#single").prop('checked'),
+					ssStyle: $("#ssStyle").prop('checked'),
 					browsertitle: $("#browsertitle").prop('checked')
 				});
 				
