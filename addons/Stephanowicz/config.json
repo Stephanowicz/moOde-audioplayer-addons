@@ -9,5 +9,6 @@
     "fav": false,
     "repeat": true,
     "single": true,
+    "ssStyle": true,
     "browsertitle": true
 }
