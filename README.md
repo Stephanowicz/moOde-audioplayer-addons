@@ -28,7 +28,7 @@ It consists of:
 
 8. Show total and remainig playtime below playlist
 
-
+9. Increase text-size of Artist, Title, Album in screen-saver wide-mode
 
 ## requirements & installation
 - Tested with moOde audioplayer v9.x  
@@ -84,7 +84,7 @@ after this add `<script src="addons/addons.js?t=1729607710734" defer></script>`
 With /var/www/addons/Stephanowicz/**config.json** the addons can be dis-/enabled  
 You can also do that by the [config-page](http://moode9.local/addons/Stephanowicz/config.html)  `http://moode9.local/addons/Stephanowicz/config.html`  
 This page also checks if the requirements are met.  
-![image](https://github.com/user-attachments/assets/3c1ad513-13cb-4f79-9dea-24143cfc6971)
+![image](https://github.com/user-attachments/assets/fad94323-0d27-4f59-8557-6eabe1b5b5e1)
   
 Worst case:  
 ![image](https://github.com/user-attachments/assets/e695ee40-9601-4054-bd86-a76f4108ab15)
@@ -154,7 +154,10 @@ Worst case:
 
 8. Show total and remainig/elapsed playtime below playlist  
 	- ![image](https://github.com/user-attachments/assets/e9b5049d-a9b4-4ce8-8b68-6c51aa6bcc01)
- 	- remaining or elapsed playtime will be shown according to Your general display setting of showing playtime	
+ 	- remaining or elapsed playtime will be shown according to Your general display setting of showing playtime
+
+9. Increase text-size of Artist, Title, Album in screen-saver wide-mode
+    - at moment a fixed size... I'm thinking of to make it adjustable 
 
 
 That's it - have fun!
