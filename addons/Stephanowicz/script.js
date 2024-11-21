@@ -33,6 +33,28 @@ fetch('addons/Stephanowicz/config.json')
     .then((json) => addonsCfg = json)
 	//.then(() => console.log(addonsCfg))
 	.then(() => {
+
+			//Style Sceensaver wide
+		addonsCfg['ssStyle'] &&
+		$(function () {
+			let styles = `
+				body.cvwide #ss-metadata #ss-currentsong {
+					font-size: 1.9em;
+				}
+				body.cvwide #ss-metadata #ss-currentartist {
+					font-size: 1.7em;
+				}
+				body.cvwide #ss-metadata #ss-currentalbum {
+					font-size: 1.4em;
+					margin-bottom: 1em;
+				}
+				body.cvwide #ss-metadata #ss-extra-metadata {
+					margin-top: 1em;
+				}
+			`;
+			appendStyle(styles);
+		});
+
 		//-- Styles Albumart --
 		addonsCfg['albumart'] &&
 		$(function () {
@@ -254,6 +276,7 @@ fetch('addons/Stephanowicz/config.json')
 				$("#context-menu-playback ul li:eq(2)").after(tempstr);
 				//-- remove "random album" and "add to favorites" from button group
 				$("button.ralbum").addClass("hide");
+				$("button.ralbum").attr('style', 'display: none !important');
 			}
 			//-- move 'add to favorites' in playback-menu
 			if(!addonsCfg['fav']){
@@ -261,6 +284,7 @@ fetch('addons/Stephanowicz/config.json')
 				$("#context-menu-playback ul li:eq(0)").before(tempstr);
 				//-- remove "add to favorites" from button group
 				$("button.add-item-to-favorites").addClass("hide");
+				$("button.add-item-to-favorites").attr('style', 'display: none !important');
 			}
 			//-- add "repeat", "single" to button group 
 			if(addonsCfg['single']){
@@ -571,4 +595,3 @@ function plStatDisp() {
         }
     }
 }
-
