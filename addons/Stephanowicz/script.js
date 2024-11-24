@@ -34,27 +34,55 @@ fetch('addons/Stephanowicz/config.json')
 	//.then(() => console.log(addonsCfg))
 	.then(() => {
 
-			//Style Sceensaver wide
+		//Style Sceensaver for local display 800x480
 		addonsCfg['ssStyle'] &&
 		$(function () {
 			let styles = `
-				body.cvwide #ss-metadata #ss-currentsong {
-					font-size: 1.9em;
-				}
-				body.cvwide #ss-metadata #ss-currentartist {
-					font-size: 1.7em;
-				}
-				body.cvwide #ss-metadata #ss-currentalbum {
-					font-size: 1.4em;
-					margin-bottom: 1em;
-				}
-				body.cvwide #ss-metadata #ss-extra-metadata {
-					margin-top: 1em;
+				@media screen and (max-width:800px) and (max-height:480px) and (orientation:landscape) {
+
+					body.cvwide #ss-metadata #ss-currentsong {
+						font-size: 1.9em;
+					}
+					body.cvwide #ss-metadata #ss-currentartist {
+						font-size: 1.7em;
+					}
+					body.cvwide #ss-metadata #ss-currentalbum {
+						font-size: 1.4em;
+						margin-bottom: 1em;
+					}
+					body.cvwide #ss-metadata #ss-extra-metadata {
+						margin-top: 1em;
+					}	
+
+					body.cvpb #playbar-timeline {top:49%;width:25%;transform:translate(-50%, -50%);}
+
+					#playbar-timeline {width:20%;z-index:999;position:absolute;bottom:.75em;left:41%;transform:translate(-50%);font-size:.8rem;display:flex;flex-flow:column;height:15px;display:none;}
+
+					#playbar-time {width:100%;z-index:100;font-size:.8rem;margin-top:-14px;line-height:8px;}
+
+					#playbar-toggles i {font-size:1.9rem;margin-top:1px;}
+
+					#playbar-toggles .btn {padding:0;margin:0 0.45rem;height:2.1rem;width:2.7rem;border-radius:50%;}
+
+					.mpd-volume-level {font-size:1.9rem;margin-left:0;}
+
+					#playbar-toggles {position:absolute;display:flex;flex-wrap:wrap;right:1.7rem;top:50%;transform:translate(0, -50%);}
+
+					#playbar-time, #playbar-total {font-size:1.7rem;}
+
+					#playbar-countdown, #m-countdown {position:relative;float:left;left:-6rem;}
+
+					#playbar-total, #m-total {position:relative;float:right;left:6rem;}
+					
+					.timeline-bg {background-color:rgb(255 255 255 / 56%);height:1px;top:50%;width:100%;position:relative;min-height:1px;margin-top:-1px;}
+
+					
+					#playbar {display:flex;align-items:center;height:3.5rem;position:absolute;bottom:0;width:100%;color:var(--adapttext);box-shadow: 0px -1px 3px rgba(0,0,0,0.1);}
+
 				}
 			`;
 			appendStyle(styles);
 		});
-
 		//-- Styles Albumart --
 		addonsCfg['albumart'] &&
 		$(function () {
@@ -195,6 +223,15 @@ fetch('addons/Stephanowicz/config.json')
 					}
 				},500);
 			}
+			if(!addonsCfg['fav']){
+				//-- remove "add to favorites" from button group if it has been overwritten - yes, it's nasty :D		
+				$("button.add-item-to-favorites").css("display") != "none" && $("button.add-item-to-favorites").attr('style', 'display: none !important');
+			}
+			if(addonsCfg['ssStyle']){
+				if (SESSION.json['scnsaver_style'] == 'Gradient (Linear)') {
+						$('#screen-saver #ss-style').css('background', 'linear-gradient(rgb(0 0 0 / 47%) 0%, rgba(0, 0, 0, 0.75) 40%, rgba(0, 0, 0, 0.8) 60%, rgba(0, 0, 0) 100%)');
+				}
+			}			
 		}
 
 
@@ -275,7 +312,7 @@ fetch('addons/Stephanowicz/config.json')
 				tempstr = '<li><a href="#notarget" data-cmd="ralbum"><i class="ralbum"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M475.31 364.144L288 256l187.31-108.144c5.74-3.314 7.706-10.653 4.392-16.392l-4-6.928c-3.314-5.74-10.653-7.706-16.392-4.392L272 228.287V12c0-6.627-5.373-12-12-12h-8c-6.627 0-12 5.373-12 12v216.287L52.69 120.144c-5.74-3.314-13.079-1.347-16.392 4.392l-4 6.928c-3.314 5.74-1.347 13.079 4.392 16.392L224 256 36.69 364.144c-5.74 3.314-7.706 10.653-4.392 16.392l4 6.928c3.314 5.74 10.653 7.706 16.392 4.392L240 283.713V500c0 6.627 5.373 12 12 12h8c6.627 0 12-5.373 12-12V283.713l187.31 108.143c5.74 3.314 13.079 1.347 16.392-4.392l4-6.928c3.314-5.74 1.347-13.079-4.392-16.392z"></path></svg></i> Random album</a></li>';
 				$("#context-menu-playback ul li:eq(2)").after(tempstr);
 				//-- remove "random album" and "add to favorites" from button group
-				$("button.ralbum").addClass("hide");
+			//	$("button.ralbum").addClass("hide");
 				$("button.ralbum").attr('style', 'display: none !important');
 			}
 			//-- move 'add to favorites' in playback-menu
@@ -283,7 +320,7 @@ fetch('addons/Stephanowicz/config.json')
 				tempstr = '<li><a href="#notarget" data-cmd="add_item_to_favorites"><i class="fal fa-heart sx"></i> Add To Favorites</a></li>';
 				$("#context-menu-playback ul li:eq(0)").before(tempstr);
 				//-- remove "add to favorites" from button group
-				$("button.add-item-to-favorites").addClass("hide");
+			//	$("button.add-item-to-favorites").addClass("hide");
 				$("button.add-item-to-favorites").attr('style', 'display: none !important');
 			}
 			//-- add "repeat", "single" to button group 
@@ -303,6 +340,7 @@ fetch('addons/Stephanowicz/config.json')
 				$('.' + cmd).toggleClass('btn-primary');
 				sendMpdCmd(cmd + ' ' + toggleValue);
 			});
+
 		});
 		
 	});
