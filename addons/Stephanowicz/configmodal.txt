@@ -1,0 +1,7 @@
+	<div class="modal-body" style="max-height:100%;">
+		<div id="AddonsConfig"></div>
+	</div>
+	<div class="modal-footer">
+		<button aria-label="Close" class="btn singleton" data-dismiss="modal" aria-hidden="true">Close</button>
+	</div>
+
