@@ -193,23 +193,52 @@
 				<span id="" style="font-size: small;padding-left: 19px;">sudo chmod 666 /var/www/addons/Stephanowicz/lyrics/clientaccesstoken.txt</i><br></span>
 			</div>
 		</div>
-		<!-- Playback-menu -->
-		<div class="settings">
-			<input type="checkbox" id="random" name="random" disabled> Playback-menue: Show "Random Album playback" button <i class="ralbum"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M475.31 364.144L288 256l187.31-108.144c5.74-3.314 7.706-10.653 4.392-16.392l-4-6.928c-3.314-5.74-10.653-7.706-16.392-4.392L272 228.287V12c0-6.627-5.373-12-12-12h-8c-6.627 0-12 5.373-12 12v216.287L52.69 120.144c-5.74-3.314-13.079-1.347-16.392 4.392l-4 6.928c-3.314 5.74-1.347 13.079 4.392 16.392L224 256 36.69 364.144c-5.74 3.314-7.706 10.653-4.392 16.392l4 6.928c3.314 5.74 10.653 7.706 16.392 4.392L240 283.713V500c0 6.627 5.373 12 12 12h8c6.627 0 12-5.373 12-12V283.713l187.31 108.143c5.74 3.314 13.079 1.347 16.392-4.392l4-6.928c3.314-5.74 1.347-13.079-4.392-16.392z"></path></svg></i><br>
-		</div>
-		<div class="settings">
-			<input type="checkbox" id="favorites" name="favorites" disabled> Playback-menue: Show "Add to favorites" button <i class="fal fa-heart sx"></i><br>
-		</div>
-		<div class="settings">
-			<input type="checkbox" id="repeat" name="repeat" disabled> Playback-menue: Show "Repeat playback" button <i class="fal fa-repeat"></i><br>
-		</div>
-		<div class="settings">
-			<input type="checkbox" id="single" name="single" disabled> Playback-menue: Show "Single playback" button <i class="fal fa-redo"></i><br>
+		<!-- Playbar-menu -->
+		<div style="margin: 10px;">
+			<span style="font-size: calc(.45em + 2vmin);margin-left: 5px;">Playbar buttons</span>
+			<span><i id="pbbtn-more" style="margin-left: 12px;position: relative;font-size: calc(.85em + 2vmin);top: -3px;" class="fal fa-sort-desc"></i></span>
+			<div id="playbarbuttons" style="margin-left: 15px;display:none">
+				<div class="settings">
+					<input type="checkbox" id="btn_random" name="btn_random" disabled> Show "Random Album playback" button <i class="ralbum"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M475.31 364.144L288 256l187.31-108.144c5.74-3.314 7.706-10.653 4.392-16.392l-4-6.928c-3.314-5.74-10.653-7.706-16.392-4.392L272 228.287V12c0-6.627-5.373-12-12-12h-8c-6.627 0-12 5.373-12 12v216.287L52.69 120.144c-5.74-3.314-13.079-1.347-16.392 4.392l-4 6.928c-3.314 5.74-1.347 13.079 4.392 16.392L224 256 36.69 364.144c-5.74 3.314-7.706 10.653-4.392 16.392l4 6.928c3.314 5.74 10.653 7.706 16.392 4.392L240 283.713V500c0 6.627 5.373 12 12 12h8c6.627 0 12-5.373 12-12V283.713l187.31 108.143c5.74 3.314 13.079 1.347 16.392-4.392l4-6.928c3.314-5.74 1.347-13.079-4.392-16.392z"></path></svg></i><br>
+				</div>
+				<div class="settings">
+					<input type="checkbox" id="btn_favorites" name="btn_favorites" disabled> Show "Add to favorites" button <i class="fal fa-heart sx"></i><br>
+				</div>
+				<div class="settings">
+					<input type="checkbox" id="btn_setFavName" name="btn_setFavName" disabled> Show "Set Favorites name" button <i class="fal fa-heart-circle sx"></i><br>
+				</div>
+				<div class="settings">
+					<input type="checkbox" id="btn_repeat" name="btn_repeat" disabled> Show "Repeat playback" button <i class="fal fa-repeat"></i><br>
+				</div>
+				<div class="settings">
+					<input type="checkbox" id="btn_single" name="btn_single" disabled> Show "Single playback" button <i class="fal fa-redo"></i><br>
+				</div>
+				<div class="settings">
+					<input type="checkbox" id="btn_save2pl" name="btn_save2pl" disabled> Show "Save Queue to playlist" button <i class="fal fa-save"></i><br>
+				</div>
+				<div class="settings">
+					<input type="checkbox" id="btn_consume" name="btn_consume" disabled> Show "Consume" button <i class="fal fa-arrow-down"></i><br>
+				</div>
+				<div class="settings">
+					<input type="checkbox" id="btn_clear" name="btn_clear" disabled> Show "Clear Queue" button <i class="fal fa-trash"></i><br>
+				</div>
+				<div class="settings">
+					<input type="checkbox" id="btn_coverview" name="btn_coverview" disabled> Show "CoverView" button <i class="fal fa-tv"></i><br>
+				</div>
+				<div class="settings">
+					<input type="checkbox" id="btn_info" name="btn_info" disabled> Show "Audio info" button <i class="fal fa-music"></i><br>
+				</div>
+<!-- 				<div class="settings">
+					<input type="checkbox" id="btn_queue" name="btn_queue" disabled> Show "Queue info" button <i class="fal fa-list"></i><br>
+				</div>
+ -->				<div class="settings">
+					<input type="checkbox" id="btn_last" name="btn_last" disabled> Show "Last track" button <i class="fal fa-exchange-alt"></i><br>
+				</div>
+			</div>
 		</div>
 		<div class="settings">
 			<input type="checkbox" id="ssStyle" name="ssStyle" disabled> Screensaver Wide-mode for local display (800x480): increase text-size and playbar size<br>
 		</div>
-		
 		<!-- Browsertitle -->
 		<div class="settings">
 			<input type="checkbox" id="browsertitle" name="browsertitle" disabled> Show Songtitle, Albumname und Albumicon in Browsertitlebar
@@ -284,14 +313,30 @@
 				$("#lyrics").prop('checked', cfgCheck["lyrics"] ? cfgJson['lyrics']:false);
 				$("#eq").prop('disabled', false);
 				$("#eq").prop('checked', cfgJson['eq']);
-				$("#random").prop('disabled', false);
-				$("#random").prop('checked', cfgJson['random']);
-				$("#favorites").prop('disabled', false);
-				$("#favorites").prop('checked', cfgJson['fav']);
-				$("#repeat").prop('disabled', false);
-				$("#repeat").prop('checked', cfgJson['repeat']);
-				$("#single").prop('disabled', false);
-				$("#single").prop('checked', cfgJson['single']);
+				$("#btn_random").prop('disabled', false);
+				$("#btn_random").prop('checked', cfgJson['btn_random']);
+				$("#btn_favorites").prop('disabled', false);
+				$("#btn_favorites").prop('checked', cfgJson['btn_fav']);
+				$("#btn_setFavName").prop('disabled', false);
+				$("#btn_setFavName").prop('checked', cfgJson['btn_fav']);
+				$("#btn_repeat").prop('disabled', false);
+				$("#btn_repeat").prop('checked', cfgJson['btn_repeat']);
+				$("#btn_single").prop('disabled', false);
+				$("#btn_single").prop('checked', cfgJson['btn_single']);
+				$("#btn_save2pl").prop('disabled', false);
+				$("#btn_save2pl").prop('checked', cfgJson['btn_save2pl']);
+				$("#btn_consume").prop('disabled', false);
+				$("#btn_consume").prop('checked', cfgJson['btn_consume']);
+				$("#btn_clear").prop('disabled', false);
+				$("#btn_clear").prop('checked', cfgJson['btn_clear']);
+				$("#btn_coverview").prop('disabled', false);
+				$("#btn_coverview").prop('checked', cfgJson['btn_coverview']);
+				$("#btn_info").prop('disabled', false);
+				$("#btn_info").prop('checked', cfgJson['btn_info']);
+//				$("#btn_queue").prop('disabled', false);
+//				$("#btn_queue").prop('checked', cfgJson['btn_queue']);
+				$("#btn_last").prop('disabled', false);
+				$("#btn_last").prop('checked', cfgJson['btn_last']);
 				$("#ssStyle").prop('disabled', false);
 				$("#ssStyle").prop('checked', cfgJson['ssStyle']);
 				$("#browsertitle").prop('disabled', false);
@@ -317,10 +362,18 @@
 					lyrics: $("#lyrics").prop('checked'),
 					eq: $("#eq").prop('checked'),
 					browse2folder: $("#browse2folder").prop('checked'),
-					random: $("#random").prop('checked'),
-					fav: $("#favorites").prop('checked'),
-					repeat: $("#repeat").prop('checked'),
-					single: $("#single").prop('checked'),
+					btn_random: $("#btn_random").prop('checked'),
+					btn_fav: $("#btn_favorites").prop('checked'),
+					btn_setFav: $("#btn_setFavName").prop('checked'),
+					btn_repeat: $("#btn_repeat").prop('checked'),
+					btn_single: $("#btn_single").prop('checked'),
+					btn_save2pl: $("#btn_save2pl").prop('checked'),
+					btn_consume: $("#btn_consume").prop('checked'),
+					btn_clear: $("#btn_clear").prop('checked'),
+					btn_coverview: $("#btn_coverview").prop('checked'),
+					btn_info: $("#btn_info").prop('checked'),
+//					btn_queue: $("#btn_queue").prop('checked'),
+					btn_last: $("#btn_last").prop('checked'),
 					ssStyle: $("#ssStyle").prop('checked'),
 					browsertitle: $("#browsertitle").prop('checked')
 				});
@@ -330,6 +383,7 @@
 						console.log("Data sent ", data);
 						if(data=="true"){
 							$("#modal-text").text("Settings have been applied");
+							//location.reload(true);
 						}
 						else{
 							$("#modal-text").html("Error!<br>Settings could not been saved");
@@ -363,6 +417,20 @@
 			    $(".modal-popup").css("display","none");
 			  }
 			}
+			$("#pbbtn-more").click(function(){
+			  if($("#playbarbuttons").css("display")=="block"){
+				$("#playbarbuttons").css("display","none");
+				$("#pbbtn-more").removeClass("fa-sort-asc");
+				$("#pbbtn-more").addClass("fa-sort-desc");
+				$("#pbbtn-more").css("top","-3px");
+			}
+			else{
+				$("#playbarbuttons").css("display","block");
+				$("#pbbtn-more").removeClass("fa-sort-desc");
+				$("#pbbtn-more").addClass("fa-sort-asc");
+				$("#pbbtn-more").css("top","12px");
+			}
+			});
 		</script>
 		<button id="apply" onclick="setCfg()" disabled>Apply settings</button>
 	</body>
