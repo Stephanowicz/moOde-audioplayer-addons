@@ -307,8 +307,20 @@ fetch('addons/Stephanowicz/config.json')
 						'<div id="trackinfo-albumart-modal" class="modal hide" tabindex="-1" role="dialog" aria-labelledby="trackinfo-albumart-modal-label" aria-hidden="true"></div>';
 				$('#shutdown').after(tempstr);
 			}
+			//-- Config Modal --
+			tempstr = '<div id="Config-modal" class="hide" tabindex="-1" role="dialog" aria-labelledby="Config-modal-label" aria-hidden="true" style="transform: translate(-50%);' +
+				'border-radius: 6px;' +
+				'left: 50%;' +
+				'position: fixed;' +
+				'z-index: 10001;' +
+				'box-shadow: 0 3px 7px rgba(0,0,0,.3);"></div>';
+			$("#shutdown").after(tempstr);
+			$('#Config-modal').load('addons/Stephanowicz/configmodal.txt');
+			tempstr ='<li class="context-menu menu-separator"><a id="addonsCfg" href="#notarget" data-cmd="addonscfg"><i class="fa-solid fa-sharp fa-pen sx"></i>Addons Configuration</a></li>';
+			//$('.dropdown-menu li.context-menu')[0].outerHTML+=tempstr;
+			$('.dropdown-menu [data-cmd="preferences"]')[0].parentNode.outerHTML+=tempstr;
 			//-- move 'Random album' in playback-menu
-			if(!addonsCfg['random']){
+			if(!addonsCfg['btn_random']){
 				tempstr = '<li><a href="#notarget" data-cmd="ralbum"><i class="ralbum"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M475.31 364.144L288 256l187.31-108.144c5.74-3.314 7.706-10.653 4.392-16.392l-4-6.928c-3.314-5.74-10.653-7.706-16.392-4.392L272 228.287V12c0-6.627-5.373-12-12-12h-8c-6.627 0-12 5.373-12 12v216.287L52.69 120.144c-5.74-3.314-13.079-1.347-16.392 4.392l-4 6.928c-3.314 5.74-1.347 13.079 4.392 16.392L224 256 36.69 364.144c-5.74 3.314-7.706 10.653-4.392 16.392l4 6.928c3.314 5.74 10.653 7.706 16.392 4.392L240 283.713V500c0 6.627 5.373 12 12 12h8c6.627 0 12-5.373 12-12V283.713l187.31 108.143c5.74 3.314 13.079 1.347 16.392-4.392l4-6.928c3.314-5.74 1.347-13.079-4.392-16.392z"></path></svg></i> Random album</a></li>';
 				$("#context-menu-playback ul li:eq(2)").after(tempstr);
 				//-- remove "random album" and "add to favorites" from button group
@@ -316,31 +328,132 @@ fetch('addons/Stephanowicz/config.json')
 				$("button.ralbum").attr('style', 'display: none !important');
 			}
 			//-- move 'add to favorites' in playback-menu
-			if(!addonsCfg['fav']){
+			if(!addonsCfg['btn_fav']){
 				tempstr = '<li><a href="#notarget" data-cmd="add_item_to_favorites"><i class="fal fa-heart sx"></i> Add To Favorites</a></li>';
 				$("#context-menu-playback ul li:eq(0)").before(tempstr);
 				//-- remove "add to favorites" from button group
 			//	$("button.add-item-to-favorites").addClass("hide");
 				$("button.add-item-to-favorites").attr('style', 'display: none !important');
 			}
-			//-- add "repeat", "single" to button group 
-			if(addonsCfg['single']){
-				tempstr = '<button class="btn btn-cmd btn-toggle1 single" data-cmd="single" aria-label="Single"><i class="fa-regular fa-sharp fa-redo"></i></button>';
+			//-- add "repeat", "single" etc to button group 
+			if(addonsCfg['btn_single']){
+				tempstr = '<button class="btn btn-cmd btn-toggle2 single" data-cmd="single" aria-label="Single"><i class="fa-regular fa-sharp fa-redo"></i></button>';
 				$("button.random").after(tempstr);
 				$("#context-menu-playback > ul").find('[data-cmd="single"]').parent().addClass("hide")
 			}
-			if(addonsCfg['repeat']){
-				tempstr = '<button class="btn btn-cmd btn-toggle1 repeat" data-cmd="repeat" aria-label="Repeat"><i class="fa-regular fa-sharp fa-repeat"></i></button>';
+			if(addonsCfg['btn_repeat']){
+				tempstr = '<button class="btn btn-cmd btn-toggle2 repeat" data-cmd="repeat" aria-label="Repeat"><i class="fa-regular fa-sharp fa-repeat"></i></button>';
 				$("button.random").after(tempstr);
 				$("#context-menu-playback > ul").find('[data-cmd="repeat"]').parent().addClass("hide")
 			}
-			$('.btn-toggle1').click(function(e) {
+			if(addonsCfg['btn_save2pl']){
+				tempstr = '<button class="btn btn-cmd btn-toggle2 save" data-cmd="save_queue_to_playlist" aria-label="SaveQueue"><i class="fa-regular fa-sharp fa-save"></i></button>';
+				$("button.random").after(tempstr);
+				$("#context-menu-playback > ul").find('[data-cmd="save_queue_to_playlist"]').parent().addClass("hide")
+			}
+			if(addonsCfg['btn_setFav']){
+				tempstr = '<button class="btn btn-cmd btn-toggle2 setFavName" data-cmd="set_favorites_name" aria-label="SaveQueue"><i class="fa-regular fa-sharp fa-heart-circle"></i></button>';
+				$("button.random").after(tempstr);
+				$("#context-menu-playback > ul").find('[data-cmd="set_favorites_name"]').parent().addClass("hide")
+			}
+			if(addonsCfg['btn_consume']){
+				tempstr = '<button class="btn btn-cmd btn-toggle2 consume" data-cmd="consume" aria-label="consume"><i class="fa-regular fa-sharp fa-arrow-down"></i></button>';
+				$("button.random").after(tempstr);
+				$("#context-menu-playback > ul").find('[data-cmd="consume"]').parent().addClass("hide")
+			}
+			if(addonsCfg['btn_clear']){
+				tempstr = '<button class="btn btn-cmd btn-toggle2 clear" data-cmd="clear" aria-label="clear"><i class="fa-regular fa-sharp fa-trash"></i></button>';
+				$("button.random").after(tempstr);
+				$("#context-menu-playback > ul").find('[data-cmd="clear"]').parent().addClass("hide")
+			}
+			if(!addonsCfg['btn_coverview']){
+				$("button.coverview").attr('style', 'display: none !important');
+				tempstr = '<li><a href="#notarget"  class="btn-toggle2" data-cmd="coverview"><i class="fal fa-tv sx"></i> Coverview</a></li>';
+				$("#context-menu-playback ul li:eq(10)").after(tempstr);
+			}
+			if(addonsCfg['btn_info']){
+				tempstr = '<button class="btn btn-cmd btn-toggle2 info" data-cmd="track_info_playback" aria-label="track_info_playback"><i class="fa-regular fa-sharp fa-music"></i></button>';
+				$("button.random").after(tempstr);
+				$("#context-menu-playback > ul").find('[data-cmd="track_info_playback"]').parent().addClass("hide")
+			}
+//			if(addonsCfg['btn_queue']){
+//				tempstr = '<button class="btn btn-cmd btn-toggle1 queue" data-cmd="playqueue_info" aria-label="playqueue_info"><i class="fa-regular fa-sharp fa-list"></i></button>';
+//				$("button.random").after(tempstr);
+//				$("#context-menu-playback > ul").find('[data-cmd="playqueue_info"]').parent().addClass("hide")
+//			}
+			if(addonsCfg['btn_last']){
+				tempstr = '<button class="btn btn-cmd btn-toggle2 last" data-cmd="toggle_song" aria-label="toggle_song"><i class="fa-regular fa-sharp fa-exchange-alt"></i></button>';
+				$("button.random").after(tempstr);
+				$("#context-menu-playback > ul").find('[data-cmd="toggle_song"]').parent().addClass("hide")
+			}
+/*			$('.btn-toggle1').click(function(e) {
 				var cmd = $(this).data('cmd');
 				var toggleValue = $(this).hasClass('btn-primary') ? '0' : '1';
 				$('.' + cmd).toggleClass('btn-primary');
 				sendMpdCmd(cmd + ' ' + toggleValue);
 			});
-
+*/
+			$('.btn-toggle2').click(function(e) {
+				switch ($(this).data('cmd')) {
+					case 'save_queue_to_playlist':
+						$('#save-queue-to-playlist-modal').modal();
+						break;
+					case 'set_favorites_name':
+						$.getJSON('command/playlist.php?cmd=get_favorites_name', function(name) {
+							$('#playlist-favorites-name').val(name); // Preload existing name (if any)
+							$('#set-favorites-playlist-modal').modal();
+						});
+						break;
+					case 'toggle_song':
+						sendMpdCmd('playid ' + toggleSongId);
+						break;
+					case 'consume':
+						$('#menu-check-consume').toggle();
+						var toggle = $('.consume').hasClass('btn-primary') ? '0' : '1';
+						$('.consume').toggleClass('btn-primary');
+						sendMpdCmd('consume ' + toggle);
+						break;
+					case 'repeat':
+						$('#menu-check-repeat').toggle();
+						var toggle = $('.repeat').hasClass('btn-primary') ? '0' : '1';
+						$('.repeat').toggleClass('btn-primary');
+						sendMpdCmd('repeat ' + toggle);
+						break;
+					case 'single':
+						$('#menu-check-single').toggle();
+						var toggle = $('.single').hasClass('btn-primary') ? '0' : '1';
+						$('.single').toggleClass('btn-primary');
+						sendMpdCmd('single ' + toggle);
+						break;
+					case 'clear':
+						sendMpdCmd('clear');
+						$('#playlist-save-name').val(''); // Clear saved playlist name if any
+						break;
+					case 'track_info_playback':
+						if ($('#currentsong').html() != '') {
+							var cmd = MPD.json['artist'] == 'Radio station' ? 'station_info' : 'track_info';
+							audioInfo(cmd, MPD.json['file']);
+						}
+						break;
+					case 'track_info_playqueue':
+						var cmd = '';
+						if ($('#pq-' + (UI.dbEntry[0] + 1) + ' .pll2').html().substr(0, 2) == '<i') { // Has icon (fa-microphone)
+							cmd = 'station_info';
+						} else {
+							cmd = 'track_info';
+						}
+						$.getJSON('command/queue.php?cmd=get_playqueue_item_tag&songpos=' + UI.dbEntry[0] + '&tag=file', function(data) {
+							if (data != '') {
+								audioInfo(cmd, data);
+							}
+						});
+						break;						
+					case 'coverview':
+						e.stopImmediatePropagation();
+						screenSaver('1');
+						break;
+				}
+			});
 		});
 		
 	});
@@ -348,6 +461,11 @@ fetch('addons/Stephanowicz/config.json')
 
 //---------------------------------------------------------
 //-- ContextMenue Click Events ---
+$(document).on('click', '#addonsCfg', function(e) {
+    $('#AddonsConfig').empty();
+    $('#AddonsConfig').load('addons/Stephanowicz//configmodal.html');
+    $('#Config-modal').modal();
+});
 $(document).on('click', '.context-menu a', function(e) {
 	var path = UI.dbEntry[0]; // File path or item num
 
