@@ -19,7 +19,7 @@ It consists of:
 	- query lyrics of current song and display them in a modal pop-up
 
 5. Playbackmenue
-	- Add/remove items for playbackcontrol on mainscreen - "repeat", "random", "single", "random album", "add to favourites"
+	- Add/remove items for playbackcontrol on mainscreen - "repeat", "random", "single", "random album", "add to favourites" etc...
 
 6. Show Songtitle, Albumname and albumicon in browsertitlebar
 
@@ -81,10 +81,15 @@ after this add `<script src="addons/addons.js?t=1729607710734" defer></script>`
 
 ## Addons
 
-With /var/www/addons/Stephanowicz/**config.json** the addons can be dis-/enabled  
-You can also do that by the [config-page](http://moode9.local/addons/Stephanowicz/config.html)  `http://moode9.local/addons/Stephanowicz/config.html`  
-This page also checks if the requirements are met.  
-![image](https://github.com/user-attachments/assets/fad94323-0d27-4f59-8557-6eabe1b5b5e1)
+With /var/www/addons/Stephanowicz/**config.json** the addons can be dis-/enabled
+A config-page will help You by doing so. This page also checks if the requirements are met. 
+The config-page can be accessed by the **m**(oode-menu) 
+
+![image](https://github.com/user-attachments/assets/555baaa8-2ef9-475c-b306-28f7d3261c42)
+
+You can also do that in a seperate window: [config-page](http://moode9.local/addons/Stephanowicz/config.html)  `http://moode9.local/addons/Stephanowicz/config.html`  
+
+![image](https://github.com/user-attachments/assets/d925e151-ed04-459b-b522-585c06c47267)
   
 Worst case:  
 ![image](https://github.com/user-attachments/assets/e695ee40-9601-4054-bd86-a76f4108ab15)
@@ -133,8 +138,8 @@ Worst case:
 	- query lyrics of current song and display them in a modal  
 	![image](https://github.com/user-attachments/assets/21f61711-1f0c-44bc-b5df-2ab6b8ebf7eb)  
 	
-5. Playbackmenue
-	- Add/remove items for playbackcontrol on mainscreen - "repeat", "random", "single", "random album", "add to favourites"  
+5. Playbackmenue / Playbar icons
+	- Add/remove items for playbackcontrol on mainscreen - "repeat", "random", "single", "random album", "add to favourites"  etc...
 	![image](https://github.com/user-attachments/assets/ef1deacc-5fef-4c33-9947-474d9194d9fd)  
 	Removed items are placed in the pop-up menue  
 	![image](https://github.com/user-attachments/assets/873f2767-8699-4140-b7e0-813b02874d6e)  
