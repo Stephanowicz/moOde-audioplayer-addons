@@ -81,18 +81,18 @@ after this add `<script src="addons/addons.js?t=1729607710734" defer></script>`
 
 ## Addons
 
-With /var/www/addons/Stephanowicz/**config.json** the addons can be dis-/enabled
-A config-page will help You by doing so. This page also checks if the requirements are met. 
-The config-page can be accessed by the **m**(oode-menu) 
+With /var/www/addons/Stephanowicz/**config.json** the addons can be dis-/enabled.  
+A config-page will help You by doing so. This page also checks if the requirements are met.  
+The config-page can be accessed by the **m**(oode-menu)  
 
-![image](https://github.com/user-attachments/assets/555baaa8-2ef9-475c-b306-28f7d3261c42)
+![image](https://github.com/user-attachments/assets/555baaa8-2ef9-475c-b306-28f7d3261c42)  
 
-You can also do that in a seperate window: [config-page](http://moode9.local/addons/Stephanowicz/config.html)  `http://moode9.local/addons/Stephanowicz/config.html`  
+(You can also do that in a seperate window: [config-page](http://moode9.local/addons/Stephanowicz/config.html)  `http://moode9.local/addons/Stephanowicz/config.html`)  
 
-![image](https://github.com/user-attachments/assets/d925e151-ed04-459b-b522-585c06c47267)
+![image](https://github.com/user-attachments/assets/d925e151-ed04-459b-b522-585c06c47267)   
   
 Worst case:  
-![image](https://github.com/user-attachments/assets/e695ee40-9601-4054-bd86-a76f4108ab15)
+![image](https://github.com/user-attachments/assets/e695ee40-9601-4054-bd86-a76f4108ab15)  
 
 1. Extended Albumart
 	- Displays embedded images and files in the albumfolder as thumbnails below albumcover and on the audioinfo page.  
