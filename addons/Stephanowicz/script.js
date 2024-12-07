@@ -87,47 +87,42 @@ fetch('addons/Stephanowicz/config.json')
 		addonsCfg['uwStyle'] &&
 		$(function () {
 			let styles = `
+			let styles = `
 				@media screen and (max-width:1480px) and (max-height:320px) and (orientation:landscape) {
+					/* Time knob */
+					#countdown {
+						height: 11vw;
+						width: 11vw;
+					}
 					#countdown > div {
-						height: 180px !important;
-						width: 180px !important;
+						height: 11vw !important;
+						width: 11vw !important;
 					}
 					#countdown > div > canvas {
-						height: 180px !important;
-						width: 180px !important;
+						height: 11vw !important;
+						width: 11vw !important;
 					}
-					#playback-controls > #timezone {
-						height: 44%;
+					#countdown-display {
+				        top: 44%;
+						font-size: 2vw;	
+    					}
+				    	#total {
+				        	top: 62%;
+				        	font-size: 1.25vw;
+				    	}
+					#timeknob {
+					    margin: 0;
 					}
-					#timeknob > #countdown-display {
-						position:absolute;
-						top:34%;
-						left:50%;
-						margin-right:0px;
-						margin-bottom:0px;
-						transform:translate(-50%, -50%);
-						font-size:2.25vw;
-						font-weight:500;
-						cursor:pointer;
-					}
-					#timeknob > #total {
-						position:absolute;
-						top:45%;
-						left:50%;
-						transform:translate(-50%);
-						font-size:1.5vw;
-					}
-					#playback-controls > #playbtns {
-						display: block;
-						height: 17%;
-					}	
-					#playbtns .btn.btn-cmd {
-						font-size: 4.0em;
+
+					/* Play and toggle buttons under the time knob */
+					#playbtns .btn {
+				        font-size: 2vw;
+						padding: 1rem 2rem;
 					}
 					#togglebtns .btn-group {
-					  font-size: 1.7em;
-					  white-space: normal;
-					  width: 100%;
+					    font-size: 1.7em;
+					    white-space: normal;
+					    width: 75%;
 					}
 				}
 			`;
