@@ -16,7 +16,7 @@
 			padding-top: 5px;
 			font-size: calc(.45em + 2vmin);
 		}
-		#youtube-dl, #eq, #albumart, #lyrics, #random, #favorites, #repeat, #single, #ssStyle, #browsertitle, #playqueue, #browse2folder {
+		#youtube-dl, #eq, #albumart, #lyrics, #random, #favorites, #repeat, #single, #ssStyle, #uwStyle, #browsertitle, #playqueue, #browse2folder {
 			width: 19px;
 			height: 19px;
 			margin: 5px;
@@ -239,6 +239,9 @@
 		<div class="settings">
 			<input type="checkbox" id="ssStyle" name="ssStyle" disabled> Screensaver Wide-mode for local display (800x480): increase text-size and playbar size<br>
 		</div>
+		<div class="settings">
+			<input type="checkbox" id="uwStyle" name="uwStyle" disabled> Fix for local ultra-wide displays (1480x320): decrease timeknob size and adjust playback buttons etc<br>
+		</div>
 		<!-- Browsertitle -->
 		<div class="settings">
 			<input type="checkbox" id="browsertitle" name="browsertitle" disabled> Show Songtitle, Albumname und Albumicon in Browsertitlebar
@@ -339,6 +342,8 @@
 				$("#btn_last").prop('checked', cfgJson['btn_last']);
 				$("#ssStyle").prop('disabled', false);
 				$("#ssStyle").prop('checked', cfgJson['ssStyle']);
+				$("#uwStyle").prop('disabled', false);
+				$("#uwStyle").prop('checked', cfgJson['uwStyle']);
 				$("#browsertitle").prop('disabled', false);
 				$("#browsertitle").prop('checked', cfgJson['browsertitle']);
 				$("#playqueue").prop('disabled', false);
@@ -375,6 +380,7 @@
 //					btn_queue: $("#btn_queue").prop('checked'),
 					btn_last: $("#btn_last").prop('checked'),
 					ssStyle: $("#ssStyle").prop('checked'),
+					uwStyle: $("#uwStyle").prop('checked'),
 					browsertitle: $("#browsertitle").prop('checked')
 				});
 				
