@@ -1,8 +1,8 @@
 {
     "albumart": false,
     "playqueue": true,
-    "ytdl": false,
-    "lyrics": false,
+    "ytdl": true,
+    "lyrics": true,
     "eq": true,
     "browse2folder": true,
     "btn_random": false,
@@ -16,6 +16,7 @@
     "btn_coverview": false,
     "btn_info": false,
     "btn_last": false,
-    "ssStyle": false,
+    "ssStyle": true,
+    "uwStyle": false,
     "browsertitle": true
 }
