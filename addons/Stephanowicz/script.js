@@ -87,7 +87,6 @@ fetch('addons/Stephanowicz/config.json')
 		addonsCfg['uwStyle'] &&
 		$(function () {
 			let styles = `
-			let styles = `
 				@media screen and (max-width:1480px) and (max-height:320px) and (orientation:landscape) {
 					/* Time knob */
 					#countdown {
