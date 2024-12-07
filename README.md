@@ -29,6 +29,8 @@ It consists of:
 8. Show total and remainig playtime below playlist
 
 9. Increase text-size of Artist, Title, Album in screen-saver wide-mode
+    
+10. Fix for local ultrawide displays like 11.9inch Capacitive Touch Screen LCD, 1480x320
 
 ## requirements & installation
 - Tested with moOde audioplayer v9.x  
@@ -164,7 +166,17 @@ Worst case:
 9. Increase text-size of Artist, Title, Album in screen-saver wide-mode
     - at moment a fixed size... I'm thinking of to make it adjustable 
 
+10. Fix for local ultrawide displays like 11.9inch Capacitive Touch Screen LCD, 1480x320  
+    e.g [https://www.waveshare.com/wiki/11.9inch_HDMI_LCD](https://www.waveshare.com/wiki/11.9inch_HDMI_LCD)
+      
+    This is how the main screen looks like originally with 1480x320:  
+    ![image](https://github.com/user-attachments/assets/4b01de58-3c23-4462-9749-c05a72d8ea8b)  
 
+    and this is how it looks like with the fix:  
+    ![image](https://github.com/user-attachments/assets/1fa64085-8ec3-4b3b-9fe9-1f7b61cb9e8f)  
+
+
+  
 That's it - have fun!
 
 
