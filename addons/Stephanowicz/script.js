@@ -83,6 +83,56 @@ fetch('addons/Stephanowicz/config.json')
 			`;
 			appendStyle(styles);
 		});
+		// Fix for local ultrawide displays like 11.9inch Capacitive Touch Screen LCD, 320×1480
+		addonsCfg['uwStyle'] &&
+		$(function () {
+			let styles = `
+				@media screen and (max-width:1480px) and (max-height:320px) and (orientation:landscape) {
+					#countdown > div {
+						height: 180px !important;
+						width: 180px !important;
+					}
+					#countdown > div > canvas {
+						height: 180px !important;
+						width: 180px !important;
+					}
+					#playback-controls > #timezone {
+						height: 44%;
+					}
+					#timeknob > #countdown-display {
+						position:absolute;
+						top:34%;
+						left:50%;
+						margin-right:0px;
+						margin-bottom:0px;
+						transform:translate(-50%, -50%);
+						font-size:2.25vw;
+						font-weight:500;
+						cursor:pointer;
+					}
+					#timeknob > #total {
+						position:absolute;
+						top:45%;
+						left:50%;
+						transform:translate(-50%);
+						font-size:1.5vw;
+					}
+					#playback-controls > #playbtns {
+						display: block;
+						height: 17%;
+					}	
+					#playbtns .btn.btn-cmd {
+						font-size: 4.0em;
+					}
+					#togglebtns .btn-group {
+					  font-size: 1.7em;
+					  white-space: normal;
+					  width: 100%;
+					}
+				}
+			`;
+			appendStyle(styles);
+		});
 		//-- Styles Albumart --
 		addonsCfg['albumart'] &&
 		$(function () {
@@ -451,6 +501,7 @@ fetch('addons/Stephanowicz/config.json')
 					case 'coverview':
 						e.stopImmediatePropagation();
 						screenSaver('1');
+						$('.context-menu').removeClass('open');
 						break;
 				}
 			});
@@ -684,6 +735,7 @@ function multiAlbumArt() {
                         if (MPD.json['title'].indexOf('Webstreaming') !== -1) {
                             imgArray.forEach(function (item) {
                                 $('#coverart-url').html('<img class="coverart" ' + 'src="' + item[0] + '" ' + 'data-adaptive-background="1" alt="Cover art not found"' + '>');
+								$('#ss-coverart-url').html('<img class="coverart" ' + 'src="' + item[0] + '" ' + 'alt="Cover art not found"' + '>');
                             });
                         }
                     }
@@ -693,6 +745,7 @@ function multiAlbumArt() {
         xhttp.open("GET", "addons/Stephanowicz/albumart/albumart.php", true);
         xhttp.send();
     }
+	
 }
 function albumthumbs_inidcator_click() {
     if (document.getElementById('albumthumbs').clientHeight == 0) {
