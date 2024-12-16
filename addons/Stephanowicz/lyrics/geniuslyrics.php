@@ -77,7 +77,8 @@ if($ClientAccessToken != ""){
 			$dom = new DOMDocument;
 			$dom->loadHTML($file);
 			$xpath = new DOMXPath($dom);
-			foreach( $xpath->query('//div[starts-with(@class, "Lyrics__Container")]') as $e ) {
+//			foreach( $xpath->query('//div[starts-with(@class, "Lyrics__Container")]') as $e ) {
+			foreach( $xpath->query('//div[starts-with(@data-lyrics-container, "true")]') as $e ) {
 				$songlyrics.=$e->nodeValue;
 			};
 		};
