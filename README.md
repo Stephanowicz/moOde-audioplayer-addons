@@ -70,15 +70,17 @@ after this add `<script src="addons/addons.js?t=1729607710734" defer></script>`
 4. Songlyrics
 	- requires php-xml, php-curl, php-dom  
 	  install with: 
-	- sudo apt-get install php-xml php-curl php-dom  
+		- sudo apt-get install php-xml php-curl php-dom  
 	  
-	- You will also need a **client access token** for the [Genius Lyrics](http://genius.com) API ->
-	- Create a free account: [Genius Lyrics API](http://genius.com/api-clients )
-	- then create a [new API client](https://genius.com/api-clients/new)  
-	("App Website URL" and "Redirect URI" can be anything)
-	- finally generate a [client access token](https://genius.com/api-clients) by clicking "Generate Access Token"  
-	 -> add the **client access token** to **clientaccesstoken.txt** in the lyrics folder */var/www/addons/Stephanowicz/lyrics*  
-
+		- You will also need a **client access token** for the [Genius Lyrics](http://genius.com) API ->
+		- Create a free account: [Genius Lyrics API](http://genius.com/api-clients )
+		- then create a [new API client](https://genius.com/api-clients/new)  
+		("App Website URL" and "Redirect URI" can be anything)
+		- finally generate a [client access token](https://genius.com/api-clients) by clicking "Generate Access Token"  
+	 	-> add the **client access token** to **clientaccesstoken.txt** in the lyrics folder */var/www/addons/Stephanowicz/lyrics*  
+	 
+ 	- The script also scans the songfolder for ".txt" files with the name of the song. If a file is found it will be displayed instead of querying genius.
+  
 	The other addons don't have any further requirements
 
 ## Addons
