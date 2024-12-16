@@ -44,7 +44,7 @@ the folder structure then should look like this:
 
 
 
-- Generally You need to add a link to **addons.js** in **header.php**  
+- Generally You need to add a link to **addons.js** in **/var/www/header.php**  
 -> below the `<!-- Common JS -->` section in **header.php** You should find a link to *lib.min.js*: `<script src="js/lib.min.js?t=1729607710734" defer></script>`   
 after this add `<script src="addons/addons.js?t=1729607710734" defer></script>`  
 (the *t=xxxx* can be different - you may copy the one from lib.min.js) 
