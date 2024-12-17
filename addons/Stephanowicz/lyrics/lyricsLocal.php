@@ -35,7 +35,7 @@
 		$path = dirname($path) . '/';
 	}
 	if($path){
-		foreach (glob($path . '*{.txt,.lirc}',GLOB_BRACE) as $file) {
+		foreach (glob($path . '*{.txt,.lrc}',GLOB_BRACE) as $file) {
 			$info = pathinfo($file);
 			$filename = basename($file,'.'.$info['extension']);
 			if (is_file($file) && stripos($filename,$TITLE) !== false) {
