@@ -16,7 +16,6 @@
 	  $ARTIST =shell_exec('mpc --format %artist% | head -n 1');
 	  $ARTIST =str_replace("\n","",$ARTIST);
 	}
-//	echo "ARTIST " . $ARTIST . PHP_EOL;
 	if(isset($_GET['title'])){
 	  $TITLE=$_GET['title'];
 	}
@@ -24,31 +23,27 @@
 	  $TITLE =shell_exec('mpc --format %title% | head -n 1');
 	  $TITLE =str_replace("\n","",$TITLE);
 	}
-//	echo "TITLE " . $TITLE . PHP_EOL;
-
 	if(isset($_GET['filepath'])){
 	  $filepath=$_GET['filepath'];
 	}
 	else{
 		$filepath=shell_exec('mpc -f %file%|head -n 1');
 	}
-//	echo "filepath " . $filepath . PHP_EOL;
 	if($filepath){
 		$filepath=trim ($filepath);
 		$path = MPD_MUSICROOT . $filepath;
 		$path = dirname($path) . '/';
-//	      	echo "path: ".$path . PHP_EOL;
 	}
 	if($path){
-		foreach (glob($path . '*.txt') as $file) {
-			$filename = basename($file, $suffix = ".txt");
-//			echo "file: " .$filename . PHP_EOL;
-//			echo "Title: " .$TITLE . PHP_EOL;
-
-			if (is_file($file) && stripos($TITLE, $filename) !== false) {
-//			if (is_file($file)) {
+		foreach (glob($path . '*{.txt,.lirc}',GLOB_BRACE) as $file) {
+			$info = pathinfo($file);
+			$filename = basename($file,'.'.$info['extension']);
+			if (is_file($file) && stripos($filename,$TITLE) !== false) {
 				$fdata = file_get_contents($file);
 				if($fdata){
+					if($info['extension']=="lirc"){
+						$fdata = preg_replace('/\[[\s\S]+?\]/', '', $fdata);
+					}
 					$fdata=nl2br($fdata);
 					echo '<p>'.$ARTIST.' - '.$TITLE.'<p>';
 					echo $fdata;
@@ -56,10 +51,6 @@
 					break;
 				}						
 			}
-//			else{
-//				echo "stripos: " . stripos($TITLE, $file) . PHP_EOL;
-//			}
-
 		}
 	}
 	
