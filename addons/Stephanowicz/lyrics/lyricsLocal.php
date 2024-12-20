@@ -41,7 +41,7 @@
 			if (is_file($file) && stripos($filename,$TITLE) !== false) {
 				$fdata = file_get_contents($file);
 				if($fdata){
-					if($info['extension']=="lirc"){
+					if($info['extension']=="lrc"){
 						$fdata = preg_replace('/\[[\s\S]+?\]/', '', $fdata);
 					}
 					$fdata=nl2br($fdata);
