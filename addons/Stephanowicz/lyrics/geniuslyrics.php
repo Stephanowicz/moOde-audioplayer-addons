@@ -6,6 +6,12 @@
 */
 error_reporting(E_ALL & ~E_NOTICE & ~E_WARNING);
 
+$genius = [];
+$genius['err'] = true;
+$genius['errtxt'] = '';
+$genius['data'] = "";
+$genius['found'] = false;
+
 $ClientAccessToken = "";
 $fp = @fopen(dirname(__FILE__) . "/clientaccesstoken.txt", "r");
 if ($fp) {
@@ -13,8 +19,10 @@ if ($fp) {
 	fclose($fp);
 }
 if($ClientAccessToken != ""){
-	if(count($argv)>1){
-	  parse_str(implode('&', array_slice($argv, 1)), $_GET);
+	if(isset($_SERVER['argv'])){
+		if(count($argv)>1){
+		  parse_str(implode('&', array_slice($argv, 1)), $_GET);
+		}
 	}
 	if(isset($_GET['artist'])){
 	  $ARTIST=$_GET['artist'];
@@ -36,13 +44,13 @@ if($ClientAccessToken != ""){
 	if($TITLE!="" && $ARTIST!=""){
 
 	  $query = array('q' => $TITLE.' '.$ARTIST,'access_token' => $ClientAccessToken);
-	  $url .= 'https://api.genius.com/search';
-	  $url .= (strpos("?",$url)===false ? "?" : "&") . http_build_query($query);
+	  $geniusurl .= 'https://api.genius.com/search';
+	  $geniusurl .= (strpos("?",$geniusurl)===false ? "?" : "&") . http_build_query($query);
 
 	  $ch = curl_init();
 	  curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 	  curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-	  curl_setopt($ch, CURLOPT_URL,$url);
+	  curl_setopt($ch, CURLOPT_URL,$geniusurl);
 	  $result=curl_exec($ch);
 	  curl_close($ch);
 	//print_r(json_decode($result, true));
@@ -61,10 +69,10 @@ if($ClientAccessToken != ""){
 			$song_api_path = $hit["result"]["api_path"];
 			$song_url=$hit["result"]["url"];
 			break;
-		};
-	  };
+		}
+	  }
+	  $songlyrics="";
 	  if($song_url != ""){
-		$songlyrics="";
 		$found=false;
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
@@ -80,39 +88,91 @@ if($ClientAccessToken != ""){
 //			foreach( $xpath->query('//div[starts-with(@class, "Lyrics__Container")]') as $e ) {
 			foreach( $xpath->query('//div[starts-with(@data-lyrics-container, "true")]') as $e ) {
 				$songlyrics.=$e->nodeValue;
-			};
-		};
+			}
+		}
 
 		if($songlyrics!=""){
 		  $songlyrics=nl2br($songlyrics);
 		  $songlyrics=str_replace("!rn!","<br />",$songlyrics);
 	//      $songlyrics=str_replace("]","]<br />",$songlyrics);
 	//      $songlyrics=str_replace("[","<br />[",$songlyrics);
-		  echo '<p>'.$artistFound.' - '.$songFound.'<p>';
-		  echo $songlyrics;
-		  echo "<p><a target='_blank' href='".$song_url."'>".$song_url."</a></p>";
+			$msg = '<p>'.$artistFound.' - '.$songFound.'<p>'.
+				$songlyrics.
+				"<p><a target='_blank' href='".$song_url."'>".$song_url."</a></p>";
+				
+//		  echo '<p>'.$artistFound.' - '.$songFound.'<p>';
+//		  echo $songlyrics;
+//		  echo "<p><a target='_blank' href='".$song_url."'>".$song_url."</a></p>";
+			if(isset($_SERVER['argv'])){echo $msg;}
+			else{
+				$genius['err'] = false;
+				$genius['data'] = $msg;
+				$genius['found'] = true;
+			}	
 		}
 		else{
-		  echo "<br /><br />cannot parse the lyrics-page<br />";
-		  echo "<a target='_blank' href='".$song_url."'>".$song_url."</a>";
-		};
+			$msg = "<br /><br />cannot parse the lyrics-page<br />".
+				"<a target='_blank' href='".$song_url."'>".$song_url."</a>".
+				"If the lyrics are shown in the above link, please don't hesitate to contact me @<br />".
+				"<a target='_blank' href='https://github.com/Stephanowicz/moOde-audioplayer-addons/issues'>".
+				"moOde-audioplayer-addons - Issues<br />".
+				"as it happens from time to time that genius changes their code!";
+			if(isset($_SERVER['argv'])){echo $msg;}
+			else{
+				$genius['err'] = true;
+				$genius['data'] = $msg;
+				$genius['found'] = false;
+			}	
+			
+//		  echo "<br /><br />cannot parse the lyrics-page<br />";
+//		  echo "<a target='_blank' href='".$song_url."'>".$song_url."</a>";
+		}
 	  }
 	  else{
 		if($result[0]=="401"){
-		  echo "401 Unauthorized<br /><br />please check Your client accesstoken!<br /><br />";
+		  //echo "401 Unauthorized<br /><br />please check Your client accesstoken!<br /><br />";
+			$msg = "401 Unauthorized<br /><br />please check Your client accesstoken!<br /><br />";
+			if(isset($_SERVER['argv'])){echo $msg;}
+			else{
+				$genius['err'] = true;
+				$genius['data'] = $msg;
+				$genius['found'] = false;
+			}			
 		}
 		else{
-			echo "<br /><br />Sorry, no lyrics found...<br /><br />";
-		};
+			//echo "<br /><br />Sorry, no lyrics found...<br /><br />";
+			$msg = "<br /><br />Sorry, no lyrics found...<br /><br />";
+			if(isset($_SERVER['argv'])){echo $msg;}
+			else{
+				$genius['err'] = false;
+				$genius['data'] = $msg;
+				$genius['found'] = false;
+			}						
+		}
 	  }
 	}
 	else{
-	  echo("<br /><br />not enough information provided for a specific lyrics-query...<br />");
-	  if($TITLE==""){echo ("(Title missing)");}
-	  if($ARTIST==""){echo ("(Artist missing)");}
-	};
+//	  echo("<br /><br />not enough information provided for a specific lyrics-query...<br />");
+//	  if($TITLE==""){echo ("(Title missing)");}
+//	  if($ARTIST==""){echo ("(Artist missing)");}
+		$msg="<br /><br />not enough information provided for a specific lyrics-query...<br />".
+			`$TITLE=="" ? "(Title missing)<br>":""`.`$ARTIST=="" ? "(Artist missing<br>)":""`;
+		if(isset($_SERVER['argv'])){echo $msg;}
+		else{
+			$genius['err'] = true;
+			$genius['data'] = $msg;
+			$genius['found'] = false;
+		}
+	}
 }
 else{
-	echo("<br /><br />You need to provide a client accesstoken in file<br /> <i>" . dirname(__FILE__) . "/clientaccesstoken.txt</i>!<br />");
+//	echo("<br /><br />You need to provide a client accesstoken in file<br /> <i>" . dirname(__FILE__) . "/clientaccesstoken.txt</i>!<br />");
+	$msg="<br /><br />You need to provide a client accesstoken in file<br /> <i>" . dirname(__FILE__) . "/clientaccesstoken.txt</i>!<br />";
+	if(isset($_SERVER['argv'])){echo $msg;}
+	else{
+		$genius['err'] = true;
+		$genius['data'] = $msg;
+		$genius['found'] = false;
+	}	
 }
 ?>
