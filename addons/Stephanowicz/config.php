@@ -13,11 +13,12 @@
 			"getid3_ex" => false,
 			"xml" => false,
 			"curl" => false,
-			"dom" => false,
+//			"dom" => false,
 			"token" => false,
 			"token_perm" => false,
 			"geniustoken" => '',
-			"lyrics" => false
+			"geniuslyrics" => false,
+			"lrcapilyrics" => false
 		);
 		$cfg = dirname(__FILE__).'/config.json';
 		$json = file_get_contents($cfg); 
@@ -37,18 +38,19 @@
 		}
 		$found=true;
 		$loaded_extensions = get_loaded_extensions();
+		if(in_array("curl",$loaded_extensions)){		
+			$cfgCheck["curl"] = true;
+			$cfgCheck["lrcapilyrics"] = true;
+		}
+		else {$found=false;}
 		if(in_array("xml",$loaded_extensions)){		
 			$cfgCheck["xml"] = true;
 		}		
 		else {$found=false;}
-		if(in_array("curl",$loaded_extensions)){		
-			$cfgCheck["curl"] = true;
-		}
-		else {$found=false;}
-		if(in_array("dom",$loaded_extensions)){		
-			$cfgCheck["dom"] = true;
-		}		
-		else {$found=false;}
+//		if(in_array("dom",$loaded_extensions)){		
+//			$cfgCheck["dom"] = true;
+//		}		
+//		else {$found=false;}
 		$ClientAccessToken = "";
 		$fp = @fopen(dirname(__FILE__) . "/lyrics/clientaccesstoken.txt", "r");
 		if ($fp) {
@@ -57,11 +59,11 @@
 		}
 		if($ClientAccessToken != ""){
 			$cfgCheck["token"] = true;
-		$cfgCheck["geniustoken"] = $ClientAccessToken;
+			$cfgCheck["geniustoken"] = $ClientAccessToken;
 		}		
 		else {$found=false;}
 		if($found){
-			$cfgCheck["lyrics"] = true;
+			$cfgCheck["geniuslyrics"] = true;
 		}		
 		$cfg = dirname(__FILE__).'/lyrics/clientaccesstoken.txt';
 		if(is_writable($cfg)) {		
