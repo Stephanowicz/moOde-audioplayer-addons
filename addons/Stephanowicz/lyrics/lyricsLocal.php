@@ -6,8 +6,10 @@
 */
 	require_once dirname(__FILE__) . '/../../../inc/common.php';
 
-	if(count($argv)>1){
-	  parse_str(implode('&', array_slice($argv, 1)), $_GET);
+	if(isset($_SERVER['argv'])){
+		if(count($argv)>1){
+		  parse_str(implode('&', array_slice($argv, 1)), $_GET);
+		}
 	}
 	if(isset($_GET['artist'])){
 	  $ARTIST=$_GET['artist'];
@@ -38,10 +40,10 @@
 		foreach (glob($path . '*{.txt,.lrc}',GLOB_BRACE) as $file) {
 			$info = pathinfo($file);
 			$filename = basename($file,'.'.$info['extension']);
-			if (is_file($file) && stripos($filename,$TITLE) !== false) {
+			if (is_file($file) && (stripos($TITLE,$filename)!==false || stripos($filename,$TITLE)!==false)) {
 				$fdata = file_get_contents($file);
 				if($fdata){
-					if($info['extension']=="lrc"){
+					if($info['extension']=="lirc"){
 						$fdata = preg_replace('/\[[\s\S]+?\]/', '', $fdata);
 					}
 					$fdata=nl2br($fdata);
