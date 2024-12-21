@@ -3,6 +3,8 @@
     "playqueue": true,
     "ytdl": true,
     "lyrics": true,
+    "genius": true,
+    "lrclib": true,
     "eq": true,
     "browse2folder": true,
     "btn_random": false,
@@ -17,6 +19,6 @@
     "btn_info": false,
     "btn_last": false,
     "ssStyle": true,
-    "uwStyle": false,
+    "uwStyle": true,
     "browsertitle": true
 }
