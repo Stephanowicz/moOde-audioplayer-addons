@@ -14,7 +14,10 @@
 		.settings {
 			padding-left: 10px;
 			padding-top: 5px;
-			font-size: calc(.45em + 2vmin);
+		/*	font-size: calc(.45em + 2vmin); */
+		}
+		#playbarbuttons input,#lrcapilyrics, #geniuslyrics {
+			vertical-align: text-top;
 		}
 		#youtube-dl, #eq, #albumart, #lyrics, #random, #favorites, #repeat, #single, #ssStyle, #uwStyle, #browsertitle, #playqueue, #browse2folder {
 			width: 19px;
@@ -28,7 +31,7 @@
 		#apply {
 			margin-left: 15px;
 			margin-top: 20px;
-			font-size: 18px;
+			font-size: 1em;
 			line-height: 28px;
 		}
 		#logo {
@@ -57,7 +60,7 @@
 		}
 		#setToken {
 			margin-left: 42px;
-			font-size: 18px;
+			font-size: 1em;
 			line-height: 28px;
 		}
 		
@@ -78,12 +81,12 @@
 		/* Modal Content/Box */
 		.modal-popup-content {
 		  background-color: #161616;
-		  margin: 15% auto; /* 15% from the top and centered */
-		  padding: 13px;
+		  margin: 45% auto; /* 15% from the top and centered */
+		  padding: 1em;
 		  border: 1px solid #888;
-		  width: 32%; /* Could be more or less, depending on screen size */
+		  width: 55%; /* Could be more or less, depending on screen size */
 		  color: #d2d2d2;
-		  font-size: 2vw;
+		  font-size: 4vw;
 		}
 
 		/* The Close Button */
@@ -154,28 +157,47 @@
 		<!-- Lyrics -->
 		<div class="settings" id="songlyrics">
 			<input type="checkbox" id="lyrics" name="lyrics" disabled> Songlyrics
-			<div id="lyrics_xml_err">
-				<span id="lyrics_xml_text" style="font-size: small;padding-left: 19px;">php-xml </span>
-				<span id="lyrics_xml_check"><i class="fa-regular fa-ban" aria-hidden="true" style="font-size: 18px;color: red;"></i><br></span>
-				<span id="lyrics_xml_check_text" style="font-size: small;padding-left: 19px;">Install with: <i>sudo apt-get install php-xml</i><br></span>
+			<!-- local files -->
+	<!-- 			<div style="padding-left: 29px;padding-bottom: 10px;">
+				<span style="margin-left: 5px;">local lyric-files</span>
+				<span><i id="lyrics_local-more" style="margin-left: 12px;position: relative;font-size: calc(.85em + 2vmin);top: -3px;" class="fal fa-sort-desc"></i></span>
+				<div id="lyrics_local" style="margin-left: 15px;display:none">
+					<div class="settings">
+						<input type="checkbox" id="lyrics_local_txt" name="lyrics_local_txt" disabled> local ".txt"-files<br>
+					</div>
+					<div class="settings">
+						<input type="checkbox" id="lyrics_local_lrc" name="lyrics_local_lrc" disabled> local ".lrc"-files<br>
+					</div>
+				</div>
 			</div>
-				
+	-->
+			<div class="settings">
+				<input type="checkbox" id="lrcapilyrics" name="lrcapilyrics" disabled> LRC-API Lyrics<br>
+			</div>
+			<div class="settings">
+				<input type="checkbox" id="geniuslyrics" name="geniuslyrics" disabled> GENIUS-Lyrics<br>
+			</div>
 			<div id="lyrics_curl_err">
 				<span id="lyrics_curl_text" style="font-size: small;padding-left: 19px;">php-curl </span>
 				<span id="lyrics_curl_check"><i class="fa-regular fa-ban" aria-hidden="true" style="font-size: 18px;color: red;"></i><br></span>
-				<span id="lyrics_curl_check_text" style="font-size: small;padding-left: 19px;">Install with: <i>sudo apt-get install php-curl</i><br></span>
+				<span id="lyrics_curl_check_text" style="font-size: small;padding-left: 19px;">Required by <b>LRC-API</b> and <b>Genius-Lyrics</b><br>Install with: <i>sudo apt-get install php-curl</i><br></span>
+			</div>
+			<div id="lyrics_xml_err">
+				<span id="lyrics_xml_text" style="font-size: small;padding-left: 19px;">php-xml </span>
+				<span id="lyrics_xml_check"><i class="fa-regular fa-ban" aria-hidden="true" style="font-size: 18px;color: red;"></i><br></span>
+				<span id="lyrics_xml_check_text" style="font-size: small;padding-left: 19px;">Required by <b>Genius-Lyrics</b><br>Install with: <i>sudo apt-get install php-xml</i><br></span>
 			</div>
 				
+	<!-- 				
 			<div id="lyrics_dom_err">
 				<span id="lyrics_dom_text" style="font-size: small;padding-left: 19px;">php-dom </span>
 				<span id="lyrics_dom_check"><i class="fa-regular fa-ban" aria-hidden="true" style="font-size: 18px;color: red;"></i><br></span>
 				<span id="lyrics_dom_check_text" style="font-size: small;padding-left: 19px;">Install with: <i>sudo apt-get install php-dom</i><br></span>
 			</div>
-				
+	-->				
 		</div>
 		<div id="token">	
-			<input size="70" type="text" id="geniustoken" name="geniustoken" placeholder="Insert Your genius clientaccesstoken here!"			
-><br>
+			<input size="70" type="text" id="geniustoken" name="geniustoken" placeholder="Insert Your genius clientaccesstoken here!"><br>
 			<button id="setToken" onclick="setToken()" disabled>apply clientaccesstoken</button>
 			<div class="settings flex-container" id="token_err" style="padding-bottom: 10px;font-size: small;">
 				<div><i class="fa-regular fa-ban" aria-hidden="true" style="font-size: 18px;color: red;"></i></div>
@@ -195,7 +217,7 @@
 		</div>
 		<!-- Playbar-menu -->
 		<div style="margin: 10px;">
-			<span style="font-size: calc(.45em + 2vmin);margin-left: 5px;">Playbar buttons</span>
+			<span style="margin-left: 5px;">Playbar buttons</span>
 			<span><i id="pbbtn-more" style="margin-left: 12px;position: relative;font-size: calc(.85em + 2vmin);top: -3px;" class="fal fa-sort-desc"></i></span>
 			<div id="playbarbuttons" style="margin-left: 15px;display:none">
 				<div class="settings">
@@ -302,7 +324,7 @@
 				$("#albumart").prop('checked', (cfgCheck["getid3_ex"] & cfgCheck["getid3_ex"]) ? cfgJson['albumart']:false);
 				cfgCheck["xml"] && $("#lyrics_xml_err").hide();
 				cfgCheck["curl"] && $("#lyrics_curl_err").hide();
-				cfgCheck["dom"] && $("#lyrics_dom_err").hide();
+//				cfgCheck["dom"] && $("#lyrics_dom_err").hide();
 				if(cfgCheck["token"]){
 					$("#token_err").hide();
 					$("#geniustoken").val(cfgCheck["geniustoken"]);
@@ -312,8 +334,12 @@
 					$("#geniustoken").val("");			
 				}
 				cfgCheck["token_perm"] && $("#token_perm_err").hide();
-				$("#lyrics").prop('disabled', !cfgCheck["lyrics"]);
-				$("#lyrics").prop('checked', cfgCheck["lyrics"] ? cfgJson['lyrics']:false);
+				$("#geniuslyrics").prop('disabled', !cfgCheck["geniuslyrics"]||!cfgJson['lyrics']);
+				$("#geniuslyrics").prop('checked', cfgCheck["geniuslyrics"]&&cfgJson['lyrics'] ? cfgJson['genius']:false);
+				$("#lrcapilyrics").prop('disabled', !cfgCheck["lrcapilyrics"]||!cfgJson['lyrics']);
+				$("#lrcapilyrics").prop('checked', cfgCheck["lrcapilyrics"]&&cfgJson['lyrics'] ? cfgJson['lrclib']:false);
+				$("#lyrics").prop('checked', cfgJson['lyrics']);
+				$("#lyrics").prop('disabled', false);
 				$("#eq").prop('disabled', false);
 				$("#eq").prop('checked', cfgJson['eq']);
 				$("#btn_random").prop('disabled', false);
@@ -365,6 +391,8 @@
 					playqueue: $("#playqueue").prop('checked'),
 					ytdl: $("#youtube-dl").prop('checked'),
 					lyrics: $("#lyrics").prop('checked'),
+					genius: $("#geniuslyrics").prop('checked'),
+					lrclib: $("#lrcapilyrics").prop('checked'),
 					eq: $("#eq").prop('checked'),
 					browse2folder: $("#browse2folder").prop('checked'),
 					btn_random: $("#btn_random").prop('checked'),
@@ -429,13 +457,41 @@
 				$("#pbbtn-more").removeClass("fa-sort-asc");
 				$("#pbbtn-more").addClass("fa-sort-desc");
 				$("#pbbtn-more").css("top","-3px");
-			}
-			else{
-				$("#playbarbuttons").css("display","block");
-				$("#pbbtn-more").removeClass("fa-sort-desc");
-				$("#pbbtn-more").addClass("fa-sort-asc");
-				$("#pbbtn-more").css("top","12px");
-			}
+				}
+				else{
+					$("#playbarbuttons").css("display","block");
+					$("#pbbtn-more").removeClass("fa-sort-desc");
+					$("#pbbtn-more").addClass("fa-sort-asc");
+					$("#pbbtn-more").css("top","12px");
+				}
+			});
+			$("#lyrics_local-more").click(function(){
+			  if($("#lyrics_local").css("display")=="block"){
+				$("#lyrics_local").css("display","none");
+				$("#lyrics_local-more").removeClass("fa-sort-asc");
+				$("#lyrics_local-more").addClass("fa-sort-desc");
+				$("#lyrics_local-more").css("top","-3px");
+				}
+				else{
+					$("#lyrics_local").css("display","block");
+					$("#lyrics_local-more").removeClass("fa-sort-desc");
+					$("#lyrics_local-more").addClass("fa-sort-asc");
+					$("#lyrics_local-more").css("top","10px");
+				}
+			});
+			$("#lyrics").click(function(){
+				if($(this).is(':checked')){
+					$("#geniuslyrics").prop('checked', cfgCheck["geniuslyrics"] ? cfgJson['genius']:false);
+					$("#lrcapilyrics").prop('checked', cfgCheck["lrcapilyrics"] ? cfgJson['lrclib']:false);
+					$("#geniuslyrics").prop('disabled', !cfgCheck["geniuslyrics"]);
+					$("#lrcapilyrics").prop('disabled', !cfgCheck["lrcapilyrics"]);
+				}
+				else{
+					$("#geniuslyrics").prop('disabled', true);
+					$("#lrcapilyrics").prop('disabled', true);
+					$("#geniuslyrics").prop('checked', false);
+					$("#lrcapilyrics").prop('checked', false);				
+				}
 			});
 		</script>
 		<button id="apply" onclick="setCfg()" disabled>Apply settings</button>
