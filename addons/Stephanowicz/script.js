@@ -26,9 +26,12 @@ function loadStyle(src) {
     });
 }
 
+var syncedLyrics;
+var lrclibsynced = false;
+
 var addonsCfg;
 //---------------load settings------------------------------------------
-fetch('addons/Stephanowicz/config.json')
+fetch('addons/Stephanowicz/config.json', {cache: "no-cache"})
     .then((response) => response.json())
     .then((json) => addonsCfg = json)
 	//.then(() => console.log(addonsCfg))
@@ -87,6 +90,9 @@ fetch('addons/Stephanowicz/config.json')
 		addonsCfg['uwStyle'] &&
 		$(function () {
 			let styles = `
+				/*
+				// Ultra-wide screens 11.9" 1480x320
+				*/
 				@media screen and (max-width:1480px) and (max-height:320px) and (orientation:landscape) {
 					/* Time knob */
 					#countdown {
@@ -104,11 +110,11 @@ fetch('addons/Stephanowicz/config.json')
 					#countdown-display {
 				        top: 44%;
 						font-size: 2vw;	
-    					}
-				    	#total {
-				        	top: 62%;
-				        	font-size: 1.25vw;
-				    	}
+    				}
+				    #total {
+				        top: 62%;
+				        font-size: 1.25vw;
+				    }
 					#timeknob {
 					    margin: 0;
 					}
@@ -144,6 +150,49 @@ fetch('addons/Stephanowicz/config.json')
 			`;
 			appendStyle(styles);
 		});
+		addonsCfg['lrclibsynced'] &&
+		$(function () {
+			//Style for synced lyrics overlay
+			let styles = `
+				#syncedLyrics {
+					position: absolute; 
+//					top: 10%;
+//					height:30%;
+//					width:100%;
+					top: 15%;
+					height: 20%;
+					width: 35%;
+//					background: #050505b5;
+					display: none;
+					overflow: hidden;
+				}
+				#syncedLyricsContent {
+//					margin-top: 100%;
+					margin-top: 100vh;
+//					margin-top: 35%;
+//					display: initial;
+				}
+				#syncedLyricsContent p{
+					background: #050505b5;
+					padding: 10px;
+					margin: 0px;
+//					display: none;
+//					transition: opacity 1s;
+					opacity: 0;
+				}
+				.fade-in-out {
+				  opacity: 0;
+				  pointer-events: none;
+				}
+				.lrclibsynced svg{
+					fill: var(--adapttext);
+					width: 1.9em;
+					height: 1.9em;	
+					margin-top: 0.4em;
+				}
+			`;
+			appendStyle(styles);
+		});
 		addonsCfg['ytdl'] &&
 		$(function () {
 			//Youtube-Dl Symbol
@@ -154,6 +203,7 @@ fetch('addons/Stephanowicz/config.json')
 			`;
 			appendStyle(styles);
 		});
+		
 		if(addonsCfg['playqueue']){
 
 		//extend function updKnobStartFrom() in playerlib.js for updating remaining playlisttime --> plStatDisp()
@@ -163,28 +213,52 @@ fetch('addons/Stephanowicz/config.json')
 				updKnobStartFrom_extended(startFrom, state);
 
 				if (state == 'play' || state == 'pause') {
-					plStatDisp(); 
+					plStatDisp();
+//					console.log("updKnobStartFrom_extended");
 				}
 			}
+		}	
+/*		
+		if(addonsCfg['playqueue']||addonsCfg['lrclibsynced']){
 
 		//extend function updKnobAndTimeTrack() in playerlib.js for updating remaining playlisttime --> plStatDisp()
 			var updKnobAndTimeTrack_extended = updKnobAndTimeTrack;
 			var updatePlStatDisp;
+			var updateSyncedLyrics;
 			window.updKnobAndTimeTrack = function () {
-				window.clearInterval(updatePlStatDisp)
+//				console.log("updKnobAndTimeTrack_extended");
+				addonsCfg['playqueue'] && window.clearInterval(updatePlStatDisp);
+				addonsCfg['lrclibsynced'] && window.clearInterval(updateSyncedLyrics);
 				updKnobAndTimeTrack_extended();
 				if (MPD.json['state'] === 'play') {
-					window.clearInterval(updatePlStatDisp)
-					updatePlStatDisp = setInterval(function () {
-						plStatDisp();
-					}, 1000);
+					if(addonsCfg['playqueue']){ 
+						window.clearInterval(updatePlStatDisp);
+						updatePlStatDisp = setInterval(function () {
+							plStatDisp();
+						}, 1000);
+					}
+					if(addonsCfg['lrclibsynced']){
+						setTimeout(() => {
+							if(syncedLyrics!=null){
+								window.clearInterval(updateSyncedLyrics)
+								slLast=0;
+								slLastSecs=0;
+								updateSyncedLyrics = setInterval(function () {
+									syncLyrics();
+								}, 750);						
+							}
+						}, 250);
+					}
 				}
 			}
-			
+		}	
+*/		
 		//extend function renderReconnect() in playerlib.js for updating remaining playlisttime --> plStatDisp()
+		if(addonsCfg['playqueue']){
 			var renderReconnect_extended = renderReconnect;
 			window.renderReconnect = function () {
 				window.clearInterval(updatePlStatDisp)
+//				console.log("renderReconnect_extended");
 				renderReconnect_extended();
 			}
 		}	
@@ -210,8 +284,11 @@ fetch('addons/Stephanowicz/config.json')
 		//extend function renderUI() in playerlib.js for multiAlbumart, display title in Browsertitle and add albumthumb as favicon
 
 		var renderUI_extended = renderUI;
+		var updatePlStatDisp;
+		var updateSyncedLyrics;
 
 		window.renderUI = function () {
+//			console.log("renderUI_extended");
 			if(addonsCfg['ytdl']){
 				$.getJSON('addons/Stephanowicz/commands.php?cmd=checkYoutubePlayback', function (data) {
 					if (data) {
@@ -231,24 +308,130 @@ fetch('addons/Stephanowicz/config.json')
 					}
 				});
 			}
+			if(addonsCfg['lrclibsynced']){
+				if (MPD.json['file'] !== UI.currentFile){
+					syncedLyrics=null;
+					$.getJSON('addons/Stephanowicz/lyrics/lrcsync.php', function (data) {
+						if (data) {
+							syncedLyrics=data;
+							
+							if(typeof $("#syncedLyrics")[0] === 'undefined'){
+								var tempstr = '<div id="syncedLyrics"></div>';
+		//						$("#coverart-url .coverart").after(tempstr);					
+		//						$(".coverart")[$(".coverart").length-1].after(tempstr);		
+								$(".covers").append(tempstr);
+							}
+							else{
+								$("#syncedLyrics").empty();
+							}
+							$("#syncedLyrics").append("<div id='syncedLyricsContent'>");
+							secsLyrics = [];
+							for(i=0;i<Object.entries(syncedLyrics).length;i++){
+								let [ss=0, mm=0, hh=0] = Object.entries(syncedLyrics)[i][0].split(':').reverse();
+								secsLyrics[i] = (+hh) * 3600 + (+mm) * 60 + (+ss);
+
+//								let p = "<p id='"+Object.entries(syncedLyrics)[i][0]+"' class='fade-in-out'>"+
+//								let p = "<p id='"+secsLyrics[i]+"' class='fade-in-out'>"+
+								let p = "<p id='"+secsLyrics[i]+"'>"+
+								Object.entries(syncedLyrics)[i][1] + "</p>";
+								$("#syncedLyricsContent").append(p);
+							}
+							console.log("syncedLyrics");
+							lrclibsynced && $(".lrclibsynced svg").css("fill","var(--accentxts)");
+
+						}
+						else{
+							if(typeof $("#syncedLyrics") !== 'undefined'){
+								$("#syncedLyrics").empty();
+							}
+							lrclibsynced && $(".lrclibsynced svg").css("fill","#ae3c27");
+						}
+						$("#syncedLyrics").css("display", "none");	
+						
+						window.clearInterval(updateSyncedLyrics)
+						slLast=0;
+						slLastSecs=0;
+						updateSyncedLyrics = setInterval(function () {
+							if (MPD.json['state'] === 'play'){
+								syncLyrics();
+							}
+						}, 750);						
+
+					});
+				}
+				else{
+					slLast=0;
+					slLastSecs=0;					
+				}
+			}
 			
 			renderUI_extended();
+			
+			if(addonsCfg['playqueue'] && (MPD.json['file'] !== UI.currentFile)){ 
+				window.clearInterval(updatePlStatDisp);
+				updatePlStatDisp = setInterval(function () {
+					if (MPD.json['state'] === 'play'){
+						plStatDisp();
+					}
+				}, 1000);
+			}
 
+/*
+			if(addonsCfg['lrclibsynced']){
+				console.log(MPD.json['state']);
+				if(MPD.json['file'] !== UI.currentFile){
+					setTimeout(() => {
+						if(syncedLyrics!=null){
+							if(typeof $("#syncedLyrics")[0] === 'undefined'){
+								var tempstr = '<div id="syncedLyrics"></div>';
+		//						$("#coverart-url .coverart").after(tempstr);					
+		//						$(".coverart")[$(".coverart").length-1].after(tempstr);		
+								$(".covers").append(tempstr);
+							}
+							else{
+								$("#syncedLyrics").empty();
+							}
+							$("#syncedLyrics").append("<div id='syncedLyricsContent'>");
+							for(i=0;i<Object.entries(syncedLyrics).length;i++){
+								let p = "<p id='"+Object.entries(syncedLyrics)[i][0]+"' class='fade-in-out'>"+
+								Object.entries(syncedLyrics)[i][1] + "</p>";
+								$("#syncedLyricsContent").append(p);
+							}
+							console.log("syncedLyrics");
+							lrclibsynced && $(".lrclibsynced svg").css("fill","var(--accentxts)");
+						}
+						else{
+							if(typeof $("#syncedLyrics") !== 'undefined'){
+								$("#syncedLyrics").empty();
+							}
+							lrclibsynced && $(".lrclibsynced svg").css("fill","#ae3c27");
+						}
+						$("#syncedLyrics").css("display", "none");	
+						
+						window.clearInterval(updateSyncedLyrics)
+						slLast=0;
+						slLastSecs=0;
+						updateSyncedLyrics = setInterval(function () {
+							if (MPD.json['state'] === 'play'){
+								syncLyrics();
+							}
+						}, 750);						
+					},500);
+				}
+				else{
+					slLast=0;
+					slLastSecs=0;					
+				}
+			}
+*/
 			if(addonsCfg['albumart']){
 				if (MPD.json['file'] !== UI.currentFile && MPD.json['cover_art_hash'] !== UI.currentHash) {
 					multiAlbumArt();;
 				}
-				//chnage browsertitle
-				if (MPD.json['state'] !== 'stop') {
-					document.title = MPD.json['title'] + " - " + MPD.json['album'];
-				}
-				else {
-					document.title = "moOde Audioplayer";
-				}
 			}
 			
 			if(addonsCfg['browsertitle']){
-				//chnage browsertitle
+				//change browsertitle
 				if (MPD.json['state'] !== 'stop') {
 					document.title = MPD.json['title'] + " - " + MPD.json['album'];
 				}
@@ -379,6 +562,22 @@ fetch('addons/Stephanowicz/config.json')
 			//	$("button.add-item-to-favorites").addClass("hide");
 				$("button.add-item-to-favorites").attr('style', 'display: none !important');
 			}
+			//-- add "lrclib synced" to button group 
+			if(addonsCfg['lrclibsynced']){
+				tempstr = '<button class="btn btn-cmd btn-toggle2 lrclibsynced" data-cmd="lrclibsynced" aria-label="Synced Lyrics"> \
+				<svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"> \
+					<g id="Icon"> \
+						<path d="M18.003,23.922l-0.001,0c-1.105,0 -2.002,0.897 -2.002,2.002c-0,1.105 0.897,2.002 2.002,2.002c1.104,-0 2.001,-0.897 2.001,-2.002l0,-7.122c0,-0 6.001,-0.75 6.001,-0.75l0.003,3.867c-1.105,-0 -2.002,0.897 -2.002,2.002c0,1.104 0.897,2.001 2.002,2.001c1.105,0 2.002,-0.897 2.002,-2.001l-0.006,-7.003c0,-0.286 -0.123,-0.559 -0.338,-0.749c-0.215,-0.19 -0.501,-0.278 -0.786,-0.242l-8,1c-0.5,0.062 -0.876,0.488 -0.876,0.992l0,6.003Z"></path> \
+						<path d="M9.004,10l13.983,0c0.552,0 1,-0.448 1,-1c0,-0.552 -0.448,-1 -1,-1l-13.983,0c-0.552,0 -1,0.448 -1,1c0,0.552 0.448,1 1,1Z"></path> \
+						<path d="M9.004,13.994l13.983,0c0.552,0 1,-0.448 1,-1c0,-0.552 -0.448,-1 -1,-1l-13.983,0c-0.552,0 -1,0.448 -1,1c0,0.552 0.448,1 1,1Z"></path> \
+						<path d="M9.004,18l5.981,0c0.552,-0 1,-0.448 1,-1c-0,-0.552 -0.448,-1 -1,-1l-5.981,0c-0.552,-0 -1,0.448 -1,1c0,0.552 0.448,1 1,1Z"></path> \
+						<path d="M9.004,22.006l5.981,-0c0.552,-0 1,-0.448 1,-1c-0,-0.552 -0.448,-1 -1,-1l-5.981,-0c-0.552,-0 -1,0.448 -1,1c0,0.552 0.448,1 1,1Z"></path>  \
+					</g> \
+				</svg> \
+				</button>';
+//				$("button.random").after(tempstr);
+				$("#togglebtns .btn.random").after(tempstr);
+			}
 			//-- add "repeat", "single" etc to button group 
 			if(addonsCfg['btn_single']){
 				tempstr = '<button class="btn btn-cmd btn-toggle2 single" data-cmd="single" aria-label="Single"><i class="fa-regular fa-sharp fa-redo"></i></button>';
@@ -462,6 +661,13 @@ fetch('addons/Stephanowicz/config.json')
 						var toggle = $('.repeat').hasClass('btn-primary') ? '0' : '1';
 						$('.repeat').toggleClass('btn-primary');
 						sendMpdCmd('repeat ' + toggle);
+						break;
+					case 'lrclibsynced':
+						lrclibsynced = $('.lrclibsynced').hasClass('btn-primary') ? false : true;
+						$('.lrclibsynced').toggleClass('btn-primary');
+						lrclibsynced ? $(".lrclibsynced svg").css("fill","var(--accentxts)") : $(".lrclibsynced svg").css("fill","var(--adapttext)");
+						lrclibsynced ? $("#syncedLyrics").css("display", "block") : $("#syncedLyrics").css("display", "none");
+						(lrclibsynced&!syncedLyrics) && $(".lrclibsynced svg").css("fill","#ae3c27");
 						break;
 					case 'single':
 						$('#menu-check-single').toggle();
@@ -797,4 +1003,68 @@ function plStatDisp() {
             }
         }
     }
+}
+var slLast = 0;
+var slLastSecs = -1;
+var secsLyrics = [];
+var lyricsNextSecs = 0;
+function syncLyrics() {
+	if($("#syncedLyrics")[0]!=null && syncedLyrics!=null && lrclibsynced){
+		$("#syncedLyrics").css("display", "block");
+		$.getJSON('command/playback.php?cmd=get_mpd_status', function(data) {
+			var secsElapsed=data["elapsed"];
+			let last = 0;
+			for(i=slLast;i<secsLyrics.length;i++){
+				if(secsLyrics[i] < secsElapsed){
+					last = i;
+					slLastSecs=secsLyrics[i];		
+				}
+				else{
+					if((slLastSecs<=secsElapsed && slLastSecs > -1) && (i > slLast)){
+							const element = document.getElementById(secsLyrics[last]);
+							const pEl = document.getElementById("syncedLyrics");
+							pEl.scrollTo({
+								top: element.offsetTop-pEl.offsetHeight/3,
+								left: 0,
+								behavior: "smooth",
+							});
+							if(last > 0){
+								if(Object.entries(syncedLyrics)[last-1][1] !=""){
+									document.getElementById(secsLyrics[last-1]).style.transition = "opacity 2s";
+									document.getElementById(secsLyrics[last-1]).style.opacity = 0;									
+								}
+							}
+							lyricsNextSecs = 6;	
+							if(last+1 < secsLyrics.length){
+								lyricsNextSecs = secsLyrics[last+1] - secsLyrics[last];
+							}
+							if(Object.entries(syncedLyrics)[last][1] !=""){
+								document.getElementById(secsLyrics[last]).style.transition = "opacity 1s";
+								document.getElementById(secsLyrics[last]).style.opacity = 1;
+								if(lyricsNextSecs > 5){
+									setTimeout(() => {
+										document.getElementById(secsLyrics[last]).style.transition = "opacity 4s";
+										document.getElementById(secsLyrics[last]).style.opacity = 0;
+									},5000);									
+								}
+							}
+								
+							if(last+1 < secsLyrics.length){
+								if(Object.entries(syncedLyrics)[last+1][1] !=""){
+									if(lyricsNextSecs < 5){
+										document.getElementById(secsLyrics[last+1]).style.transition = "opacity "+(lyricsNextSecs+1)+"s";
+										document.getElementById(secsLyrics[last+1]).style.opacity = 1;
+									}
+								}
+							}
+					}
+					slLast = i;		
+					break;
+				}
+			}
+		});
+	}
+	else{
+		$("#syncedLyrics").css("display", "none");	
+	}
 }
