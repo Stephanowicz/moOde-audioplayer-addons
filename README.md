@@ -16,7 +16,8 @@ It consists of:
 	(cudos to elovattibr's [Webmixer](https://github.com/elovattibr/webmixer/))
 
 4. Songlyrics
-	- query lyrics of current song and display them in a modal pop-up
+	- query lyrics of current song and display them in a modal pop-up  
+	- show synced lyrics above albumcover
 
 5. Playbackmenue
 	- Add/remove items for playbackcontrol on mainscreen - "repeat", "random", "single", "random album", "add to favourites" etc...
@@ -79,7 +80,9 @@ after this add `<script src="addons/addons.js?t=1729607710734" defer></script>`
 	[LRCLIB Lyrics](https://lrclib.net/)  
 	- requires php-curl  
 	  install with: 
-		- sudo apt-get install php-curl  
+		- sudo apt-get install php-curl
+
+	  LRCLIB also provides synced lyrics
 
 	[Genius Lyrics](http://genius.com)  
 	- requires php-xml(php-dom), php-curl    
@@ -93,7 +96,6 @@ after this add `<script src="addons/addons.js?t=1729607710734" defer></script>`
 		- finally generate a [client access token](https://genius.com/api-clients) by clicking "Generate Access Token"  
 	 	-> add the **client access token** to **clientaccesstoken.txt** in the lyrics folder */var/www/addons/Stephanowicz/lyrics*  
    
-	ToDo: displaying lyric-verses according to the actual song position...
   
      
 	The other addons don't have any further requirements
@@ -108,7 +110,8 @@ The config-page can be accessed by the **m**(oode-menu)
 
 (You can also do that in a seperate window: [config-page](http://moode9.local/addons/Stephanowicz/config.html)  `http://moode9.local/addons/Stephanowicz/config.html`)  
 
-![image](https://github.com/user-attachments/assets/485a7996-0502-43eb-900a-24d6c3894429)
+![image](https://github.com/user-attachments/assets/47489242-ac69-490f-b006-d570220c8dd7)
+
    
   
 Worst case:  
@@ -157,7 +160,11 @@ Worst case:
 	
 4. Songlyrics
 	- query lyrics of current song and display them in a modal  
-	![image](https://github.com/user-attachments/assets/21f61711-1f0c-44bc-b5df-2ab6b8ebf7eb)  
+	![image](https://github.com/user-attachments/assets/21f61711-1f0c-44bc-b5df-2ab6b8ebf7eb)
+	  
+	- show synced lyrics from LRCLIB above the albumcover (at moment only in normal view)
+	![image](https://github.com/user-attachments/assets/75d8c065-1aeb-40da-a168-c93968f68b21)
+
 	
 5. Playbackmenue / Playbar icons
 	- Add/remove items for playbackcontrol on mainscreen - "repeat", "random", "single", "random album", "add to favourites"  etc...
