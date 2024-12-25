@@ -18,7 +18,7 @@
 			"token_perm" => false,
 			"geniustoken" => '',
 			"geniuslyrics" => false,
-			"lrcapilyrics" => false
+			"lrcliblyrics" => false
 		);
 		$cfg = dirname(__FILE__).'/config.json';
 		$json = file_get_contents($cfg); 
@@ -40,7 +40,7 @@
 		$loaded_extensions = get_loaded_extensions();
 		if(in_array("curl",$loaded_extensions)){		
 			$cfgCheck["curl"] = true;
-			$cfgCheck["lrcapilyrics"] = true;
+			$cfgCheck["lrcliblyrics"] = true;
 		}
 		else {$found=false;}
 		if(in_array("xml",$loaded_extensions)){		
