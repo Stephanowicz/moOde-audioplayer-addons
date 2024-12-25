@@ -16,7 +16,7 @@
 			padding-top: 5px;
 		/*	font-size: calc(.45em + 2vmin); */
 		}
-		#playbarbuttons input,#lrcapilyrics, #geniuslyrics {
+		#playbarbuttons input,#lrcliblyrics, #lrclibsynced, #geniuslyrics {
 			vertical-align: text-top;
 		}
 		#youtube-dl, #eq, #albumart, #lyrics, #random, #favorites, #repeat, #single, #ssStyle, #uwStyle, #browsertitle, #playqueue, #browse2folder {
@@ -172,7 +172,10 @@
 			</div>
 	-->
 			<div class="settings">
-				<input type="checkbox" id="lrcapilyrics" name="lrcapilyrics" disabled> LRC-API Lyrics<br>
+				<input type="checkbox" id="lrcliblyrics" name="lrcliblyrics" disabled> LRCLIB Lyrics<br>
+			</div>
+			<div class="settings">
+				<input type="checkbox" id="lrclibsynced" name="lrclibsynced" disabled> LRCLIB Lyrics synced<br>
 			</div>
 			<div class="settings">
 				<input type="checkbox" id="geniuslyrics" name="geniuslyrics" disabled> GENIUS-Lyrics<br>
@@ -180,7 +183,7 @@
 			<div id="lyrics_curl_err">
 				<span id="lyrics_curl_text" style="font-size: small;padding-left: 19px;">php-curl </span>
 				<span id="lyrics_curl_check"><i class="fa-regular fa-ban" aria-hidden="true" style="font-size: 18px;color: red;"></i><br></span>
-				<span id="lyrics_curl_check_text" style="font-size: small;padding-left: 19px;">Required by <b>LRC-API</b> and <b>Genius-Lyrics</b><br>Install with: <i>sudo apt-get install php-curl</i><br></span>
+				<span id="lyrics_curl_check_text" style="font-size: small;padding-left: 19px;">Required by <b>LRCLIB</b> and <b>Genius-Lyrics</b><br>Install with: <i>sudo apt-get install php-curl</i><br></span>
 			</div>
 			<div id="lyrics_xml_err">
 				<span id="lyrics_xml_text" style="font-size: small;padding-left: 19px;">php-xml </span>
@@ -336,8 +339,10 @@
 				cfgCheck["token_perm"] && $("#token_perm_err").hide();
 				$("#geniuslyrics").prop('disabled', !cfgCheck["geniuslyrics"]||!cfgJson['lyrics']);
 				$("#geniuslyrics").prop('checked', cfgCheck["geniuslyrics"]&&cfgJson['lyrics'] ? cfgJson['genius']:false);
-				$("#lrcapilyrics").prop('disabled', !cfgCheck["lrcapilyrics"]||!cfgJson['lyrics']);
-				$("#lrcapilyrics").prop('checked', cfgCheck["lrcapilyrics"]&&cfgJson['lyrics'] ? cfgJson['lrclib']:false);
+				$("#lrcliblyrics").prop('disabled', !cfgCheck["lrcliblyrics"]||!cfgJson['lyrics']);
+				$("#lrcliblyrics").prop('checked', cfgCheck["lrcliblyrics"]&&cfgJson['lyrics'] ? cfgJson['lrclib']:false);
+				$("#lrclibsynced").prop('disabled', !cfgCheck["lrcliblyrics"]||!cfgJson['lyrics']);
+				$("#lrclibsynced").prop('checked', cfgCheck["lrcliblyrics"]&&cfgJson['lyrics'] ? cfgJson['lrclibsynced']:false);
 				$("#lyrics").prop('checked', cfgJson['lyrics']);
 				$("#lyrics").prop('disabled', false);
 				$("#eq").prop('disabled', false);
@@ -392,7 +397,8 @@
 					ytdl: $("#youtube-dl").prop('checked'),
 					lyrics: $("#lyrics").prop('checked'),
 					genius: $("#geniuslyrics").prop('checked'),
-					lrclib: $("#lrcapilyrics").prop('checked'),
+					lrclib: $("#lrcliblyrics").prop('checked'),
+					lrclibsynced: $("#lrclibsynced").prop('checked'),
 					eq: $("#eq").prop('checked'),
 					browse2folder: $("#browse2folder").prop('checked'),
 					btn_random: $("#btn_random").prop('checked'),
@@ -482,15 +488,19 @@
 			$("#lyrics").click(function(){
 				if($(this).is(':checked')){
 					$("#geniuslyrics").prop('checked', cfgCheck["geniuslyrics"] ? cfgJson['genius']:false);
-					$("#lrcapilyrics").prop('checked', cfgCheck["lrcapilyrics"] ? cfgJson['lrclib']:false);
+					$("#lrcliblyrics").prop('checked', cfgCheck["lrcliblyrics"] ? cfgJson['lrclib']:false);
+					$("#lrclibsynced").prop('checked', cfgCheck["lrcliblyrics"] ? cfgJson['lrclibsynced']:false);
 					$("#geniuslyrics").prop('disabled', !cfgCheck["geniuslyrics"]);
-					$("#lrcapilyrics").prop('disabled', !cfgCheck["lrcapilyrics"]);
+					$("#lrcliblyrics").prop('disabled', !cfgCheck["lrcliblyrics"]);
+					$("#lrclibsynced").prop('disabled', !cfgCheck["lrcliblyrics"]);
 				}
 				else{
 					$("#geniuslyrics").prop('disabled', true);
-					$("#lrcapilyrics").prop('disabled', true);
+					$("#lrcliblyrics").prop('disabled', true);
+					$("#lrclibsynced").prop('disabled', true);
 					$("#geniuslyrics").prop('checked', false);
-					$("#lrcapilyrics").prop('checked', false);				
+					$("#lrcliblyrics").prop('checked', false);				
+					$("#lrclibsynced").prop('checked', false);				
 				}
 			});
 		</script>
