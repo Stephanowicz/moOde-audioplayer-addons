@@ -1030,20 +1030,20 @@ function syncLyrics() {
 							});
 							if(last > 0){
 								if(Object.entries(syncedLyrics)[last-1][1] !=""){
-									document.getElementById(secsLyrics[last-1]).style.transition = "opacity 2s";
+									document.getElementById(secsLyrics[last-1]).style.transition = "opacity 5s";
 									document.getElementById(secsLyrics[last-1]).style.opacity = 0;									
 								}
 							}
-							lyricsNextSecs = 6;	
+							lyricsNextSecs = 9;	
 							if(last+1 < secsLyrics.length){
 								lyricsNextSecs = secsLyrics[last+1] - secsLyrics[last];
 							}
 							if(Object.entries(syncedLyrics)[last][1] !=""){
 								document.getElementById(secsLyrics[last]).style.transition = "opacity 1s";
 								document.getElementById(secsLyrics[last]).style.opacity = 1;
-								if(lyricsNextSecs > 5){
+								if(lyricsNextSecs > 8){
 									setTimeout(() => {
-										document.getElementById(secsLyrics[last]).style.transition = "opacity 4s";
+										document.getElementById(secsLyrics[last]).style.transition = "opacity 5s";
 										document.getElementById(secsLyrics[last]).style.opacity = 0;
 									},5000);									
 								}
@@ -1051,7 +1051,7 @@ function syncLyrics() {
 								
 							if(last+1 < secsLyrics.length){
 								if(Object.entries(syncedLyrics)[last+1][1] !=""){
-									if(lyricsNextSecs < 5){
+									if(lyricsNextSecs < 2){
 										document.getElementById(secsLyrics[last+1]).style.transition = "opacity "+(lyricsNextSecs+1)+"s";
 										document.getElementById(secsLyrics[last+1]).style.opacity = 1;
 									}
