@@ -5,6 +5,7 @@
     "lyrics": true,
     "genius": true,
     "lrclib": true,
+    "lrclibsynced": true,
     "eq": true,
     "browse2folder": true,
     "btn_random": false,
