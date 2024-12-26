@@ -218,41 +218,7 @@ fetch('addons/Stephanowicz/config.json', {cache: "no-cache"})
 				}
 			}
 		}	
-/*		
-		if(addonsCfg['playqueue']||addonsCfg['lrclibsynced']){
-
-		//extend function updKnobAndTimeTrack() in playerlib.js for updating remaining playlisttime --> plStatDisp()
-			var updKnobAndTimeTrack_extended = updKnobAndTimeTrack;
-			var updatePlStatDisp;
-			var updateSyncedLyrics;
-			window.updKnobAndTimeTrack = function () {
-//				console.log("updKnobAndTimeTrack_extended");
-				addonsCfg['playqueue'] && window.clearInterval(updatePlStatDisp);
-				addonsCfg['lrclibsynced'] && window.clearInterval(updateSyncedLyrics);
-				updKnobAndTimeTrack_extended();
-				if (MPD.json['state'] === 'play') {
-					if(addonsCfg['playqueue']){ 
-						window.clearInterval(updatePlStatDisp);
-						updatePlStatDisp = setInterval(function () {
-							plStatDisp();
-						}, 1000);
-					}
-					if(addonsCfg['lrclibsynced']){
-						setTimeout(() => {
-							if(syncedLyrics!=null){
-								window.clearInterval(updateSyncedLyrics)
-								slLast=0;
-								slLastSecs=0;
-								updateSyncedLyrics = setInterval(function () {
-									syncLyrics();
-								}, 750);						
-							}
-						}, 250);
-					}
-				}
-			}
-		}	
-*/		
+		
 		//extend function renderReconnect() in playerlib.js for updating remaining playlisttime --> plStatDisp()
 		if(addonsCfg['playqueue']){
 			var renderReconnect_extended = renderReconnect;
@@ -317,8 +283,6 @@ fetch('addons/Stephanowicz/config.json', {cache: "no-cache"})
 							
 							if(typeof $("#syncedLyrics")[0] === 'undefined'){
 								var tempstr = '<div id="syncedLyrics"></div>';
-		//						$("#coverart-url .coverart").after(tempstr);					
-		//						$(".coverart")[$(".coverart").length-1].after(tempstr);		
 								$(".covers").append(tempstr);
 							}
 							else{
@@ -329,9 +293,6 @@ fetch('addons/Stephanowicz/config.json', {cache: "no-cache"})
 							for(i=0;i<Object.entries(syncedLyrics).length;i++){
 								let [ss=0, mm=0, hh=0] = Object.entries(syncedLyrics)[i][0].split(':').reverse();
 								secsLyrics[i] = (+hh) * 3600 + (+mm) * 60 + (+ss);
-
-//								let p = "<p id='"+Object.entries(syncedLyrics)[i][0]+"' class='fade-in-out'>"+
-//								let p = "<p id='"+secsLyrics[i]+"' class='fade-in-out'>"+
 								let p = "<p id='"+secsLyrics[i]+"'>"+
 								Object.entries(syncedLyrics)[i][1] + "</p>";
 								$("#syncedLyricsContent").append(p);
@@ -376,54 +337,6 @@ fetch('addons/Stephanowicz/config.json', {cache: "no-cache"})
 				}, 1000);
 			}
 
-/*
-			if(addonsCfg['lrclibsynced']){
-				console.log(MPD.json['state']);
-				if(MPD.json['file'] !== UI.currentFile){
-					setTimeout(() => {
-						if(syncedLyrics!=null){
-							if(typeof $("#syncedLyrics")[0] === 'undefined'){
-								var tempstr = '<div id="syncedLyrics"></div>';
-		//						$("#coverart-url .coverart").after(tempstr);					
-		//						$(".coverart")[$(".coverart").length-1].after(tempstr);		
-								$(".covers").append(tempstr);
-							}
-							else{
-								$("#syncedLyrics").empty();
-							}
-							$("#syncedLyrics").append("<div id='syncedLyricsContent'>");
-							for(i=0;i<Object.entries(syncedLyrics).length;i++){
-								let p = "<p id='"+Object.entries(syncedLyrics)[i][0]+"' class='fade-in-out'>"+
-								Object.entries(syncedLyrics)[i][1] + "</p>";
-								$("#syncedLyricsContent").append(p);
-							}
-							console.log("syncedLyrics");
-							lrclibsynced && $(".lrclibsynced svg").css("fill","var(--accentxts)");
-						}
-						else{
-							if(typeof $("#syncedLyrics") !== 'undefined'){
-								$("#syncedLyrics").empty();
-							}
-							lrclibsynced && $(".lrclibsynced svg").css("fill","#ae3c27");
-						}
-						$("#syncedLyrics").css("display", "none");	
-						
-						window.clearInterval(updateSyncedLyrics)
-						slLast=0;
-						slLastSecs=0;
-						updateSyncedLyrics = setInterval(function () {
-							if (MPD.json['state'] === 'play'){
-								syncLyrics();
-							}
-						}, 750);						
-					},500);
-				}
-				else{
-					slLast=0;
-					slLastSecs=0;					
-				}
-			}
-*/
 			if(addonsCfg['albumart']){
 				if (MPD.json['file'] !== UI.currentFile && MPD.json['cover_art_hash'] !== UI.currentHash) {
 					multiAlbumArt();;
@@ -1004,6 +917,8 @@ function plStatDisp() {
         }
     }
 }
+//--------------------------------------------------------------------------------------------------------------------------------------
+//---------Show synced lyrics above album cover---------------------------------------------
 var slLast = 0;
 var slLastSecs = -1;
 var secsLyrics = [];
