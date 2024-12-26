@@ -163,7 +163,10 @@ Worst case:
 	![image](https://github.com/user-attachments/assets/21f61711-1f0c-44bc-b5df-2ab6b8ebf7eb)
 	  
 	- show synced lyrics from LRCLIB above the albumcover (at moment only in normal view)
-	![image](https://github.com/user-attachments/assets/75d8c065-1aeb-40da-a168-c93968f68b21)
+	![image](https://github.com/user-attachments/assets/75d8c065-1aeb-40da-a168-c93968f68b21)  
+	activate with right button below playback control  
+	if synced lyrics are available the button turns green, otherwise it turns red  
+	(be aware that sometimes the synced lyrics maybe from a (special) edition and don't fit properly)  
 
 	
 5. Playbackmenue / Playbar icons
