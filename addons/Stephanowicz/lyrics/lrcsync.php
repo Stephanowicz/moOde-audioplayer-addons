@@ -12,6 +12,10 @@
 	$lrc['errtxt'] = '';
 	$lrc['data'] = "";
 	$lrc['found'] = false;
+	$path = false;
+	$songlyrics = array();
+	$found=false;
+	
 	if(isset($_GET['artist'])){
 	  $ARTIST=$_GET['artist'];
 	}
@@ -28,11 +32,47 @@
 	  $TITLE =str_replace("\n","",$TITLE_);
 	 // $TITLE=str_replace(" ","+",$TITLE_);
 	}
-
-	if($TITLE!="" && $ARTIST!=""){
-		$songlyrics="";
-		$found=false;
-		$query = array('track_name' => $TITLE, 'artist_name' => $ARTIST);
+	if(isset($_GET['album'])){
+	  $ALBUM=$_GET['album'];
+	}
+	else{
+	  $ALBUM=shell_exec('mpc --format %album% | head -n 1');
+	  $ALBUM =str_replace("\n","",$ALBUM);
+	 // $TITLE=str_replace(" ","+",$TITLE_);
+	}
+	$filepath=shell_exec('mpc -f %file%|head -n 1');
+	if($filepath){
+		$filepath=trim ($filepath);
+		$path = '/var/lib/mpd/music/' . $filepath;
+		$path = dirname($path) . '/';
+	}
+	
+	if($path && $TITLE!="" && $ARTIST!=""){
+		foreach (glob($path . '*{.lrc}',GLOB_BRACE) as $file) {
+			$info = pathinfo($file);
+			$filename = basename($file,'.'.$info['extension']);
+			if (is_file($file) && (stripos($TITLE,$filename)!==false || stripos($filename,$TITLE)!==false)) {
+				$fdata = file_get_contents($file);
+				if($fdata){
+					$fdata = str_replace("    ", "<br>",$fdata);
+					$arr=preg_split('/\r\n|\r|\n/', $fdata);
+					if(count($arr)>1){
+						foreach($arr as $item){
+							$tmp=preg_split('/\]/', $item,2);
+							$songlyrics[trim($tmp[0],"\[")]=trim($tmp[1]);
+						}
+						$found=true;
+						break;
+					}
+				}						
+			}
+		}
+	}
+	if($found){
+		echo json_encode($songlyrics);
+	}
+	elseif($TITLE!="" && $ARTIST!=""){
+		$query = array('track_name' => $TITLE, 'artist_name' => $ARTIST, 'album_name' => $ALBUM);
 		$lrcurl .= 'https://lrclib.net/api/get';
 		$lrcurl .= (strpos("?",$lrcurl)===false ? "?" : "&") . http_build_query($query);
 		$ch = curl_init();
