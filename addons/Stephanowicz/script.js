@@ -28,7 +28,7 @@ function loadStyle(src) {
 
 var syncedLyrics;
 var lrclibsynced = false;
-
+var resizeTimeout = false;
 var addonsCfg;
 //---------------load settings------------------------------------------
 fetch('addons/Stephanowicz/config.json', {cache: "no-cache"})
@@ -166,6 +166,10 @@ fetch('addons/Stephanowicz/config.json', {cache: "no-cache"})
 					display: none;
 					overflow: hidden;
 				}
+				#ss-coverart #syncedLyrics {
+					margin-left: 5em;
+					width: 80vh;
+				}
 				#syncedLyricsContent {
 //					margin-top: 100%;
 					margin-top: 100vh;
@@ -284,22 +288,29 @@ fetch('addons/Stephanowicz/config.json', {cache: "no-cache"})
 							if(typeof $("#syncedLyrics")[0] === 'undefined'){
 								var tempstr = '<div id="syncedLyrics"></div>';
 								$(".covers").append(tempstr);
+//								$(".ss-coverart").append(tempstr);
 							}
 							else{
 								$("#syncedLyrics").empty();
 							}
 							$("#syncedLyrics").append("<div id='syncedLyricsContent'>");
 							secsLyrics = [];
-							for(i=0;i<Object.entries(syncedLyrics).length;i++){
-								let [ss=0, mm=0, hh=0] = Object.entries(syncedLyrics)[i][0].split(':').reverse();
-								secsLyrics[i] = (+hh) * 3600 + (+mm) * 60 + (+ss);
-								let p = "<p id='"+secsLyrics[i]+"'>"+
-								Object.entries(syncedLyrics)[i][1] + "</p>";
-								$("#syncedLyricsContent").append(p);
+							let iLength=Object.entries(syncedLyrics).length;
+							for(i=0;i<iLength;i++){
+//								if(Object.entries(syncedLyrics)[i][1] ===""){
+//									delete syncedLyrics[Object.entries(syncedLyrics)[i][1]];
+//									iLength-=1;
+//								}
+//								else{
+									let [ss=0, mm=0, hh=0] = Object.entries(syncedLyrics)[i][0].split(':').reverse();
+									secsLyrics[i] = (+hh) * 3600 + (+mm) * 60 + (+ss);							
+									let p = "<p id='"+secsLyrics[i]+"'>"+
+									Object.entries(syncedLyrics)[i][1] + "</p>";
+									$("#syncedLyricsContent").append(p);
+//								}
 							}
 							console.log("syncedLyrics");
 							lrclibsynced && $(".lrclibsynced svg").css("fill","var(--accentxts)");
-
 						}
 						else{
 							if(typeof $("#syncedLyrics") !== 'undefined'){
@@ -308,16 +319,20 @@ fetch('addons/Stephanowicz/config.json', {cache: "no-cache"})
 							lrclibsynced && $(".lrclibsynced svg").css("fill","#ae3c27");
 						}
 						$("#syncedLyrics").css("display", "none");	
-						
-						window.clearInterval(updateSyncedLyrics)
-						slLast=0;
-						slLastSecs=0;
-						updateSyncedLyrics = setInterval(function () {
-							if (MPD.json['state'] === 'play'){
-								syncLyrics();
-							}
-						}, 750);						
+						if(document.getElementById("syncedLyrics")){
+							setTimeout(function () {
+								syncedLyricsPos();
 
+							}, 750);							
+							window.clearInterval(updateSyncedLyrics)
+							slLast=0;
+							slLastSecs=0;
+							updateSyncedLyrics = setInterval(function () {
+								if (MPD.json['state'] === 'play'){
+									syncLyrics();
+								}
+							}, 750);						
+						}
 					});
 				}
 				else{
@@ -549,6 +564,28 @@ fetch('addons/Stephanowicz/config.json', {cache: "no-cache"})
 				sendMpdCmd(cmd + ' ' + toggleValue);
 			});
 */
+
+			if(addonsCfg['lrclibsynced']){
+				window.addEventListener('resize', function() {
+					// clear the timeout
+					clearTimeout(resizeTimeout);
+					// start timing for event "completion"
+					resizeTimeout = setTimeout(function () {
+						syncedLyricsPos();
+/*						if(document.getElementById("syncedLyrics")){
+							if(document.getElementsByClassName("coverart").length > 0){
+								let w = document.getElementsByClassName("coverart")[0].offsetWidth;
+								let h = document.getElementsByClassName("coverart")[0].offsetHeight;
+								document.getElementById("syncedLyrics").style.width = w + "px";
+								document.getElementById("syncedLyrics").style.top = 0.9*h + "px";
+								let l = document.getElementsByClassName("coverart")[0].offsetLeft;
+								document.getElementById("syncedLyrics").style.left = l  + "px";
+							}
+						}
+*/					}, 250);
+				});
+			}
+
 			$('.btn-toggle2').click(function(e) {
 				switch ($(this).data('cmd')) {
 					case 'save_queue_to_playlist':
@@ -936,6 +973,7 @@ function syncLyrics() {
 				}
 				else{
 					if((slLastSecs<=secsElapsed && slLastSecs > -1) && (i > slLast)){
+						if(last < secsLyrics.length && ((last > 0 && secsLyrics[last]-secsLyrics[last-1]>1) || last == 0)){
 							const element = document.getElementById(secsLyrics[last]);
 							const pEl = document.getElementById("syncedLyrics");
 							pEl.scrollTo({
@@ -943,37 +981,45 @@ function syncLyrics() {
 								left: 0,
 								behavior: "smooth",
 							});
-							if(last > 0){
-								if(Object.entries(syncedLyrics)[last-1][1] !=""){
-									document.getElementById(secsLyrics[last-1]).style.transition = "opacity 4s";
-									document.getElementById(secsLyrics[last-1]).style.opacity = 0;									
-								}
+						}
+						else if(last > 0 && secsLyrics[last]-secsLyrics[last-1]<1 && document.getElementById(secsLyrics[last-1]).style.opacity == 0){
+							last -= 1;
+							i-=1;
+							slLastSecs=secsLyrics[last];
+							if(last > 0 && secsLyrics[last]-secsLyrics[last-1]<1 && document.getElementById(secsLyrics[last-1]).style.opacity == 0){
+								last -= 1;
+								i-=1;
+								slLastSecs=secsLyrics[last];
 							}
-					
-							lyricsNextSecs = 9;	
-							if(last+1 < secsLyrics.length){
-								lyricsNextSecs = secsLyrics[last+1] - secsLyrics[last];
+							const element = document.getElementById(secsLyrics[last]);
+							const pEl = document.getElementById("syncedLyrics");
+							pEl.scrollTo({
+								top: element.offsetTop-pEl.offsetHeight/3,
+								left: 0,
+								behavior: "smooth",
+							});
+						}
+						lyricsNextSecs = 9;	
+						if(last+1 < secsLyrics.length){
+							lyricsNextSecs = secsLyrics[last+1] - secsLyrics[last];
+						}
+						if(last > 0){
+							if(Object.entries(syncedLyrics)[last-1][1] !=""){
+//										document.getElementById(secsLyrics[last-1]).style.transition = "opacity 3s cubic-bezier(0.7,0.46,1,1)";
+								document.getElementById(secsLyrics[last-1]).style.transition = "opacity 1s linear 2s";
+								document.getElementById(secsLyrics[last-1]).style.opacity = 0;					
 							}
-							if(Object.entries(syncedLyrics)[last][1] !=""){
-								document.getElementById(secsLyrics[last]).style.transition = "opacity "+ lyricsNextSecs > 2? 2:1 + "s";
-								document.getElementById(secsLyrics[last]).style.opacity = 1;
-								if(lyricsNextSecs > 8){
-									setTimeout(() => {
-										document.getElementById(secsLyrics[last]).style.transition = "opacity 7s";
-										document.getElementById(secsLyrics[last]).style.opacity = 0;
-									},5000);									
-								}
+						}
+						if(Object.entries(syncedLyrics)[last][1] !=""){
+							document.getElementById(secsLyrics[last]).style.transition = "opacity "+ lyricsNextSecs > 2? 2:1 + "s";
+							document.getElementById(secsLyrics[last]).style.opacity = 1;
+							if(lyricsNextSecs > 8){
+								setTimeout(() => {
+									document.getElementById(secsLyrics[last]).style.transition = "opacity 7s";
+									document.getElementById(secsLyrics[last]).style.opacity = 0;
+								},8000);									
 							}
-								
-						/*	if(last+1 < secsLyrics.length){
-								if(Object.entries(syncedLyrics)[last+1][1] !=""){
-									if(lyricsNextSecs < 2){
-										document.getElementById(secsLyrics[last+1]).style.transition = "opacity "+(lyricsNextSecs+1)+"s";
-										document.getElementById(secsLyrics[last+1]).style.opacity = 1;
-									}
-								}
-							}
-						*/
+						}
 					}
 					slLast = i;		
 					break;
@@ -983,5 +1029,18 @@ function syncLyrics() {
 	}
 	else{
 		$("#syncedLyrics").css("display", "none");	
+	}
+}
+function syncedLyricsPos() {
+	if(document.getElementsByClassName("coverart").length > 0 && document.getElementsByClassName("coverart")[0].offsetLeft > 0){
+		let w = document.getElementsByClassName("coverart")[0].offsetWidth;
+		let h = document.getElementsByClassName("coverart")[0].offsetHeight;
+		let l = document.getElementsByClassName("coverart")[0].offsetLeft;
+		document.getElementById("syncedLyrics").style.width = w + "px";
+		document.getElementById("syncedLyrics").style.top = 0.3*h + "px";
+		document.getElementById("syncedLyrics").style.left = l  + "px";
+//		console.log("width: " + w);
+//		console.log("height: " + h);
+//		console.log("left: " + l);
 	}
 }
