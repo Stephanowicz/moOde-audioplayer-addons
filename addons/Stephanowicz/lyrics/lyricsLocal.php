@@ -4,7 +4,6 @@
  * Copyright 2024 Stephanowicz 
  * https://github.com/Stephanowicz/moOde-audioplayer-addons
 */
-	require_once dirname(__FILE__) . '/../../../inc/common.php';
 
 	if(isset($_SERVER['argv'])){
 		if(count($argv)>1){
@@ -33,7 +32,7 @@
 	}
 	if($filepath){
 		$filepath=trim ($filepath);
-		$path = MPD_MUSICROOT . $filepath;
+		$path = '/var/lib/mpd/music/' . $filepath;
 		$path = dirname($path) . '/';
 	}
 	if($path){
