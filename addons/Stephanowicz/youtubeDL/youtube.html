@@ -7,154 +7,329 @@
 -->
 <html>
 <head>
-<title>Youtube Audioplayback</title>
-<script type="text/javascript">
+	<title>Youtube Audioplayback</title>
+	<style>
+		body {
+			background-color: #4a4a4a;
+			color: white;
+		}
+	</style>
+	<script src="jquery.min.js"></script>
+	<script type="text/javascript">
+		var ytplItems = [];
+		
+		function getTimestring() {
+			var d = new Date();
+			return d.toLocaleTimeString();
+		}
 
-	function getTimestring(){
-	  var d = new Date();
-	  return d.toLocaleTimeString();
-	}
+		function YTQuery() {
+			var query, url;
+			query = document.ytquery["querystring"].value;
+			query = query.replace(/\s+/g, "+");
+			url = "https://www.youtube.com/results?search_query=" + query;
+			window.open(url);
+		}
 
-  function YTQuery() {
-	  var query,url;	  
-	  query = document.ytquery["querystring"].value;
-		query = query.replace(/\s+/g, "+");
-		url = "https://www.youtube.com/results?search_query=" + query;
-		window.open(url);
-	}
-	
-  function singleVid() {
-	  var url,opts;	  
-	  yturl = document.vidurl["yturl"].value;
-	  opts = document.vidurl["plopts"].value;
-		document.getElementById('log').innerHTML = "";
-		document.getElementById('mpdlog').innerHTML = "";
-		document.getElementById('ytplist').innerHTML = "";
-		document.getElementById('ytplaylist').style.display = "none";
-		createPLItem(yturl,opts);
-	}	
-	function createPLItem(url,opts)
-	{
-	  var xhttp;	  
-	  xhttp = new XMLHttpRequest();
-	  xhttp.onreadystatechange = function() {
-			if (this.readyState == 4 && this.status == 200) {
-				document.getElementById('mpdlog').innerHTML += getTimestring() + ": " + this.responseText + "<br />";
-				MPDPlaylist();
-			}
-	  };
-	  xhttp.open("GET", "addons/Stephanowicz/youtubeDL/youtube.php?yturl=" + url + "&plopts=" + opts, true);
-	  xhttp.send();
-	  document.getElementById('log').innerHTML += getTimestring() + ": creating playlistentry for: " + url + " (" + opts + ")<br />"; 
-	}
-	
-	function loadnplay () {
-	  var xhttp;
-	  xhttp = new XMLHttpRequest();
-	  xhttp.onreadystatechange = function() {
-			if (this.readyState == 4 && this.status == 200) {
-				document.getElementById('mpdlog').innerHTML = getTimestring() + ": " + this.responseText + "<br />"; 
-			}
-	  };
-	  xhttp.open("GET", "addons/Stephanowicz/youtubeDL/youtube.php?loadnplay", true);
-	  xhttp.send();
-		document.getElementById('log').innerHTML ="";
-	}
-	
-  function MPDPlaylist()
-  {
-	  var xhttp;
-	  xhttp = new XMLHttpRequest();
-	  xhttp.onreadystatechange = function() {
-			if (this.readyState == 4 && this.status == 200) {
-				document.getElementById('playlist').innerHTML = this.responseText;
-			}
-	  };
-	  xhttp.open("GET", "addons/Stephanowicz/youtubeDL/youtube.php?playlist", true);
-	  xhttp.send();
-  }
-
-  function createPlaylistfromArray(url=plArray[0][1],opts="clear",cnt=0)
-  {
-	  var xhttp;
-	  xhttp = new XMLHttpRequest();
-	  xhttp.onreadystatechange = function() {
-			if (this.readyState == 4 && this.status == 200) {
-				document.getElementById('mpdlog').innerHTML += getTimestring() + ": " + this.responseText + "<br />";
-				MPDPlaylist();
-			}
-	  };
-		if(cnt==0){
-			opts = document.formCreatePl["plopts"].value;
+		function singleVid() {
+			var url, opts;
+			yturl = document.vidurl["yturl"].value;
+			opts = document.vidurl["plopts"].value;
 			document.getElementById('log').innerHTML = "";
 			document.getElementById('mpdlog').innerHTML = "";
-		}
-	  xhttp.open("GET", "addons/Stephanowicz/youtubeDL/youtube.php?yturl=" + url + "&plopts=" + opts + "&index=" + (cnt+1) + "&length=" + plArray.length, true);
-	  xhttp.send();
-	  document.getElementById('log').innerHTML += getTimestring() + ": creating playlistentry ("+(cnt+1).toString()+"/"+(plArray.length).toString()+") for " + plArray[cnt][0] + " (" + opts + ")<br />"; 
-		cnt++;
-		if(cnt < plArray.length) {
-			setTimeout(createPlaylistfromArray,1500,plArray[cnt][1],"add",cnt);
-		}
-		else {
-			document.getElementById('ytplist').innerHTML="";
+			document.getElementById('ytplist').innerHTML = "";
+			document.getElementById('ytplItemsfound').innerHTML = "";
 			document.getElementById('ytplaylist').style.display = "none";
+			createPLItem(yturl, opts);
 		}
-	}
-	
-  function YTPlaylist()
-  {
-	  var xhttp,plurl;
-	  plurl = document.plurl["ytpl"].value;
-	  xhttp = new XMLHttpRequest();
-	  xhttp.onreadystatechange = function() {
-			if (this.readyState == 4 && this.status == 200) {
-				var plItems = JSON.parse(this.responseText);
-				plArray = Object.entries(plItems);
-				if(Array.isArray(plArray) && plArray.length > 0) {
-					plArray.forEach(item => {
-						document.getElementById('ytplist').innerHTML += item + "<br />";
-					});
+		function createPLItem(url, opts) {
+			var xhttp;
+			xhttp = new XMLHttpRequest();
+			xhttp.onreadystatechange = function () {
+				if (this.readyState == 4 && this.status == 200) {
+					document.getElementById('mpdlog').innerHTML += getTimestring() + ": " + this.responseText + "<br />";
+					MPDPlaylist();
 				}
-				else {document.getElementById('mpdlog').innerHTML = getTimestring() + ": no items!<br />";}
+			};
+			xhttp.open("GET", "youtube.php?yturl=" + url + "&plopts=" + opts, true);
+			xhttp.send();
+			document.getElementById('log').innerHTML += getTimestring() + ": creating playlistentry for: " + url + " (" + opts + ")<br />";
+		}
+
+		function loadnplay() {
+			var xhttp;
+			xhttp = new XMLHttpRequest();
+			xhttp.onreadystatechange = function () {
+				if (this.readyState == 4 && this.status == 200) {
+					document.getElementById('mpdlog').innerHTML = getTimestring() + ": " + this.responseText + "<br />";
+				}
+			};
+			xhttp.open("GET", "youtube.php?loadnplay", true);
+			xhttp.send();
+			document.getElementById('log').innerHTML = "";
+		}
+
+		function MPDPlaylist() {
+			var xhttp;
+			xhttp = new XMLHttpRequest();
+			xhttp.onreadystatechange = function () {
+				if (this.readyState == 4 && this.status == 200) {
+					document.getElementById('playlist').innerHTML = this.responseText;
+				}
+			};
+			xhttp.open("GET", "youtube.php?playlist", true);
+			xhttp.send();
+		}
+
+		function createPlaylistfromArray(url = plArray[0][1], opts = "clear", cnt = 0) {
+			var xhttp;
+			var mpdlog= document.getElementById("mpdlog");
+			var log= document.getElementById("log");
+			xhttp = new XMLHttpRequest();
+			xhttp.onreadystatechange = function () {
+				if (this.readyState == 4 && this.status == 200) {
+					mpdlog.innerHTML += getTimestring() + ": " + this.responseText + "<br />";
+					mpdlog.scrollTop = mpdlog.scrollHeight;
+					MPDPlaylist();
+				}
+			};
+			if (cnt == 0) {
+				opts = document.formCreatePl["plopts"].value;
+				log.innerHTML = "";
+				mpdlog.innerHTML = "";
 			}
-	  };
-	  xhttp.open("GET", "addons/Stephanowicz/youtubeDL/youtube.php?ytpl=" + plurl, true);
-	  xhttp.send();
-		document.getElementById('ytplist').innerHTML="";
-		document.getElementById('ytplaylist').style.display = "block";
-		document.getElementById('log').innerHTML = getTimestring() + ": reading youtube playlist<br />";
-		document.getElementById('mpdlog').innerHTML = "";
-  }
-	
-	//https://www.youtube.com/results?search_query=kutless+full+album
-</script>
+			xhttp.open("GET", "youtube.php?yturl=" + url + "&plopts=" + opts + "&index=" + (cnt + 1) + "&length=" + plArray.length, true);
+			xhttp.send();
+			log.innerHTML += getTimestring() + ": creating playlistentry (" + (cnt + 1).toString() + "/" + (plArray.length).toString() + ") for " + plArray[cnt][0] + " (" + opts + ")<br />";
+			cnt++;
+			if (cnt < plArray.length) {
+				if(["append","insert"].includes(opts)){
+					setTimeout(createPlaylistfromArray, 1500, plArray[cnt][1], opts, cnt);
+				}
+				else{
+					setTimeout(createPlaylistfromArray, 1500, plArray[cnt][1], "add", cnt);
+				}
+			}
+			else {
+				document.getElementById('ytplist').innerHTML = "";
+				document.getElementById('ytplItemsfound').innerHTML = "";
+				document.getElementById('ytplaylist').style.display = "none";
+			}
+			log.scrollTop = log.scrollHeight;
+
+		}
+
+		function YTPlaylist() {
+			var xhttp, plurl;
+			plurl = document.plurl["ytpl"].value;
+			xhttp = new XMLHttpRequest();
+			xhttp.onreadystatechange = function () {
+				if (this.readyState == 4 && this.status == 200) {
+					var plItems = JSON.parse(this.responseText);
+					plArray = Object.entries(plItems);
+					if (Array.isArray(plArray) && plArray.length > 0) {
+						document.getElementById('ytplItemsfound').innerHTML = plArray.length;
+						document.getElementById('ytplaylist').style.display = "block";
+						plArray.forEach(item => {
+							document.getElementById('ytplist').innerHTML += item + "<br />";
+						});
+					}
+					else { document.getElementById('mpdlog').innerHTML = getTimestring() + ": no items!<br />"; }
+				}
+			};
+			xhttp.open("GET", "youtube.php?ytpl=" + plurl, true);
+			xhttp.send();
+			document.getElementById('ytplist').innerHTML = "";
+			document.getElementById('ytplItemsfound').innerHTML = "";
+			
+			document.getElementById('log').innerHTML = getTimestring() + ": reading youtube playlist<br />";
+			document.getElementById('mpdlog').innerHTML = "";
+		}
+
+		//https://www.youtube.com/results?search_query=kutless+full+album
+
+		function fillYTPLList(){
+			var xhttp,temp;
+			$('#selectPL').empty();
+			ytplItems = [];
+			xhttp = new XMLHttpRequest();
+			xhttp.onreadystatechange = function () {
+				if (this.readyState == 4 && this.status == 200) {
+					var plItems = JSON.parse(this.responseText);
+					if (Array.isArray(plItems) && plItems.length > 0) {
+						plItems.filter(Boolean);;
+						$.each(plItems, function(i, p) {
+							if(plItems[i] !== null && p[0] !== "" && p[1] !== ""){
+								$('#selectPL').append($('<option></option>').val(p[0]).html(p[1]));
+							}
+						});
+					}
+					else { document.getElementById('mpdlog').innerHTML = getTimestring() + ": no items!<br />"; }
+				}
+			};
+			xhttp.open("GET", "youtube.php?ytpllist", true);
+			xhttp.send();
+		}
+
+		function savePLentry() {
+			var xhttp;
+			xhttp = new XMLHttpRequest();
+			param1 = $("[name='ytpl']").val();
+			param2 = $("[name='ytplTitle']").val();
+			params = 'saveytpl=' + encodeURIComponent(param1) + ',' + encodeURIComponent(param2);
+			if(($("[name='ytpl']").val() != "") && ($("[name='ytplTitle']").val() != "")){
+				xhttp.onreadystatechange = function () {
+					if (this.readyState == 4 && this.status == 200) {
+						setTimeout(fillYTPLList, 500);
+					}
+				};
+				xhttp.open("PUT", "youtube.php?"+params, true);		
+				xhttp.send();
+			}
+		}
+		
+		function loadPLentry() {
+			$("[name='ytpl']").val($('#selectPL')[0].value);
+			buttonState(document.getElementsByName('ytpl')[0],$('#ytplquery'));
+		}
+		function delPLentry() {
+			var xhttp;
+			xhttp = new XMLHttpRequest();
+			if($('#selectPL')[0].selectedOptions[0].value !="" && $('#selectPL')[0].selectedOptions[0].text !=""){
+				param1 = $('#selectPL')[0].selectedOptions[0].value;
+				param2 = $('#selectPL')[0].selectedOptions[0].text;
+				params = 'delytpl=' + encodeURIComponent(param1) + ',' + encodeURIComponent(param2);
+				xhttp.onreadystatechange = function () {
+					if (this.readyState == 4 && this.status == 200) {
+						setTimeout(fillYTPLList, 500);
+					}
+				};
+				xhttp.open("PUT", "youtube.php?"+params, true);		
+				xhttp.send();
+			}
+		}
+		
+		function openPLentry() {
+			window.open($('#selectPL')[0].value, '_blank').focus();
+		}
+		
+		function buttonState(oInput,oButton){
+			if(oInput.value.length > 0) {
+				oButton.prop('disabled',false);
+				oButton.css('border-color','');
+				oButton.css('background-color','');
+				oButton.css('color','');
+			}
+			else{
+				oButton.prop('disabled',true);
+				oButton.css('border-color','darkgrey');
+				oButton.css('background-color','darkgrey');
+				oButton.css('color','#6a6a6a');
+			}
+		}
+	</script>
 </head>
 <body onload="MPDPlaylist()">
-<table>
-<tr>
-<td valign="top">Video-URL:</td><td><form name="vidurl" method="post" action="javascript:singleVid()"><input size="80" type="text" name="yturl"><input type="submit"></td><td valign="top"><input type="radio" name="plopts" value="add" checked>add to playlist</td><td valign="top"><input type="radio" name="plopts" value="clear">clear playlist<input type="radio" name="plopts" value="append">append<input type="radio" name="plopts" value="insert">insert</form></td>
-</tr>
-<tr>
-<td valign="top">Playlist-URL:</td><td><form name="plurl" method="post" action="javascript:YTPlaylist()"><input size="80" type="text" name="ytpl"><input type="submit"></form></td>
-</tr>
-<tr>
-<td valign="top">Youtube query:</td><td><form name="ytquery" method="post" action="javascript:YTQuery()"><input size="80" type="text" name="querystring"><input type="submit"></form></td>
-</tr></table><br />
-<table>
-<tr>
-<td valign="top"><div id="log"></div></td><td valign="top"><div id="mpdlog"></div></td>
-</tr>
-</table
-<br /><br />
+<div style="border: 1px solid;padding: 10px;width: 90%;">
+	<form name="vidurl" method="post" action="javascript:singleVid()">
+		<div>Single-Vid:</div>
+		<div><input size="80" type="text" placeholder="Video-URL"  name="yturl" style="width: 67vw;margin-left:3px;" onkeyup=buttonState(this,$('#ytsinglequery'));><input type="submit" id="ytsinglequery" style="position: relative;top: -3px;margin-left:3px" disabled></div>
+		<div>
+			
+			<span><input type="radio" name="plopts" value="add" checked style="position: relative;top: -2px;">&nbsp;add to youtube-playlist&nbsp;</span>
+			<span><input type="radio" name="plopts" value="clear" style="position: relative;top: -2px;">&nbsp;clear youtube-playlist&nbsp;</span>
+		</div>
+		<div>
+			<span><input type="radio" name="plopts" value="append" style="position: relative;top: -2px;">&nbsp;append to current playlist&nbsp;</span>
+			<span><input type="radio" name="plopts" value="insert" style="position: relative;top: -2px;">&nbsp;insert after current playlist position&nbsp;</span>
+		</div>		
+	</form>
+</div>
+<div style="margin-top: 7px;border: 1px solid;padding: 10px;width: 90%;">
+	<form name="plurl" method="post" action="javascript:YTPlaylist()">
+		<div>Playlist:</div>
+		<div>
+			<input size="80" type="text" name="ytpl" placeholder="Playlist-URL" style="width: 67vw;margin-left:3px;" onkeyup=buttonState(this,$('#ytplquery'));><input type="submit" id="ytplquery" style="position: relative;top: -3px;margin-left:3px" disabled>
+		</div>
+	</form>
+	<div>
+		<select id="selectPL" style="position: relative;top: 6px;margin-left:3px;width: 30vw;color: #201f1f;" oninput="loadPLentry()"></select>
+		<button type="button" id="loadPLentry" onclick="loadPLentry();buttonState(this,$('#ytpl'));">LOAD</button>
+		<button type="button" id="delPLentry" onclick="delPLentry()">DEL</button>
+		<button type="button" id="delPLentry" onclick="openPLentry()">OPEN</button>
+		<input size="40" type="text" placeholder="playlist title for new entry"  name="ytplTitle" style="width: 19vw;margin-left:10px;position: relative;top: 4px;" onkeyup="if(this.value.length > 0) document.getElementById('savePLentry').disabled = false; else document.getElementById('savePLentry').disabled = true;">
+		<button type="button" id="savePLentry" onclick="savePLentry()" disabled>ADD</button>
+	</div>	
+</div>	
+<div style="margin-top: 7px;border: 1px solid;padding: 10px;width: 90%;">
+	<form name="ytquery" method="post" action="javascript:YTQuery()">
+		<div>Youtube query:</div>
+		<div><input size="80" type="text" name="querystring" placeholder="start a query" style="width: 67vw;margin-left:3px;" onkeyup=buttonState(this,$('#ytquery'));><input type="submit" id="ytquery" style="position: relative;top: -3px;margin-left:3px" disabled></div>
+	</form>
+</div>
 
-<div id="ytplaylist" style="display:none">
-"youtube playlist-items:   <form name="formCreatePl" method='post' action='javascript:createPlaylistfromArray()'><input type='submit' value='create playlist'><input type="radio" name="plopts" value="add" checked>add to playlist<input type="radio" name="plopts" value="clear">clear playlist</form><br />
-<div id="ytplist"></div>
-</div><br /><br />
+<div id="ytplaylist" style="border: 1px solid;padding: 10px;width: 90%; display:none">
+	<div>items found:&nbsp;<span id="ytplItemsfound"></span></div>
+	<div id="ytplist" style="max-height: 15vh; overflow: auto; margin-left:5px"></div>
+	<form name="formCreatePl" method='post' action='javascript:createPlaylistfromArray()' style="margin-top:24px;">
+		<input type='submit' value='create playlist'>
+		<div style="left: 104px;position: relative;top: -27px;">		
+			<input type="radio" name="plopts" value="add" checked style="position: relative;top:-2px;margin-left:8px;">&nbsp;add to youtube-playlist&nbsp;
+			<input type="radio" name="plopts" value="clear" style="position: relative;top: -2px;margin-left:8px;">&nbsp;clear youtube-playlist&nbsp;<br>
+			<input type="radio" name="plopts" value="append" style="position: relative;top: -2px;margin-left:8px;"><span style="font-style: italic;">&nbsp;append to current playlist&nbsp;</span>
+			<input type="radio" name="plopts" value="insert" style="position: relative;top: -2px;margin-left:8px;"><span style="font-style: italic;">&nbsp;insert after current playlist position&nbsp;</span>
+		</div>
+	</form>
+</div>
+<br />
+<table style="max-height: 15vh; overflow: auto;background-color: #132e43;width: 92%;">
+	<tr>
+		<td valign="top"><div id="log" style="max-height: 15vh;overflow: auto;"></div></td>
+		<td valign="top"><div id="mpdlog" style="max-height: 15vh;overflow: auto;"></div></td>
+	</tr>
+</table>
+<br />
 
-<form method="post" action="javascript:loadnplay()">youtube.m3u:     <input type="submit" value="load & play"><input type="hidden" name="loadnplay" value="go"></form>
-<div id="playlist"></div>
+<div style="margin-top: 20px;border: 1px solid;padding: 10px;width: 90%;">
+	<form method="post" action="javascript:loadnplay()">Playlist (youtube.m3u):<input type="submit" value="load & play" style="margin: 0px 0px 0px 15px;vertical-align: text-bottom;"><input type="hidden" name="loadnplay" value="go"></form>
+	<div id="playlist"style="margin: 5px 0px 0px 5px;overflow: auto;max-height: 40%;"></div>
+</div>
+
+<script type="text/javascript">
+	MPDPlaylist();
+	fillYTPLList();
+	if($('#ytsinglequery').prop('disabled')){
+		$('#ytsinglequery').css('border-color','darkgrey');
+		$('#ytsinglequery').css('background-color','darkgrey');
+		$('#ytsinglequery').css('color','#6a6a6a')
+	}
+	else{
+		$('#ytsinglequery').css('border-color','');
+		$('#ytsinglequery').css('background-color','');
+		$('#ytsinglequery').css('color','')
+	}
+	if($('#ytplquery').prop('disabled')){
+		$('#ytplquery').css('border-color','darkgrey');
+		$('#ytplquery').css('background-color','darkgrey');
+		$('#ytplquery').css('color','#6a6a6a')
+	}
+	else{
+		$('#ytplquery').css('border-color','');
+		$('#ytplquery').css('background-color','');
+		$('#ytplquery').css('color','')
+	}
+	if($('#ytquery').prop('disabled')){
+		$('#ytquery').css('border-color','darkgrey');
+		$('#ytquery').css('background-color','darkgrey');
+		$('#ytquery').css('color','#6a6a6a')
+	}
+	else{
+		$('#ytquery').css('border-color','');
+		$('#ytquery').css('background-color','');
+		$('#ytquery').css('color','')
+	}
+	
+</script>
 
 </body>
 </html>

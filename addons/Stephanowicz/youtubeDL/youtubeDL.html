@@ -256,15 +256,7 @@
 		<div><input size="80" type="text" name="querystring" placeholder="start a query" style="width: 67vw;margin-left:3px;" onkeyup=buttonState(this,$('#ytquery'));><input type="submit" id="ytquery" style="position: relative;top: -3px;margin-left:3px" disabled></div>
 	</form>
 </div>
-<br />
-<table style="max-height: 15vh; overflow: auto;">
-	<tr>
-		<td valign="top"><div id="log" style="max-height: 15vh;overflow: auto;"></div></td>
-		<td valign="top"><div id="mpdlog" style="max-height: 15vh;overflow: auto;"></div></td>
-	</tr>
-</table>
-<br />
-<div id="ytplaylist" style="display:none">
+<div id="ytplaylist" style="display:none;margin-top: 7px;">
 	<div>items found:&nbsp;<span id="ytplItemsfound"></span></div>
 	<div id="ytplist" style="max-height: 15vh; overflow: auto; margin-left:5px"></div>
 	<form name="formCreatePl" method='post' action='javascript:createPlaylistfromArray()' style="margin-top:24px;">
@@ -278,6 +270,14 @@
 	</form>
 </div>
 
+<hr>
+<table style="max-height: 15vh;overflow: auto;margin-top: 5px;margin-bottom: 35px;">
+	<tr>
+		<td valign="top"><div id="log" style="max-height: 15vh;overflow: auto;"></div></td>
+		<td valign="top"><div id="mpdlog" style="max-height: 15vh;overflow: auto;"></div></td>
+	</tr>
+</table>
+<hr>
 <form method="post" action="javascript:loadnplay()">Playlist (youtube.m3u):<input type="submit" value="load & play" style="margin: 0px 0px 0px 15px;vertical-align: text-bottom;"><input type="hidden" name="loadnplay" value="go"></form>
 <div id="playlist"style="margin: 5px 0px 0px 5px;max-height: 20vh;overflow: auto;"></div>
 
