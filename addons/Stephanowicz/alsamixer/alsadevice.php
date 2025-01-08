@@ -90,13 +90,13 @@
     
     function get_curves($request){
 		global $dbh;
-        $result = sqlQuery('SELECT curve_name FROM cfg_eqalsa', $dbh);
+        $result = sqlQuery("SELECT curve_name FROM cfg_eqalsa", $dbh);
         exit(json_encode($result,true));
     }
     function get_active(){
 		global $dbh;
-        $result = sqlQuery('SELECT value FROM cfg_system where param="alsaequal"', $dbh);
-        exit(json_encode($result,true));
+        $result = sqlQuery("SELECT value FROM cfg_system where param='alsaequal'", $dbh);
+        exit(json_encode($result[0],true));
     }    
     function save_curve($request){
 		global $dbh;
