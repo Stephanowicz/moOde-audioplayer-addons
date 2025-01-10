@@ -4,6 +4,7 @@
  * Copyright 2024 Stephanowicz 
  * https://github.com/Stephanowicz/moOde-audioplayer-addons
 */
+	clearstatcache();
 	switch ($_GET['cmd']) {
 	case 'cfgCheck':
 		$cfgCheck = array(

@@ -17,7 +17,7 @@
 		/*	font-size: calc(.45em + 2vmin); */
 		}
 		#playbarbuttons input,#lrcliblyrics, #lrclibsynced, #geniuslyrics {
-			vertical-align: text-top;
+			vertical-align: text-bottom;
 		}
 		#youtube-dl, #eq, #albumart, #lyrics, #random, #favorites, #repeat, #single, #ssStyle, #uwStyle, #browsertitle, #playqueue, #browse2folder {
 			width: 19px;
@@ -322,9 +322,9 @@
 				$("#youtube-dl").prop('checked', cfgCheck["ytdl"] ? cfgJson['ytdl']:false);
 				cfgCheck["ytdl"] ? $("#youtube-dl_err").hide():$("#youtube-dl_err").show();
 				cfgCheck["getid3"] ? $("#getid3_check_err1").hide() : $("#getid3_check_err1").show();
-				(cfgCheck["getid3"] & cfgCheck["getid3_ex"]) ? $("#getid3_check_err2").hide() : $("#getid3_check_err2").show();
-				$("#albumart").prop('disabled', !(cfgCheck["getid3_ex"] & cfgCheck["getid3_ex"]));
-				$("#albumart").prop('checked', (cfgCheck["getid3_ex"] & cfgCheck["getid3_ex"]) ? cfgJson['albumart']:false);
+				cfgCheck["getid3_ex"] ? $("#getid3_check_err2").hide() : $("#getid3_check_err2").show();
+				$("#albumart").prop('disabled', !(cfgCheck["getid3"] & cfgCheck["getid3_ex"]));
+				$("#albumart").prop('checked', (cfgCheck["getid3"] & cfgCheck["getid3_ex"]) ? cfgJson['albumart']:false);
 				cfgCheck["xml"] && $("#lyrics_xml_err").hide();
 				cfgCheck["curl"] && $("#lyrics_curl_err").hide();
 //				cfgCheck["dom"] && $("#lyrics_dom_err").hide();
