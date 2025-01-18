@@ -67,6 +67,10 @@ after this add `<script src="addons/addons.js?t=1729607710734" defer></script>`
 	  install with: 
 		- sudo curl -L https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -o /usr/local/bin/youtube-dl  
       		-> sudo chmod 755 /usr/local/bin/youtube-dl
+    
+    	As youtube changes its code from time to time You may need to update yt-dlp to get it working again.   
+	  -->  sudo youtube-dl --update-to nightly  
+
 		
 4. Songlyrics  
 	at moment there are 3 methods to get the songlyrics: genius.com, lrclib.net and local files  
@@ -152,6 +156,7 @@ Worst case:
 
 	There's also an independent page available that can be opened outside of moOde-audioplayer:  
 	[http://moode.local/addons/Stephanowicz/youtubeDL/youtube.html](http://moode.local/addons/Stephanowicz/youtubeDL/youtube.html)
+
 
 
 4. Graphics equalizer  
