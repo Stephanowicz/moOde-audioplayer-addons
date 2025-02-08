@@ -413,6 +413,10 @@ fetch('addons/Stephanowicz/config.json', {cache: "no-cache"})
 			tempstr = '<li><a href="#notarget" data-cmd="" data-addoncmd="add_folders_next"><i class="fal fa-plus-circle sx"></i> Add next</a></li>';
 			$("#context-menu-folder ul li:eq(0)").after(tempstr);
 			$("#context-menu-folder-item ul li:eq(0)").after(tempstr);
+			//----Add folder to jumplist in folder-context-menues
+			tempstr = '<li><a href="#notarget" data-cmd="" data-addoncmd="add_jmplist"><i class="fal fa-plus-circle sx"></i> Add to jumplist</a></li>';
+			$("#context-menu-folder ul li:eq(0)").after(tempstr);
+//			$("#context-menu-folder-item ul li:eq(0)").after(tempstr);
 			//----new items in playback-menue
 			if(addonsCfg['ytdl']||addonsCfg['lyrics']||addonsCfg['eq']||addonsCfg['browse2folder']){
 				tempstr = '<li class="menu-separator"></li>';
@@ -715,6 +719,9 @@ $(document).on('click', '.context-menu a', function(e) {
             GLOBAL.playQueueChanged = true;
             $.post('addons/Stephanowicz/commands.php?cmd=' + $(this).data('addoncmd'), { 'path': path });
             break;
+		case 'add_jmplist':
+			$.post('addons/Stephanowicz/jmplist/jmplist.php', {'path': path});
+			break;
         case 'pl_browse_to_folder':
             var filepath = "";
             if ($('#pq-' + (UI.dbEntry[0] + 1) + ' .pll2').html().substr(0, 2) != '<i') { // Has icon (fa-microphone)
@@ -1036,17 +1043,19 @@ function syncLyrics() {
 }
 var slPosW,slPosH,slPosL = 0;
 function syncedLyricsPos() {
-	let len = document.getElementsByClassName("coverart").length;
-	if( len > 0 && document.getElementsByClassName("coverart")[len-1].offsetLeft > 0){
-		
-		slPosW = document.getElementsByClassName("coverart")[len-1].offsetWidth;
-		slPosH = document.getElementsByClassName("coverart")[len-1].offsetHeight;
-		slPosL = document.getElementsByClassName("coverart")[len-1].offsetLeft;
-		document.getElementById("syncedLyrics").style.width = slPosW + "px";
-		document.getElementById("syncedLyrics").style.top = 0.3*slPosH + "px";
-		document.getElementById("syncedLyrics").style.left = slPosL  + "px";
-//		console.log("width: " + w);
-//		console.log("height: " + h);
-//		console.log("left: " + l);
+	if(document.getElementById("syncedLyrics")){
+		let len = document.getElementsByClassName("coverart").length;
+		if( len > 0 && document.getElementsByClassName("coverart")[len-1].offsetLeft > 0){
+			
+			slPosW = document.getElementsByClassName("coverart")[len-1].offsetWidth;
+			slPosH = document.getElementsByClassName("coverart")[len-1].offsetHeight;
+			slPosL = document.getElementsByClassName("coverart")[len-1].offsetLeft;
+			document.getElementById("syncedLyrics").style.width = slPosW + "px";
+			document.getElementById("syncedLyrics").style.top = 0.3*slPosH + "px";
+			document.getElementById("syncedLyrics").style.left = slPosL  + "px";
+	//		console.log("width: " + w);
+	//		console.log("height: " + h);
+	//		console.log("left: " + l);
+		}
 	}
 }
