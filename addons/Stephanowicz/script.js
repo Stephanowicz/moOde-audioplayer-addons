@@ -156,13 +156,9 @@ fetch('addons/Stephanowicz/config.json', {cache: "no-cache"})
 			let styles = `
 				#syncedLyrics {
 					position: absolute; 
-//					top: 10%;
-//					height:30%;
-//					width:100%;
 					top: 15%;
 					height: 20%;
 					width: 35%;
-//					background: #050505b5;
 					display: none;
 					overflow: hidden;
 				}
@@ -171,17 +167,13 @@ fetch('addons/Stephanowicz/config.json', {cache: "no-cache"})
 					width: 80vh;
 				}
 				#syncedLyricsContent {
-//					margin-top: 100%;
 					margin-top: 100vh;
-//					margin-top: 35%;
-//					display: initial;
+					font-Size: clamp(1.3em, 1.5vw, 1.75em);
 				}
 				#syncedLyricsContent p{
 					background: #050505b5;
 					padding: 10px;
 					margin: 0px;
-//					display: none;
-//					transition: opacity 1s;
 					opacity: 0;
 				}
 				.fade-in-out {
@@ -190,10 +182,13 @@ fetch('addons/Stephanowicz/config.json', {cache: "no-cache"})
 				}
 				.lrclibsynced svg{
 					fill: var(--adapttext);
-					width: 1.9em;
-					height: 1.9em;	
-					margin-top: 0.4em;
+					vertical-align: middle;
+					width: calc(1.3rem + 1vmin);
 				}
+				#togglebtns .lrclibsynced svg{
+					width: 1.9em;
+				}
+
 			`;
 			appendStyle(styles);
 		});
@@ -287,7 +282,8 @@ fetch('addons/Stephanowicz/config.json', {cache: "no-cache"})
 							
 							if(typeof $("#syncedLyrics")[0] === 'undefined'){
 								var tempstr = '<div id="syncedLyrics"></div>';
-								$(".covers").append(tempstr);
+								$(".tab-content").append(tempstr);
+//								$(".covers").append(tempstr);
 //								$(".ss-coverart").append(tempstr);
 							}
 							else{
@@ -320,10 +316,10 @@ fetch('addons/Stephanowicz/config.json', {cache: "no-cache"})
 						}
 						$("#syncedLyrics").css("display", "none");	
 						if(document.getElementById("syncedLyrics")){
-							setTimeout(function () {
+					/*		setTimeout(function () {
 								syncedLyricsPos();
 
-							}, 750);							
+							}, 750);	*/						
 							window.clearInterval(updateSyncedLyrics)
 							slLast=0;
 							slLastSecs=0;
@@ -414,7 +410,7 @@ fetch('addons/Stephanowicz/config.json', {cache: "no-cache"})
 			$("#context-menu-folder ul li:eq(0)").after(tempstr);
 			$("#context-menu-folder-item ul li:eq(0)").after(tempstr);
 			//----Add folder to jumplist in folder-context-menues
-			tempstr = '<li><a href="#notarget" data-cmd="" data-addoncmd="add_jmplist"><i class="fal fa-plus-circle sx"></i> Add to jumplist</a></li>';
+//			tempstr = '<li><a href="#notarget" data-cmd="" data-addoncmd="add_jmplist"><i class="fal fa-plus-circle sx"></i> Add to jumplist</a></li>';
 			$("#context-menu-folder ul li:eq(0)").after(tempstr);
 //			$("#context-menu-folder-item ul li:eq(0)").after(tempstr);
 			//----new items in playback-menue
@@ -507,8 +503,8 @@ fetch('addons/Stephanowicz/config.json', {cache: "no-cache"})
 					</g> \
 				</svg> \
 				</button>';
-//				$("button.random").after(tempstr);
-				$("#togglebtns .btn.random").after(tempstr);
+				$("button.random").after(tempstr);
+//				$("#togglebtns .btn.random").after(tempstr);
 			}
 			//-- add "repeat", "single" etc to button group 
 			if(addonsCfg['btn_single']){
@@ -568,7 +564,7 @@ fetch('addons/Stephanowicz/config.json', {cache: "no-cache"})
 				sendMpdCmd(cmd + ' ' + toggleValue);
 			});
 */
-
+/*
 			if(addonsCfg['lrclibsynced']){
 				window.addEventListener('resize', function() {
 					// clear the timeout
@@ -576,20 +572,10 @@ fetch('addons/Stephanowicz/config.json', {cache: "no-cache"})
 					// start timing for event "completion"
 					resizeTimeout = setTimeout(function () {
 						syncedLyricsPos();
-/*						if(document.getElementById("syncedLyrics")){
-							if(document.getElementsByClassName("coverart").length > 0){
-								let w = document.getElementsByClassName("coverart")[0].offsetWidth;
-								let h = document.getElementsByClassName("coverart")[0].offsetHeight;
-								document.getElementById("syncedLyrics").style.width = w + "px";
-								document.getElementById("syncedLyrics").style.top = 0.9*h + "px";
-								let l = document.getElementsByClassName("coverart")[0].offsetLeft;
-								document.getElementById("syncedLyrics").style.left = l  + "px";
-							}
-						}
-*/					}, 250);
+					}, 250);
 				});
 			}
-
+*/
 			$('.btn-toggle2').click(function(e) {
 				switch ($(this).data('cmd')) {
 					case 'save_queue_to_playlist':
@@ -968,10 +954,10 @@ var slLastSecs = -1;
 var secsLyrics = [];
 var lyricsNextSecs = 0;
 function syncLyrics() {
-	if($("#syncedLyrics")[0]!=null && syncedLyrics!=null && lrclibsynced){
-		if(slPosL==0){
+	if(($("#syncedLyrics")[0]!=null && syncedLyrics!=null && lrclibsynced)&&($("#screen-saver").css("display") == 'block'||document.getElementById("playback-panel").className.includes("active"))){
+	//	if(slPosL==0){
 			syncedLyricsPos();
-		}
+	//	}
 		$("#syncedLyrics").css("display", "block");
 		$.getJSON('command/playback.php?cmd=get_mpd_status', function(data) {
 			var secsElapsed=data["elapsed"];
@@ -1044,18 +1030,25 @@ function syncLyrics() {
 var slPosW,slPosH,slPosL = 0;
 function syncedLyricsPos() {
 	if(document.getElementById("syncedLyrics")){
-		let len = document.getElementsByClassName("coverart").length;
-		if( len > 0 && document.getElementsByClassName("coverart")[len-1].offsetLeft > 0){
+		let len = document.getElementsByClassName("coverart").length; //Screen-saver cover and main view cover have same class-name
+		if( len > 0 ){
+			let index = 0;
 			
-			slPosW = document.getElementsByClassName("coverart")[len-1].offsetWidth;
-			slPosH = document.getElementsByClassName("coverart")[len-1].offsetHeight;
-			slPosL = document.getElementsByClassName("coverart")[len-1].offsetLeft;
+			if($("#screen-saver").css("display") == 'block'){
+				index = 0;
+				slPosL = parseInt(window.getComputedStyle($(".coverart")[index]).marginLeft); //Screen-saver cover is first element if available
+			}
+			else{
+				index = len -1;
+				if(document.getElementsByClassName("coverart")[index].offsetLeft > 0){		
+					slPosL = document.getElementsByClassName("coverart")[index].offsetLeft;
+				}
+			}
+			slPosW = document.getElementsByClassName("coverart")[index].offsetWidth;
+			slPosH = document.getElementsByClassName("coverart")[index].offsetHeight;
 			document.getElementById("syncedLyrics").style.width = slPosW + "px";
 			document.getElementById("syncedLyrics").style.top = 0.3*slPosH + "px";
 			document.getElementById("syncedLyrics").style.left = slPosL  + "px";
-	//		console.log("width: " + w);
-	//		console.log("height: " + h);
-	//		console.log("left: " + l);
 		}
 	}
 }
