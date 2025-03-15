@@ -171,7 +171,7 @@ Worst case:
 	- query lyrics of current song and display them in a modal  
 	![image](https://github.com/user-attachments/assets/21f61711-1f0c-44bc-b5df-2ab6b8ebf7eb)
 	  
-	- show synced lyrics from LRCLIB above the albumcover (at moment only in normal view)
+	- show synced lyrics from LRCLIB above the albumcover 
 	![image](https://github.com/user-attachments/assets/75d8c065-1aeb-40da-a168-c93968f68b21)  
 	activate with right button below playback control  
 	if synced lyrics are available the button turns green, otherwise it turns red  
