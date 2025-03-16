@@ -1040,9 +1040,15 @@ function syncedLyricsPos() {
 			}
 			else{
 				index = len -1;
-				if(document.getElementsByClassName("coverart")[index].offsetLeft > 0){		
-					slPosL = document.getElementsByClassName("coverart")[index].offsetLeft;
+				if($(".coverart")[index].offsetLeft > 0){		
+					slPosL = $(".coverart")[index].offsetLeft;
 				}
+				else{
+					slPosL = $("#coverart-url")[0].offsetLeft;
+				}
+//				if(document.getElementsByClassName("coverart")[index].offsetLeft > 0){		
+//					slPosL = document.getElementsByClassName("coverart")[index].offsetLeft;
+//				}
 			}
 			slPosW = document.getElementsByClassName("coverart")[index].offsetWidth;
 			slPosH = document.getElementsByClassName("coverart")[index].offsetHeight;
