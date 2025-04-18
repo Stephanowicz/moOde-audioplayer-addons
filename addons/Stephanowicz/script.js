@@ -973,7 +973,7 @@ function syncLyrics() {
 							const element = document.getElementById(secsLyrics[last]);
 							const pEl = document.getElementById("syncedLyrics");
 							pEl.scrollTo({
-								top: element.offsetTop-pEl.offsetHeight/3,
+								top: element.offsetTop-pEl.offsetHeight/4,
 								left: 0,
 								behavior: "smooth",
 							});
@@ -990,7 +990,7 @@ function syncLyrics() {
 							const element = document.getElementById(secsLyrics[last]);
 							const pEl = document.getElementById("syncedLyrics");
 							pEl.scrollTo({
-								top: element.offsetTop-pEl.offsetHeight/3,
+								top: element.offsetTop-pEl.offsetHeight/4,
 								left: 0,
 								behavior: "smooth",
 							});
@@ -1053,7 +1053,7 @@ function syncedLyricsPos() {
 			slPosW = document.getElementsByClassName("coverart")[index].offsetWidth;
 			slPosH = document.getElementsByClassName("coverart")[index].offsetHeight;
 			document.getElementById("syncedLyrics").style.width = slPosW + "px";
-			document.getElementById("syncedLyrics").style.top = 0.3*slPosH + "px";
+			document.getElementById("syncedLyrics").style.top = 0.2*slPosH + "px";
 			document.getElementById("syncedLyrics").style.left = slPosL  + "px";
 		}
 	}
