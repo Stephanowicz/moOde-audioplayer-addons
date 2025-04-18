@@ -157,7 +157,7 @@ fetch('addons/Stephanowicz/config.json', {cache: "no-cache"})
 				#syncedLyrics {
 					position: absolute; 
 					top: 15%;
-					height: 20%;
+					height: 50%;
 					width: 35%;
 					display: none;
 					overflow: hidden;
