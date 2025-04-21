@@ -970,13 +970,32 @@ function syncLyrics() {
 				else{
 					if((slLastSecs<=secsElapsed && slLastSecs > -1) && (i > slLast)){
 						if(last < secsLyrics.length && ((last > 0 && secsLyrics[last]-secsLyrics[last-1]>1) || last == 0)){
-							const element = document.getElementById(secsLyrics[last]);
 							const pEl = document.getElementById("syncedLyrics");
-							pEl.scrollTo({
-								top: element.offsetTop-pEl.offsetHeight/4,
-								left: 0,
-								behavior: "smooth",
-							});
+							const element = document.getElementById(secsLyrics[last]);
+							if(last == 0) {
+								pEl.scrollTo({
+									top: element.offsetTop-pEl.offsetHeight/4,
+									left: 0,
+									behavior: "smooth",
+								});
+							}
+							if(last > 0) { 
+								const prev = document.getElementById(secsLyrics[last-1]);
+								if (prev.offsetHeight < slPosH / 4) {
+									pEl.scrollTo({
+										top: element.offsetTop-pEl.offsetHeight/4,
+										left: 0,
+										behavior: "smooth",
+									});
+								}
+								else {
+									pEl.scrollTo({
+										top: prev.offsetTop,
+										left: 0,
+										behavior: "smooth",
+									});
+								}
+							}
 						}
 						else if(last > 0 && secsLyrics[last]-secsLyrics[last-1]<1 && document.getElementById(secsLyrics[last-1]).style.opacity == 0){
 							last -= 1;
@@ -987,13 +1006,23 @@ function syncLyrics() {
 								i-=1;
 								slLastSecs=secsLyrics[last];
 							}
-							const element = document.getElementById(secsLyrics[last]);
 							const pEl = document.getElementById("syncedLyrics");
-							pEl.scrollTo({
-								top: element.offsetTop-pEl.offsetHeight/4,
-								left: 0,
-								behavior: "smooth",
-							});
+							const element = document.getElementById(secsLyrics[last]);
+							const prev = document.getElementById(secsLyrics[last-1]); 
+							if (prev.offsetHeight < slPosH / 4) {
+								pEl.scrollTo({
+									top: element.offsetTop-pEl.offsetHeight/4,
+									left: 0,
+									behavior: "smooth",
+								});
+							}
+							else {
+								pEl.scrollTo({
+									top: prev.offsetTop,
+									left: 0,
+									behavior: "smooth",
+								});
+							}
 						}
 						lyricsNextSecs = 9;	
 						if(last+1 < secsLyrics.length){
@@ -1027,7 +1056,7 @@ function syncLyrics() {
 		$("#syncedLyrics").css("display", "none");	
 	}
 }
-var slPosW,slPosH,slPosL = 0;
+var slPosW,slPosH,slPosL = 0,slPosTop;
 function syncedLyricsPos() {
 	if(document.getElementById("syncedLyrics")){
 		let len = document.getElementsByClassName("coverart").length; //Screen-saver cover and main view cover have same class-name
@@ -1052,8 +1081,11 @@ function syncedLyricsPos() {
 			}
 			slPosW = document.getElementsByClassName("coverart")[index].offsetWidth;
 			slPosH = document.getElementsByClassName("coverart")[index].offsetHeight;
+			slPosTop = document.getElementsByClassName("coverart")[index].offsetParent.offsetTop;
 			document.getElementById("syncedLyrics").style.width = slPosW + "px";
-			document.getElementById("syncedLyrics").style.top = 0.2*slPosH + "px";
+			document.getElementById("syncedLyrics").style.height = slPosW + "px";
+			document.getElementById("syncedLyrics").style.top = slPosTop + "px";
+//			document.getElementById("syncedLyrics").style.top = 0.2*slPosH + "px";
 			document.getElementById("syncedLyrics").style.left = slPosL  + "px";
 		}
 	}
