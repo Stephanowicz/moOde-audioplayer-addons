@@ -52,6 +52,7 @@
 			if($data!=null && array_key_exists('trackName', $data)){
 				$songlyrics=nl2br($data["plainLyrics"]);
 				$songlyrics=str_replace("!rn!","<br />",$songlyrics);
+				$songlyrics=str_replace(":::","<br />",$songlyrics);  //Multiline seperator e.g. for multilingual texts - there is no agreement at moment on how to do this....
 				
 				$msg='<p>'.$data["artistName"].' - '.
 					$data["trackName"].'<p>'.$songlyrics.
@@ -64,6 +65,7 @@
 					$lrc['err'] = false;
 					$lrc['data'] = $msg;
 					$lrc['found'] = true;
+					//echo $lrc['data'];
 				}
 			}
 			else{

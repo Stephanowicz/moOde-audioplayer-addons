@@ -54,7 +54,8 @@
 			if (is_file($file) && (stripos($TITLE,$filename)!==false || stripos($filename,$TITLE)!==false)) {
 				$fdata = file_get_contents($file);
 				if($fdata){
-					$fdata = str_replace("    ", "<br>",$fdata);
+					$fdata = str_replace(":::","<br />",$fdata);
+//					$fdata = str_replace(array("\t\t",":::"),"<br />",$fdata);
 					$arr=preg_split('/\r\n|\r|\n/', $fdata);
 					if(count($arr)>1){
 						foreach($arr as $item){
@@ -100,6 +101,8 @@
 						foreach($arr as $item){
 							$tmp=preg_split('/\]/', $item,2);
 		//					print_r($tmp)."<br>";
+		//					echo trim($tmp[1])."<br>";
+							$tmp[1]=str_replace(":::","<br />",$tmp[1]);
 							$songlyrics[trim($tmp[0],"\[")]=trim($tmp[1]);
 						}
 		//				echo "<br>songlyrics: <br>";
