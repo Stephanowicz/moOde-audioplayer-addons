@@ -161,6 +161,7 @@ fetch('addons/Stephanowicz/config.json', {cache: "no-cache"})
 					width: 35%;
 					display: none;
 					overflow: hidden;
+					pointer-events: none;
 				}
 				#ss-coverart #syncedLyrics {
 					margin-left: 5em;
@@ -169,12 +170,14 @@ fetch('addons/Stephanowicz/config.json', {cache: "no-cache"})
 				#syncedLyricsContent {
 					margin-top: 100vh;
 					font-Size: clamp(1.3em, 1.5vw, 1.75em);
+					pointer-events: none;
 				}
 				#syncedLyricsContent p{
 					background: #050505b5;
 					padding: 10px;
 					margin: 0px;
 					opacity: 0;
+					pointer-events: none;
 				}
 				.fade-in-out {
 				  opacity: 0;
