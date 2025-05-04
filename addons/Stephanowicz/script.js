@@ -958,7 +958,7 @@ var secsLyrics = [];
 var lyricsNextSecs = 0;
 function syncLyrics() {
 	if(($("#syncedLyrics")[0]!=null && syncedLyrics!=null && lrclibsynced)&&($("#screen-saver").css("display") == 'block'||document.getElementById("playback-panel").className.includes("active"))){
-	//	if(slPosL==0){
+	//	if(slPosL==0){ //removed query as it is not accurate enough -> @moment position is checked every cycle
 			syncedLyricsPos();
 	//	}
 		$("#syncedLyrics").css("display", "block");
@@ -972,21 +972,26 @@ function syncLyrics() {
 				}
 				else{
 					if((slLastSecs<=secsElapsed && slLastSecs > -1) && (i > slLast)){
+						const element = document.getElementById(secsLyrics[last]);
+						const prev = document.getElementById(secsLyrics[last-1]); 
+						const pEl = document.getElementById("syncedLyrics");
+						let posTop = element.offsetTop-pEl.offsetHeight/4;
+						
 						if(last < secsLyrics.length && ((last > 0 && secsLyrics[last]-secsLyrics[last-1]>1) || last == 0)){
-							const pEl = document.getElementById("syncedLyrics");
-							const element = document.getElementById(secsLyrics[last]);
 							if(last == 0) {
 								pEl.scrollTo({
-									top: element.offsetTop-pEl.offsetHeight/4,
+									top: posTop,
 									left: 0,
 									behavior: "smooth",
 								});
 							}
 							if(last > 0) { 
-								const prev = document.getElementById(secsLyrics[last-1]);
-								if (prev.offsetHeight < slPosH / 4) {
+								if (prev.offsetHeight < slPosH / 4 || prev.offsetHeight+element.offsetHeight > pEl.offsetHeight) {
+									if(element.offsetHeight > 0.8 * pEl.offsetHeight) {
+										posTop = element.offsetTop;
+									}
 									pEl.scrollTo({
-										top: element.offsetTop-pEl.offsetHeight/4,
+										top: posTop,
 										left: 0,
 										behavior: "smooth",
 									});
@@ -1009,12 +1014,9 @@ function syncLyrics() {
 								i-=1;
 								slLastSecs=secsLyrics[last];
 							}
-							const pEl = document.getElementById("syncedLyrics");
-							const element = document.getElementById(secsLyrics[last]);
-							const prev = document.getElementById(secsLyrics[last-1]); 
-							if (prev.offsetHeight < slPosH / 4) {
+							if (prev.offsetHeight < slPosH / 4 || prev.offsetHeight+element.offsetHeight > pEl.offsetHeight) {
 								pEl.scrollTo({
-									top: element.offsetTop-pEl.offsetHeight/4,
+									top: posTop,
 									left: 0,
 									behavior: "smooth",
 								});
@@ -1027,7 +1029,7 @@ function syncLyrics() {
 								});
 							}
 						}
-						lyricsNextSecs = 9;	
+						lyricsNextSecs = 10;	
 						if(last+1 < secsLyrics.length){
 							lyricsNextSecs = secsLyrics[last+1] - secsLyrics[last];
 						}
@@ -1041,9 +1043,9 @@ function syncLyrics() {
 						if(Object.entries(syncedLyrics)[last][1] !=""){
 							document.getElementById(secsLyrics[last]).style.transition = "opacity "+ lyricsNextSecs > 2? 2:1 + "s";
 							document.getElementById(secsLyrics[last]).style.opacity = 1;
-							if(lyricsNextSecs > 8){
+							if(lyricsNextSecs > 9){
 								setTimeout(() => {
-									document.getElementById(secsLyrics[last]).style.transition = "opacity 7s";
+									document.getElementById(secsLyrics[last]).style.transition = "opacity 9s";
 									document.getElementById(secsLyrics[last]).style.opacity = 0;
 								},8000);									
 							}
@@ -1062,7 +1064,7 @@ function syncLyrics() {
 var slPosW,slPosH,slPosL = 0,slPosTop;
 function syncedLyricsPos() {
 	if(document.getElementById("syncedLyrics")){
-		let len = document.getElementsByClassName("coverart").length; //Screen-saver cover and main view cover have same class-name
+		let len = document.getElementsByClassName("coverart").length; //Screen-saver cover and main view cover have same class-name :/
 		if( len > 0 ){
 			let index = 0;
 			
@@ -1078,9 +1080,6 @@ function syncedLyricsPos() {
 				else{
 					slPosL = $("#coverart-url")[0].offsetLeft;
 				}
-//				if(document.getElementsByClassName("coverart")[index].offsetLeft > 0){		
-//					slPosL = document.getElementsByClassName("coverart")[index].offsetLeft;
-//				}
 			}
 			slPosW = document.getElementsByClassName("coverart")[index].offsetWidth;
 			slPosH = document.getElementsByClassName("coverart")[index].offsetHeight;
