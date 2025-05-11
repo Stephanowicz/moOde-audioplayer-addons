@@ -681,7 +681,7 @@ $(document).on('click', '.context-menu a', function(e) {
                             var artist = "";
                             var title = "";
                             var file = "";
-                            for (i = 0; i < data.length; i++) {
+                            for (i = 0; i < Object.keys(data).length; i++) {
                                 var key = Object.keys(data[i]);
                                 if (typeof (data[i][key]) != 'undefined') {
                                     if (key == 'Artists') {
