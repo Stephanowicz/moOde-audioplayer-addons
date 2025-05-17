@@ -308,6 +308,7 @@ fetch('addons/Stephanowicz/config.json', {cache: "no-cache"})
 									$("#syncedLyricsContent").append(p);
 //								}
 							}
+							if(iLength > 0) {$("#syncedLyricsContent").append("<p style='height: 100px;'></p>");} //append empty <p> at end for scrolling last element to higher position
 							console.log("syncedLyrics");
 							lrclibsynced && $(".lrclibsynced svg").css("fill","var(--accentxts)");
 						}
