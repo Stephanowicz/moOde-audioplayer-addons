@@ -393,6 +393,19 @@ fetch('addons/Stephanowicz/config.json', {cache: "no-cache"})
 		//-- Add new items to loaded page
 		//$(window).on("load", function () {
 		$(function () {
+            if(addonsCfg['pbmenue_fix']){
+                setTimeout(window.onload = function(){
+                    var targetNode = document.getElementById('context-menu-playback');
+                    var observer = new MutationObserver(function(){
+                        if(($(targetNode)).hasClass('open')){
+                            var menue = $("#context-menu-playback > .dropdown-menu");
+                            var offset = $(document.getElementById('context-menu-playback')).position().top;
+                            menue.css("top",-offset);
+                        }
+                    });
+                    observer.observe(targetNode, { attributes: true, childList: true });
+                }, 500);
+            }
 			var tempstr;
 			if(addonsCfg['playqueue']){
 				//---div plstat below playlist-------------

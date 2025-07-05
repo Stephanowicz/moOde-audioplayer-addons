@@ -21,5 +21,6 @@
     "btn_last": false,
     "ssStyle": true,
     "uwStyle": true,
-    "browsertitle": true
+    "browsertitle": true,
+    "pbmenue_fix": true
 }

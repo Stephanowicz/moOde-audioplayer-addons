@@ -19,7 +19,7 @@
 		#playbarbuttons input,#lrcliblyrics, #lrclibsynced, #geniuslyrics {
 			vertical-align: text-bottom;
 		}
-		#youtube-dl, #eq, #albumart, #lyrics, #random, #favorites, #repeat, #single, #ssStyle, #uwStyle, #browsertitle, #playqueue, #browse2folder {
+		#youtube-dl, #eq, #albumart, #lyrics, #random, #favorites, #repeat, #single, #ssStyle, #uwStyle, #pbmenue_fix, #browsertitle, #playqueue, #browse2folder {
 			width: 19px;
 			height: 19px;
 			margin: 5px;
@@ -267,6 +267,9 @@
 		<div class="settings">
 			<input type="checkbox" id="uwStyle" name="uwStyle" disabled> Fix for local ultra-wide displays (1480x320): decrease timeknob size and adjust playback buttons etc<br>
 		</div>
+		<div class="settings">
+			<input type="checkbox" id="pbmenue_fix" name="pbmenue_fix" disabled> Fix playback-menue position out of scope for large menues<br>
+		</div>
 		<!-- Browsertitle -->
 		<div class="settings">
 			<input type="checkbox" id="browsertitle" name="browsertitle" disabled> Show Songtitle, Albumname und Albumicon in Browsertitlebar
@@ -375,6 +378,8 @@
 				$("#ssStyle").prop('checked', cfgJson['ssStyle']);
 				$("#uwStyle").prop('disabled', false);
 				$("#uwStyle").prop('checked', cfgJson['uwStyle']);
+				$("#pbmenue_fix").prop('disabled', false);
+				$("#pbmenue_fix").prop('checked', cfgJson['pbmenue_fix']);
 				$("#browsertitle").prop('disabled', false);
 				$("#browsertitle").prop('checked', cfgJson['browsertitle']);
 				$("#playqueue").prop('disabled', false);
@@ -415,6 +420,7 @@
 					btn_last: $("#btn_last").prop('checked'),
 					ssStyle: $("#ssStyle").prop('checked'),
 					uwStyle: $("#uwStyle").prop('checked'),
+					pbmenue_fix: $("#pbmenue_fix").prop('checked'),
 					browsertitle: $("#browsertitle").prop('checked')
 				});
 				
