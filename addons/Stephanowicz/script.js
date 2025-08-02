@@ -430,6 +430,12 @@ fetch('addons/Stephanowicz/config.json', {cache: "no-cache"})
 //			tempstr = '<li><a href="#notarget" data-cmd="" data-addoncmd="add_jmplist"><i class="fal fa-plus-circle sx"></i> Add to jumplist</a></li>';
 			$("#context-menu-folder ul li:eq(0)").after(tempstr);
 //			$("#context-menu-folder-item ul li:eq(0)").after(tempstr);
+
+			//----Preview playback in context-menues
+			tempstr = '<li><a href="#notarget" data-cmd="" data-addoncmd="preview_playback"><i class="fa-sharp fa-thin fa-ear-listen"></i> Listen sample</a></li>';
+			$("#context-menu-folder-item ul li:eq(-1)").after(tempstr);
+			$("#context-menu-lib-item ul li:eq(-1)").after(tempstr);
+			
 			//----new items in playback-menue
 			if(addonsCfg['ytdl']||addonsCfg['lyrics']||addonsCfg['eq']||addonsCfg['browse2folder']){
 				tempstr = '<li class="menu-separator"></li>';
@@ -674,6 +680,19 @@ $(document).on('click', '#addonsCfg', function(e) {
     $('#AddonsConfig').load('addons/Stephanowicz//configmodal.html');
     $('#Config-modal').modal();
 });
+
+$(document).on('click', '.context-menu-lib a', function(e) {
+	var path = filteredSongs[UI.dbEntry[0]].file; // File path or item num
+	var img_src = $(".lib-coverart")[1];
+	switch ($(this).data('addoncmd')) {
+        case 'preview_playback':
+			$.getJSON('addons/Stephanowicz/commands.php?cmd=preview_playback', function (result) {
+				if(result !="") {playback_preview(result, path,img_src); }
+			});			
+            break;
+	}
+});
+	
 $(document).on('click', '.context-menu a', function(e) {
 	var path = UI.dbEntry[0]; // File path or item num
 
@@ -722,6 +741,12 @@ $(document).on('click', '.context-menu a', function(e) {
             GLOBAL.playQueueChanged = true;
             $.post('addons/Stephanowicz/commands.php?cmd=' + $(this).data('addoncmd'), { 'path': path });
             break;
+        case 'preview_playback':
+			var img_src = $("#db-0 .btn img")[0];
+			$.getJSON('addons/Stephanowicz/commands.php?cmd=preview_playback', function (result) {
+				if(result !="") {playback_preview(result, path, img_src); }
+			});			
+            break;
 		case 'add_jmplist':
 			$.post('addons/Stephanowicz/jmplist/jmplist.php', {'path': path});
 			break;
@@ -767,6 +792,106 @@ $(document).on('click', '.context-menu a', function(e) {
 
 
 //--------FUNCTIONS-------------------------------------------------------
+var timerID_pbPrev,pbPrevData,pbPrevPLpos;
+async function playback_preview(songdata,path,img_src){
+	var res ={'albumartist':'','title':''};
+	var img = "";
+	if(typeof(img_src) != "undefined"){
+		img = img_src.src;
+	}
+	pbPrevPLpos=songdata['playlistlength'];
+	sendQueueCmd('add_item', path);
+	await new Promise(r => setTimeout(r, 100));
+	sendMpdCmd('play ' + (songdata['playlistlength']).toString(),false);	
+	await new Promise(r => setTimeout(r, 100));
+	$.ajaxSetup({
+        async: false
+    });
+	$.getJSON('engine-mpd.php', function (result) {
+		if(result !="") {
+			pbPrevData = result;
+			if(!result['albumartist']){
+				if(result['artist']){
+					pbPrevData['albumartist']=result['artist'];
+				}
+				else {pbPrevData['albumartist'] = "unknown";}
+			}
+		}
+	});
+	$.ajaxSetup({
+        async: true
+    });
+
+	//await new Promise(r => setTimeout(r, 100));	
+	tempstr = '<div id="playback-preview-modal" class="hide" tabindex="-1" role="dialog" aria-hidden="true" style="transform: translate(-50%);' + 
+		'width:70%;height:33%;' +
+		'border-radius: 6px;' +
+		'left: 50%;' +
+		'position: fixed;' +
+		'z-index: 10001;' +
+		'box-shadow: 0 3px 7px rgba(0,0,0,.3);">' +
+			'<div class="modal-content" style="margin: 40px;">' + 
+				'<div style="display: flex;"><img src="' + img + '" style="max-width:70px">' +
+				'<div style="margin-left: 10px;"><p style="font-size: x-large;">' + pbPrevData['albumartist'] + '</p><p>' + pbPrevData['title'] + '</p></div></div>' +
+				'<div id="pbar-timeline" ' +
+					'style="display: block;width: 64%;z-index: 999;position: fixed;left: 50%;transform: translate(-50%);font-size: .8rem;display: flex;flex-flow: column;height: 16px;margin-top:30px;">' +
+					'<div class="timeline-bg"></div>' +
+					'<div id="playback-preview-timeline-progress" style="width: 0%;background-color: var(--trackfill);height: 3px;margin-top: -3px;position: relative;top: 50%;"><div class="inner-progress"style="width: 0%;background-color: var(--trackfill);height: 3px;margin-top: -3px;"></div></div>' +
+					'<div class="timeline-thm" style="z-index:9999999">' +
+						'<input aria-label="Timeline" id="playbar-preview-timetrack" type="range" min="0" max="1000" value="0" step="1" style="display: flex;width: 100%;padding: 0;margin-top: -2px;color: inherit;height: 16px;">' +
+						'</div>' +
+						'<div id="playbar-time">' +
+						'<div id="playback-preview-playbar-countdown" style="position: relative;float: left;left: -3rem;font-size: .8rem;line-height: 15px;">00:00</div>' +
+						'<span id="playbar-div">&nbsp;&nbsp;</span>' +
+						'<div id="playback-preview-playbar-total" style="font-size: .8rem;position: relative;float: right;left: 3rem;line-height: 15px;">00:00</div>' +
+					'</div>' +
+				'</div>' +
+				'<div class="modal-footer">' +
+					'<button aria-label="Close" class="btn singleton" data-dismiss="modal" aria-hidden="true" style="bottom: 19px; position: fixed; transform: translate(-50%);">' + 
+					'Close</button>' +
+				'</div>' +
+			'</div>' +
+		'</div>';
+	$("#shutdown").after(tempstr);
+	$('#playback-preview-modal').modal();
+	$('#playback-preview-modal').on('hide.bs.modal', function(){
+		clearTimeout(timerID_pbPrev);
+		$('#playback-preview-modal').remove();
+		sendMpdCmd('seek ' + songdata['song'] + ' ' + songdata['elapsed']);
+		if(songdata['state'] != 'play') {sendMpdCmd(songdata['state']);}
+		sendMpdCmd('delete ' + (songdata['playlistlength']).toString());
+		GLOBAL.playQueueChanged = true;
+	});
+	$('#playbar-preview-timetrack').bind('touchend mouseup', function(e) {
+		var delta, time;
+		time = parseInt(pbPrevData['duration']);
+		delta = time / 1000;
+		var seekto = Math.floor(($(this).val() * delta));
+		if (seekto > time - 2) {seekto = time - 2;}
+		sendMpdCmd('seek ' + pbPrevPLpos + ' ' + seekto);
+		//timeSliderMove = false;
+		//console.log('touchend mouseup');
+	});
+	playbackPreviewTimebar();
+//	await new Promise(r => setTimeout(r, 5000));
+//	$('#playback-preview-modal').modal('hide');
+//	$('#playback-preview-modal').remove();
+}
+function playbackPreviewTimebar(){
+	$.getJSON('addons/Stephanowicz/commands.php?cmd=preview_playback', function (result) {
+		if(result !="") {
+			if(result['time'] > 0){
+				var percent = result['elapsed']/result['time'] * 100;
+				if(percent > 99){$('#playback-preview-modal').modal('hide');return;}
+				$('#playback-preview-timeline-progress').width(percent+'%');
+				$('#playback-preview-playbar-total')[0].innerText=new Date(result['time'] * 1000).toISOString().substring(14, 19);
+				$('#playback-preview-playbar-countdown')[0].innerText=new Date(result['elapsed'] * 1000).toISOString().substring(14, 19);
+				$('#playbar-preview-timetrack')[0].value = percent * 10;
+			}
+		}
+		timerID_pbPrev = setTimeout(playbackPreviewTimebar,1000);		
+	});	
+}
 //*******************SONG LYRICS************************************************
 //uglify doesn't like the default values for the parameters... if your compressor complains about them, cut the default values, compress and then paste them back in the .min file!
 function lyricsQuery(songtitle = MPD.json['title'], songartist = MPD.json['artist'], filepath = "") {

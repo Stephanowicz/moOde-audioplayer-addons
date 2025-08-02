@@ -95,6 +95,21 @@ switch ($_GET['cmd']) {
 		}
 		else {echo "";}
 		break;
+	
+	case 'playerStatus':
+		sendMpdCmd($sock, 'status');
+		$resp = readMpdResp($sock);
+		$formattedStatus=formatMpdStatus($resp);
+		echo json_encode($formattedStatus);
+		break;
+		
+	case 'preview_playback':
+		
+		sendMpdCmd($sock, 'status');
+		$resp = readMpdResp($sock);
+		$formattedStatus=formatMpdStatus($resp);
+		echo json_encode($formattedStatus);
+		break;
 
     default:
 		echo 'Unknown command';
