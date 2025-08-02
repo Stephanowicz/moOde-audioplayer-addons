@@ -35,6 +35,8 @@ It consists of:
 
 11. Fix for playback context-menue out of scope for large menues
 
+12. Pre-listen audio-file without changing playlist and continue playback at current song-position
+
 ## requirements & installation
 - Tested with moOde audioplayer v9.x  
 should also work with v8.x (will NOT work with v7.x)
@@ -222,8 +224,13 @@ Worst case:
    position fixed:  
    ![contextmenue_fix](https://github.com/user-attachments/assets/64698b36-31cf-4a4d-a4b7-86acf9285b22)
 
+12. Pre-listen to audio-file  
+    If You have a playlist, and maybe are already playing audio, You can pre-listen to another song without changing the current playlist.  
+    The playback will continue afterwards at the current song position. (i.e. the previous playbackstate will be restored)
+    <img width="335" height="330" alt="image" src="https://github.com/user-attachments/assets/2e4d3b36-247b-4c1b-a7ec-85286b3e1d81" />  
+    <img width="646" height="334" alt="image" src="https://github.com/user-attachments/assets/a0fd1439-bde6-4253-bc5c-04db8fcb0a09" />
 
-  
+
 That's it - have fun!
 
 
