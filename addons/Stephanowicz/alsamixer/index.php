@@ -245,7 +245,8 @@
  	            $.post('alsadevice.php', {'command': 'getActiveCurve'}, function(result){
                     if(!['Off','Flat'].includes($(result)[0][0]))
                     {
-                      $('#curves option:contains("'+$(result)[0][0]+'")').attr('selected', true)                    
+                      $('#curves option').filter(function() {return ($(this).text() === "Hi Boost");}).attr('selected', true) ;  
+                      //$('#curves option:contains("'+$(result)[0][0]+'")').attr('selected', true)                    
                     }
                    console.log("active: ", $(result)[0][0]);
 
