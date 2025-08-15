@@ -1,0 +1,38 @@
+#syncedLyrics {
+	position: absolute; 
+	top: 15%;
+	height: 50%;
+	width: 35%;
+	display: none;
+	overflow: hidden;
+	pointer-events: none;
+}
+#ss-coverart #syncedLyrics {
+	margin-left: 5em;
+	width: 80vh;
+}
+#syncedLyricsContent {
+	margin-top: 100vh;
+	font-Size: clamp(1.3em, 1.5vw, 1.75em);
+	pointer-events: none;
+}
+#syncedLyricsContent p{
+	background: #050505b5;
+	padding: 10px;
+	margin: 0px;
+	opacity: 0;
+	pointer-events: none;
+}
+.fade-in-out {
+  opacity: 0;
+  pointer-events: none;
+}
+.lrclibsynced svg{
+	fill: var(--adapttext);
+	vertical-align: middle;
+	width: calc(1.3rem + 1vmin);
+}
+#togglebtns .lrclibsynced svg{
+	width: 1.9em;
+}
+

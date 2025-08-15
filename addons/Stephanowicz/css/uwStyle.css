@@ -1,0 +1,40 @@
+/*
+// Ultra-wide screens 11.9" 1480x320
+*/
+@media screen and (max-width:1480px) and (max-height:320px) and (orientation:landscape) {
+	/* Time knob */
+	#countdown {
+		height: 11vw;
+		width: 11vw;
+	}
+	#countdown > div {
+		height: 11vw !important;
+		width: 11vw !important;
+	}
+	#countdown > div > canvas {
+		height: 11vw !important;
+		width: 11vw !important;
+	}
+	#countdown-display {
+		top: 44%;
+		font-size: 2vw;	
+	}
+	#total {
+		top: 62%;
+		font-size: 1.25vw;
+	}
+	#timeknob {
+		margin: 0;
+	}
+
+	/* Play and toggle buttons under the time knob */
+	#playbtns .btn {
+		font-size: 2vw;
+		padding: 1rem 2rem;
+	}
+	#togglebtns .btn-group {
+		font-size: 1.7em;
+		white-space: normal;
+		width: 75%;
+	}
+}
