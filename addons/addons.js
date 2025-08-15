@@ -4,4 +4,4 @@
  * https://github.com/Stephanowicz/moOde-audioplayer-addons
 */
 
-$.getScript("addons/Stephanowicz/script.js");
+$.getScript("addons/Stephanowicz/js/main.js");
