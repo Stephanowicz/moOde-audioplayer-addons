@@ -63,6 +63,16 @@ fetch('addons/Stephanowicz/config.json', {cache: "no-cache"})
 				.then(() => console.log("uwStyle.css loaded"))
 				.catch(console.error);
 		});
+		addonsCfg['ytdl'] && $(function () {
+			//Youtube-Dl Symbol
+			let styles = `
+				.fa-youtube:before {
+					content: "\f167";
+				}
+			`;
+			appendStyle(styles);
+			loadScript("addons/Stephanowicz/youtubeDL/youtubeDL.js");
+		});
 		//-- Styles Albumart --
 		addonsCfg['albumart'] && $(function () {
 			loadStyle("addons/Stephanowicz/albumart/albumart.css")
@@ -92,16 +102,6 @@ fetch('addons/Stephanowicz/config.json', {cache: "no-cache"})
 				.catch(console.error);
 		});
 		(addonsCfg['ytdl']||addonsCfg['lyrics']||addonsCfg['eq']||addonsCfg['browse2folder']) && $("#context-menu-playback ul").append('<li class="menu-separator"></li>');
-		addonsCfg['ytdl'] && $(function () {
-			//Youtube-Dl Symbol
-			let styles = `
-				.fa-youtube:before {
-					content: "\f167";
-				}
-			`;
-			appendStyle(styles);
-			loadScript("addons/Stephanowicz/youtubeDL/youtubeDL.js");
-		});
 		addonsCfg['browse2folder'] && loadScript("addons/Stephanowicz/js/browse2folder.js");
 		addonsCfg['lyrics'] && loadScript("addons/Stephanowicz/lyrics/songlyrics.js");
 		addonsCfg['eq'] && loadScript("addons/Stephanowicz/alsamixer/alsamixer_modal.js");
@@ -561,3 +561,4 @@ function playbackPreviewTimebar(){
 		timerID_pbPrev = setTimeout(playbackPreviewTimebar,1000);		
 	});	
 }
+
