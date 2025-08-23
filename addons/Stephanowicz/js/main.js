@@ -23,6 +23,16 @@ function loadStyle(src) {
     });
 }
 // Script loader
+//function loadScript(src) {
+//		var data = $.ajax({url: 'http://httpbin.org/get', async: false}).responseText;
+/*	if ($("script[src='" + src + "']").length === 0) {
+		var script = document.createElement('script');
+		script.type = "text/javascript";
+		script.src = src;
+		document.body.appendChild(script);
+	}
+}*/
+// Script loader
 function loadScript(src) {
 	return new Promise(function (resolve, reject) {
 		if ($("script[src='" + src + "']").length === 0) {
@@ -71,14 +81,18 @@ fetch('addons/Stephanowicz/config.json', {cache: "no-cache"})
 				}
 			`;
 			appendStyle(styles);
-			loadScript("addons/Stephanowicz/youtubeDL/youtubeDL.js");
+			loadScript("addons/Stephanowicz/youtubeDL/youtubeDL.js")
+				.then(() => console.log("youtubeDL.js loaded"))
+				.catch(console.error);
 		});
 		//-- Styles Albumart --
 		addonsCfg['albumart'] && $(function () {
 			loadStyle("addons/Stephanowicz/albumart/albumart.css")
 				.then(() => console.log("albumart.css loaded"))
 				.catch(console.error);
-			loadScript("addons/Stephanowicz/albumart/albumart.js");
+			loadScript("addons/Stephanowicz/albumart/albumart.js")
+				.then(() => console.log("albumart.js loaded"))
+				.catch(console.error);
 		});
 		addonsCfg['playqueue'] && $(function () {
 			//Style container-playqueue override for Playlist-Status below playlist
@@ -113,7 +127,7 @@ fetch('addons/Stephanowicz/config.json', {cache: "no-cache"})
 		var updateSyncedLyrics;
 
 		window.renderUI = function () {
-			//console.log("renderUI_extended");
+			console.log("renderUI_extended");
 			(addonsCfg['ytdl'] && (typeof youtubeDL_render === "function")) && youtubeDL_render();
 			(addonsCfg['lrclibsynced'] && (typeof render_syncedLyrics === "function")) && render_syncedLyrics();
 			renderUI_extended();
