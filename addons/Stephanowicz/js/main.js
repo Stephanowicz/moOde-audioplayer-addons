@@ -114,16 +114,16 @@ fetch('addons/Stephanowicz/config.json', {cache: "no-cache"})
 
 		window.renderUI = function () {
 			//console.log("renderUI_extended");
-			addonsCfg['ytdl'] && youtubeDL_render();
-			addonsCfg['lrclibsynced'] && render_syncedLyrics();
+			(addonsCfg['ytdl'] && (typeof youtubeDL_render === "function")) && youtubeDL_render();
+			(addonsCfg['lrclibsynced'] && (typeof render_syncedLyrics === "function")) && render_syncedLyrics();
 			renderUI_extended();
-			addonsCfg['playqueue'] && render_plstat();
+			(addonsCfg['playqueue'] && (typeof render_plstat === "function")) && render_plstat();
 			if(addonsCfg['albumart']){
 				if (MPD.json['file'] !== UI.currentFile && MPD.json['cover_art_hash'] !== UI.currentHash) {
 					multiAlbumArt();;
 				}
 			}
-			addonsCfg['browsertitle'] && render_browsertitle();
+			(addonsCfg['browsertitle'] && (typeof render_browsertitle === "function")) && render_browsertitle();
 			if(!addonsCfg['fav']){
 				//-- remove "add to favorites" from button group if it has been overwritten - yes, it's nasty :D		
 				$("button.add-item-to-favorites").css("display") != "none" && $("button.add-item-to-favorites").attr('style', 'display: none !important');
@@ -338,7 +338,6 @@ fetch('addons/Stephanowicz/config.json', {cache: "no-cache"})
 						break;
 				}
 			});
-			
 		});		
 	});
 //	.then(() => console.log(addonsCfg));
@@ -356,7 +355,7 @@ $(document).on('click', '.context-menu-lib a', function(e) {
 	var img_src = $(".lib-coverart")[1];
 	switch ($(this).data('addoncmd')) {
         case 'preview_playback':
-			$.getJSON('addons/Stephanowicz/commands.php?cmd=preview_playback', function (result) {
+			$.getJSON('command/playback.php?cmd=get_mpd_status', function (result) {
 				if(result !="") {playback_preview(result, path,img_src); }
 			});			
             break;
@@ -413,7 +412,7 @@ $(document).on('click', '.context-menu a', function(e) {
             break;
         case 'preview_playback':
 			var img_src = $("#db-0 .btn img")[0];
-			$.getJSON('addons/Stephanowicz/commands.php?cmd=preview_playback', function (result) {
+			$.getJSON('command/playback.php?cmd=get_mpd_status', function (result) {
 				if(result !="") {playback_preview(result, path, img_src); }
 			});			
             break;
@@ -538,19 +537,19 @@ async function playback_preview(songdata,path,img_src){
 		var seekto = Math.floor(($(this).val() * delta));
 		if (seekto > time - 2) {seekto = time - 2;}
 		sendMpdCmd('seek ' + pbPrevPLpos + ' ' + seekto);
-		//timeSliderMove = false;
-		//console.log('touchend mouseup');
 	});
 	playbackPreviewTimebar();
+// Auto-close option after set time
 //	await new Promise(r => setTimeout(r, 5000));
 //	$('#playback-preview-modal').modal('hide');
 //	$('#playback-preview-modal').remove();
 }
 function playbackPreviewTimebar(){
-	$.getJSON('addons/Stephanowicz/commands.php?cmd=preview_playback', function (result) {
+	$.getJSON('command/playback.php?cmd=get_mpd_status', function (result) {
 		if(result !="") {
 			if(result['time'] > 0){
 				var percent = result['elapsed']/result['time'] * 100;
+				//auto-close if song is finished
 				if(percent > 99){$('#playback-preview-modal').modal('hide');return;}
 				$('#playback-preview-timeline-progress').width(percent+'%');
 				$('#playback-preview-playbar-total')[0].innerText=new Date(result['time'] * 1000).toISOString().substring(14, 19);
@@ -561,4 +560,3 @@ function playbackPreviewTimebar(){
 		timerID_pbPrev = setTimeout(playbackPreviewTimebar,1000);		
 	});	
 }
-
