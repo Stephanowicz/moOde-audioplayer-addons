@@ -11,6 +11,7 @@ tempstr = '<div id="albumart-modal" class="modal hide" tabindex="-1" role="dialo
 		'<div id="trackinfo-albumart-modal" class="modal hide" tabindex="-1" role="dialog" aria-labelledby="trackinfo-albumart-modal-label" aria-hidden="true"></div>';
 $('#shutdown').after(tempstr);
 
+
 //extend function audioInfo() in playerlib.js for multiAlbumart in Audio-Info
 var audioInfo_extended = audioInfo;
 
@@ -115,7 +116,12 @@ function multiAlbumArt() {
                 }
             }
         };
-        xhttp.open("GET", "addons/Stephanowicz/albumart/albumart.php", true);
+        if(MPD.json['state']==='stop'){
+            xhttp.open("GET", "addons/Stephanowicz/albumart/albumart.php?filepath="+ MPD.json['file'], true);
+        }
+        else{
+            xhttp.open("GET", "addons/Stephanowicz/albumart/albumart.php", true);
+        }
         xhttp.send();
     }
 	
