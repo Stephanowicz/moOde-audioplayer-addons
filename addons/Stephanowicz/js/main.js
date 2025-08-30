@@ -121,33 +121,6 @@ fetch('addons/Stephanowicz/config.json', {cache: "no-cache"})
 		addonsCfg['eq'] && loadScript("addons/Stephanowicz/alsamixer/alsamixer_modal.js");
 		addonsCfg['browsertitle'] && loadScript("addons/Stephanowicz/js/browsertitle.js");
 		
-		//extend function renderUI() in playerlib.js for multiAlbumart, display title in Browsertitle and add albumthumb as favicon
-		var renderUI_extended = renderUI;
-		var updatePlStatDisp;
-		var updateSyncedLyrics;
-
-		window.renderUI = function () {
-			console.log("renderUI_extended");
-			(addonsCfg['ytdl'] && (typeof youtubeDL_render === "function")) && youtubeDL_render();
-			(addonsCfg['lrclibsynced'] && (typeof render_syncedLyrics === "function")) && render_syncedLyrics();
-			renderUI_extended();
-			(addonsCfg['playqueue'] && (typeof render_plstat === "function")) && render_plstat();
-			if(addonsCfg['albumart']){
-				if (MPD.json['file'] !== UI.currentFile && MPD.json['cover_art_hash'] !== UI.currentHash) {
-					multiAlbumArt();;
-				}
-			}
-			(addonsCfg['browsertitle'] && (typeof render_browsertitle === "function")) && render_browsertitle();
-			if(!addonsCfg['fav']){
-				//-- remove "add to favorites" from button group if it has been overwritten - yes, it's nasty :D		
-				$("button.add-item-to-favorites").css("display") != "none" && $("button.add-item-to-favorites").attr('style', 'display: none !important');
-			}
-			if(addonsCfg['ssStyle']){
-				if (SESSION.json['scnsaver_style'] == 'Gradient (Linear)') {
-						$('#screen-saver #ss-style').css('background', 'linear-gradient(rgb(0 0 0 / 47%) 0%, rgba(0, 0, 0, 0.75) 40%, rgba(0, 0, 0, 0.8) 60%, rgba(0, 0, 0) 100%)');
-				}
-			}
-		}
 
 
 		//-- Add new items to loaded page
@@ -352,6 +325,34 @@ fetch('addons/Stephanowicz/config.json', {cache: "no-cache"})
 						break;
 				}
 			});
+			//extend function renderUI() in playerlib.js for multiAlbumart, display title in Browsertitle and add albumthumb as favicon
+			var renderUI_extended = renderUI;
+			var updatePlStatDisp;
+			var updateSyncedLyrics;
+
+			window.renderUI = function () {
+				console.log("renderUI_extended");
+				(addonsCfg['ytdl'] && (typeof youtubeDL_render === "function")) && youtubeDL_render();
+				(addonsCfg['lrclibsynced'] && (typeof render_syncedLyrics === "function")) && render_syncedLyrics();
+				renderUI_extended();
+				(addonsCfg['playqueue'] && (typeof render_plstat === "function")) && render_plstat();
+				if(addonsCfg['albumart']){
+					if (MPD.json['file'] !== UI.currentFile && MPD.json['cover_art_hash'] !== UI.currentHash) {
+						(typeof multiAlbumArt === "function") && multiAlbumArt();
+					}
+				}
+				(addonsCfg['browsertitle'] && (typeof render_browsertitle === "function")) && render_browsertitle();
+				if(!addonsCfg['fav']){
+					//-- remove "add to favorites" from button group if it has been overwritten - yes, it's nasty :D		
+					$("button.add-item-to-favorites").css("display") != "none" && $("button.add-item-to-favorites").attr('style', 'display: none !important');
+				}
+				if(addonsCfg['ssStyle']){
+					if (SESSION.json['scnsaver_style'] == 'Gradient (Linear)') {
+							$('#screen-saver #ss-style').css('background', 'linear-gradient(rgb(0 0 0 / 47%) 0%, rgba(0, 0, 0, 0.75) 40%, rgba(0, 0, 0, 0.8) 60%, rgba(0, 0, 0) 100%)');
+					}
+				}
+			}
+
 		});		
 	});
 //	.then(() => console.log(addonsCfg));
