@@ -55,11 +55,13 @@ var lrclibsynced = false;
 var resizeTimeout = false;
 var addonsCfg;
 //---------------load settings------------------------------------------
-fetch('addons/Stephanowicz/config.json', {cache: "no-cache"})
-    .then((response) => response.json())
-    .then((json) => addonsCfg = json)
+(async () => {
+	const apiCallPromise = await fetch('addons/Stephanowicz/config.json', {cache: "no-cache"});
+	addonsCfg = await apiCallPromise.json();
+//    .then((response) => response.json())
+//    .then((json) => addonsCfg = json)
 	//.then(() => console.log(addonsCfg))
-	.then(() => {
+//	.then(() => {
 
 		//Style Sceensaver for local display 800x480
 		addonsCfg['ssStyle'] && $(function () {
@@ -73,7 +75,7 @@ fetch('addons/Stephanowicz/config.json', {cache: "no-cache"})
 				.then(() => console.log("uwStyle.css loaded"))
 				.catch(console.error);
 		});
-		addonsCfg['ytdl'] && $(function () {
+		if(addonsCfg['ytdl']) {
 			//Youtube-Dl Symbol
 			let styles = `
 				.fa-youtube:before {
@@ -81,20 +83,28 @@ fetch('addons/Stephanowicz/config.json', {cache: "no-cache"})
 				}
 			`;
 			appendStyle(styles);
-			loadScript("addons/Stephanowicz/youtubeDL/youtubeDL.js")
-				.then(() => console.log("youtubeDL.js loaded"))
-				.catch(console.error);
-		});
+			try {
+				await loadScript("addons/Stephanowicz/youtubeDL/youtubeDL.js");
+				console.log("youtubeDL.js loaded");
+			}
+			catch(error){
+				  console.error(error);
+			};		
+		}
 		//-- Styles Albumart --
-		addonsCfg['albumart'] && $(function () {
+		if(addonsCfg['albumart']){
 			loadStyle("addons/Stephanowicz/albumart/albumart.css")
 				.then(() => console.log("albumart.css loaded"))
 				.catch(console.error);
-			loadScript("addons/Stephanowicz/albumart/albumart.js")
-				.then(() => console.log("albumart.js loaded"))
-				.catch(console.error);
-		});
-		addonsCfg['playqueue'] && $(function () {
+			try {
+				await loadScript("addons/Stephanowicz/albumart/albumart.js");
+				console.log("albumart.js loaded");
+			}
+			catch(error){
+				  console.error(error);
+			};		
+		}
+		if(addonsCfg['playqueue']) {
 			//Style container-playqueue override for Playlist-Status below playlist
 			let styles = `
 				#playback-queue #container-playqueue { 
@@ -102,19 +112,27 @@ fetch('addons/Stephanowicz/config.json', {cache: "no-cache"})
 				}
 			`;
 			appendStyle(styles);
-			loadScript("addons/Stephanowicz/js/playqueue.js")
-				.then(() => console.log("playqueue.js loaded"))
-				.catch(console.error);
-		});
+			try {
+				await loadScript("addons/Stephanowicz/js/playqueue.js");
+				console.log("playqueue.js loaded");
+			}
+			catch(error){
+				  console.error(error);
+			};		
+		}
 		//Style for synced lyrics overlay
-		addonsCfg['lrclibsynced'] && $(function () {
+		if(addonsCfg['lrclibsynced']) {
 			loadStyle("addons/Stephanowicz/css/lrclibsyncedStyle.css")
 				.then(() => console.log("lrclibsyncedStyle.css loaded"))
 				.catch(console.error);
-			loadScript("addons/Stephanowicz/lyrics/syncedlyrics.js")
-				.then(() => console.log("syncedlyrics.js loaded"))
-				.catch(console.error);
-		});
+			try {
+				await loadScript("addons/Stephanowicz/lyrics/syncedlyrics.js");
+				console.log("syncedlyrics.js loaded");
+			}
+			catch(error){
+				  console.error(error);
+			};		
+		}
 		(addonsCfg['ytdl']||addonsCfg['lyrics']||addonsCfg['eq']||addonsCfg['browse2folder']) && $("#context-menu-playback ul").append('<li class="menu-separator"></li>');
 		addonsCfg['browse2folder'] && loadScript("addons/Stephanowicz/js/browse2folder.js");
 		addonsCfg['lyrics'] && loadScript("addons/Stephanowicz/lyrics/songlyrics.js");
@@ -125,7 +143,7 @@ fetch('addons/Stephanowicz/config.json', {cache: "no-cache"})
 
 		//-- Add new items to loaded page
 		//$(window).on("load", function () {
-		$(function () {
+	//	$(function () {
 			var tempstr
             addonsCfg['pbmenue_fix'] && loadScript("addons/Stephanowicz/js/pbmenue_fix.js");
 			//----"Add folders next" in context-menues
@@ -353,8 +371,9 @@ fetch('addons/Stephanowicz/config.json', {cache: "no-cache"})
 				}
 			}
 
-		});		
-	});
+	//	});		
+//	});
+})();
 //	.then(() => console.log(addonsCfg));
 
 //---------------------------------------------------------
