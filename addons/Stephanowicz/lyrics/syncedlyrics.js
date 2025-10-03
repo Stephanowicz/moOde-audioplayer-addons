@@ -205,12 +205,14 @@ function render_syncedLyrics() {
 				if(iLength > 0) {$("#syncedLyricsContent").append("<p style='height: 100px;'></p>");} //append empty <p> at end for scrolling last element to higher position
 				console.log("Lyrics for synced display loaded");
 				lrclibsynced && $(".lrclibsynced svg").css("fill","var(--accentxts)");
+				!lrclibsynced ? $("[id=slyricsavail]").css("display", "block"):$("[id=slyricsavail]").css("display", "none");;
 			}
 			else{
 				if(typeof $("#syncedLyrics") !== 'undefined'){
 					$("#syncedLyrics").empty();
 				}
 				lrclibsynced && $(".lrclibsynced svg").css("fill","#ae3c27");
+				$("[id=slyricsavail]").css("display", "none");
 			}
 			$("#syncedLyrics").css("display", "none");	
 			if(document.getElementById("syncedLyrics")){
