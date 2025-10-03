@@ -199,6 +199,7 @@ var addonsCfg;
 						<path d="M9.004,22.006l5.981,-0c0.552,-0 1,-0.448 1,-1c-0,-0.552 -0.448,-1 -1,-1l-5.981,-0c-0.552,-0 -1,0.448 -1,1c0,0.552 0.448,1 1,1Z"></path>  \
 					</g> \
 				</svg> \
+				<svg id="slyricsavail" width="0.5vw" height="0.5vw" viewBox="0 0 3 3" style="top: 0.5px;position: absolute;right: -8px;display: none;"><defs id="defs265"><linearGradient id="linearGradient3029"><stop style="stop-color:#000000;stop-opacity:1;" offset="0" id="stop3025"></stop><stop style="stop-color:#000000;stop-opacity:0;" offset="1" id="stop3027"></stop></linearGradient><linearGradient id="linearGradient2975"><stop style="stop-color:#000000;stop-opacity:1;" offset="0" id="stop2973"></stop></linearGradient><radialGradient xlink:href="#linearGradient3029" id="radialGradient3031" cx="226.86385" cy="2.3167014" fx="226.86385" fy="2.3167014" r="1.0246025" gradientUnits="userSpaceOnUse" gradientTransform="matrix(1.4963502,0,0,1.4963502,-337.93459,-1.9334326)"></radialGradient></defs><circle style="fill:#55fa36;fill-opacity:1;stroke:url(#radialGradient3031);stroke-width:0.396531;stroke-dasharray:none" id="path962" cx="1.5331675" cy="1.5331639" r="1.3348985"></circle></svg> \
 				</button>';
 				$("button.random").after(tempstr);
 //				$("#togglebtns .btn.random").after(tempstr);
@@ -306,6 +307,7 @@ var addonsCfg;
 						lrclibsynced ? $("#syncedLyrics").css("display", "block") : $("#syncedLyrics").css("display", "none");
 						lrclibsynced && syncedLyricsPos();
 						(lrclibsynced&!syncedLyrics) && $(".lrclibsynced svg").css("fill","#ae3c27");
+						(!lrclibsynced&syncedLyrics!=null) ? $("[id=slyricsavail]").css("display", "block") : $("[id=slyricsavail]").css("display", "none");
 						break;
 					case 'single':
 						$('#menu-check-single').toggle();
