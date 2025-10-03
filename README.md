@@ -177,38 +177,41 @@ Worst case:
 	  
 	- show synced lyrics from LRCLIB above the albumcover 
 	![image](https://github.com/user-attachments/assets/75d8c065-1aeb-40da-a168-c93968f68b21)  
-	activate with right button below playback control  
-	if synced lyrics are available the button turns green, otherwise it turns red  
+      
+	  <img width="235" height="65" alt="image" src="https://github.com/user-attachments/assets/1f6d45fc-0d00-49bf-9ca6-3736844121e0" />   
+    a small green dot above the icon indicates that synced lyrics are available   
+	activate the synced lyrics display with clicking the right button below playback control  
+    if synced lyrics are available the button turns green, otherwise it turns red  
 	(be aware that sometimes the synced lyrics maybe from a (special) edition and don't fit properly)  
 
 	
-5. Playbackmenue / Playbar icons
+6. Playbackmenue / Playbar icons
 	- Add/remove items for playbackcontrol on mainscreen - "repeat", "random", "single", "random album", "add to favourites"  etc...
 	![image](https://github.com/user-attachments/assets/ef1deacc-5fef-4c33-9947-474d9194d9fd)  
 	Removed items are placed in the pop-up menue  
 	![image](https://github.com/user-attachments/assets/873f2767-8699-4140-b7e0-813b02874d6e)  
 
-6. Show Songtitle, Albumname and albumicon in browsertitlebar or tab  
+7. Show Songtitle, Albumname and albumicon in browsertitlebar or tab  
 	![image](https://github.com/user-attachments/assets/55c6f3e3-3b67-4911-8156-28cea76f9f5b)  
 	Tip: use a bare window without controls for the moOde audioplayer  
 	for edge (chrome?) you need to add the params `--app=http://moode9.local --window-size=800,600` to the browser command:  
 	`msedge --app=http://moode9.local --window-size=800,600`  
 	(this should also be possible for firefox etc. - but I don't know the commands at moment)  
 
-7. Browse to folder 
+8. Browse to folder 
 	- Contextmenue-option to browse to songfolder in folderview  
 	![image](https://github.com/user-attachments/assets/085b1245-e2c2-4642-9e35-64186c2a4251)  
 	->  
 	![image](https://github.com/user-attachments/assets/00044b3e-9255-454d-913c-d0226c592425)  
 
-8. Show total and remainig/elapsed playtime below playlist  
+9. Show total and remainig/elapsed playtime below playlist  
 	- ![image](https://github.com/user-attachments/assets/e9b5049d-a9b4-4ce8-8b68-6c51aa6bcc01)
  	- remaining or elapsed playtime will be shown according to Your general display setting of showing playtime
 
-9. Increase text-size of Artist, Title, Album in screen-saver wide-mode
+10. Increase text-size of Artist, Title, Album in screen-saver wide-mode
     - at moment a fixed size... I'm thinking of to make it adjustable 
 
-10. Fix for local ultrawide displays like 11.9inch Capacitive Touch Screen LCD, 1480x320  
+11. Fix for local ultrawide displays like 11.9inch Capacitive Touch Screen LCD, 1480x320  
     e.g [https://www.waveshare.com/wiki/11.9inch_HDMI_LCD](https://www.waveshare.com/wiki/11.9inch_HDMI_LCD)
       
     This is how the main screen looks like originally with 1480x320:  
@@ -217,7 +220,7 @@ Worst case:
     and this is how it looks like with the fix:  
     ![image](https://github.com/user-attachments/assets/1fa64085-8ec3-4b3b-9fe9-1f7b61cb9e8f)  
 
-11. Fix for playback context-menue out of scope for large menues with many items  
+12. Fix for playback context-menue out of scope for large menues with many items  
    menue out of scope:  
    ![contextmenue](https://github.com/user-attachments/assets/8fc4967f-0ab2-4143-a942-228f13b4af77)  
    
