@@ -190,16 +190,18 @@ var addonsCfg;
 			//-- add "lrclib synced" to button group 
 			if(addonsCfg['lrclibsynced']){
 				tempstr = '<button class="btn btn-cmd btn-toggle2 lrclibsynced" data-cmd="lrclibsynced" aria-label="Synced Lyrics"> \
-				<svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"> \
-					<g id="Icon"> \
-						<path d="M18.003,23.922l-0.001,0c-1.105,0 -2.002,0.897 -2.002,2.002c-0,1.105 0.897,2.002 2.002,2.002c1.104,-0 2.001,-0.897 2.001,-2.002l0,-7.122c0,-0 6.001,-0.75 6.001,-0.75l0.003,3.867c-1.105,-0 -2.002,0.897 -2.002,2.002c0,1.104 0.897,2.001 2.002,2.001c1.105,0 2.002,-0.897 2.002,-2.001l-0.006,-7.003c0,-0.286 -0.123,-0.559 -0.338,-0.749c-0.215,-0.19 -0.501,-0.278 -0.786,-0.242l-8,1c-0.5,0.062 -0.876,0.488 -0.876,0.992l0,6.003Z"></path> \
-						<path d="M9.004,10l13.983,0c0.552,0 1,-0.448 1,-1c0,-0.552 -0.448,-1 -1,-1l-13.983,0c-0.552,0 -1,0.448 -1,1c0,0.552 0.448,1 1,1Z"></path> \
-						<path d="M9.004,13.994l13.983,0c0.552,0 1,-0.448 1,-1c0,-0.552 -0.448,-1 -1,-1l-13.983,0c-0.552,0 -1,0.448 -1,1c0,0.552 0.448,1 1,1Z"></path> \
-						<path d="M9.004,18l5.981,0c0.552,-0 1,-0.448 1,-1c-0,-0.552 -0.448,-1 -1,-1l-5.981,0c-0.552,-0 -1,0.448 -1,1c0,0.552 0.448,1 1,1Z"></path> \
-						<path d="M9.004,22.006l5.981,-0c0.552,-0 1,-0.448 1,-1c-0,-0.552 -0.448,-1 -1,-1l-5.981,-0c-0.552,-0 -1,0.448 -1,1c0,0.552 0.448,1 1,1Z"></path>  \
-					</g> \
-				</svg> \
-				<svg id="slyricsavail" width="0.5vw" height="0.5vw" viewBox="0 0 3 3" style="top: 0.5px;position: absolute;right: -8px;display: none;"><defs id="defs265"><linearGradient id="linearGradient3029"><stop style="stop-color:#000000;stop-opacity:1;" offset="0" id="stop3025"></stop><stop style="stop-color:#000000;stop-opacity:0;" offset="1" id="stop3027"></stop></linearGradient><linearGradient id="linearGradient2975"><stop style="stop-color:#000000;stop-opacity:1;" offset="0" id="stop2973"></stop></linearGradient><radialGradient xlink:href="#linearGradient3029" id="radialGradient3031" cx="226.86385" cy="2.3167014" fx="226.86385" fy="2.3167014" r="1.0246025" gradientUnits="userSpaceOnUse" gradientTransform="matrix(1.4963502,0,0,1.4963502,-337.93459,-1.9334326)"></radialGradient></defs><circle style="fill:#55fa36;fill-opacity:1;stroke:url(#radialGradient3031);stroke-width:0.396531;stroke-dasharray:none" id="path962" cx="1.5331675" cy="1.5331639" r="1.3348985"></circle></svg> \
+					<div> \
+						<svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"> \
+							<g id="Icon"> \
+								<path d="M18.003,23.922l-0.001,0c-1.105,0 -2.002,0.897 -2.002,2.002c-0,1.105 0.897,2.002 2.002,2.002c1.104,-0 2.001,-0.897 2.001,-2.002l0,-7.122c0,-0 6.001,-0.75 6.001,-0.75l0.003,3.867c-1.105,-0 -2.002,0.897 -2.002,2.002c0,1.104 0.897,2.001 2.002,2.001c1.105,0 2.002,-0.897 2.002,-2.001l-0.006,-7.003c0,-0.286 -0.123,-0.559 -0.338,-0.749c-0.215,-0.19 -0.501,-0.278 -0.786,-0.242l-8,1c-0.5,0.062 -0.876,0.488 -0.876,0.992l0,6.003Z"></path> \
+								<path d="M9.004,10l13.983,0c0.552,0 1,-0.448 1,-1c0,-0.552 -0.448,-1 -1,-1l-13.983,0c-0.552,0 -1,0.448 -1,1c0,0.552 0.448,1 1,1Z"></path> \
+								<path d="M9.004,13.994l13.983,0c0.552,0 1,-0.448 1,-1c0,-0.552 -0.448,-1 -1,-1l-13.983,0c-0.552,0 -1,0.448 -1,1c0,0.552 0.448,1 1,1Z"></path> \
+								<path d="M9.004,18l5.981,0c0.552,-0 1,-0.448 1,-1c-0,-0.552 -0.448,-1 -1,-1l-5.981,0c-0.552,-0 -1,0.448 -1,1c0,0.552 0.448,1 1,1Z"></path> \
+								<path d="M9.004,22.006l5.981,-0c0.552,-0 1,-0.448 1,-1c-0,-0.552 -0.448,-1 -1,-1l-5.981,-0c-0.552,-0 -1,0.448 -1,1c0,0.552 0.448,1 1,1Z"></path>  \
+							</g> \
+						</svg> \
+						<svg id="slyricsavail" width="0.5vw" height="0.5vw" viewBox="0 0 3 3" style="display: none;"><defs id="defs265"><linearGradient id="linearGradient3029"><stop style="stop-color:#000000;stop-opacity:1;" offset="0" id="stop3025"></stop><stop style="stop-color:#000000;stop-opacity:0;" offset="1" id="stop3027"></stop></linearGradient><linearGradient id="linearGradient2975"><stop style="stop-color:#000000;stop-opacity:1;" offset="0" id="stop2973"></stop></linearGradient><radialGradient xlink:href="#linearGradient3029" id="radialGradient3031" cx="226.86385" cy="2.3167014" fx="226.86385" fy="2.3167014" r="1.0246025" gradientUnits="userSpaceOnUse" gradientTransform="matrix(1.4963502,0,0,1.4963502,-337.93459,-1.9334326)"></radialGradient></defs><circle style="fill:#55fa36;fill-opacity:1;stroke:url(#radialGradient3031);stroke-width:0.396531;stroke-dasharray:none" id="path962" cx="1.5331675" cy="1.5331639" r="1.3348985"></circle></svg> \
+					</div> \
 				</button>';
 				$("button.random").after(tempstr);
 //				$("#togglebtns .btn.random").after(tempstr);
