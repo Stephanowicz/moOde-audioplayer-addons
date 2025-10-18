@@ -1,9 +1,9 @@
 {
     "albumart": true,
     "playqueue": true,
-    "ytdl": true,
+    "ytdl": false,
     "lyrics": true,
-    "genius": true,
+    "genius": false,
     "lrclib": true,
     "lrclibsynced": true,
     "eq": true,
@@ -20,8 +20,8 @@
     "btn_info": false,
     "btn_last": false,
     "ssStyle": true,
-    "uwStyle": true,
+    "uwStyle": false,
     "pbmenue_fix": true,
     "browsertitle": true,
-    "bookmarks": true
+    "bookmarks": false
 }
