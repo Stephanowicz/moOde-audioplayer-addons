@@ -138,7 +138,7 @@ var addonsCfg;
 		addonsCfg['lyrics'] && loadScript("addons/Stephanowicz/lyrics/songlyrics.js");
 		addonsCfg['eq'] && loadScript("addons/Stephanowicz/alsamixer/alsamixer_modal.js");
 		addonsCfg['browsertitle'] && loadScript("addons/Stephanowicz/js/browsertitle.js");
-		
+		addonsCfg['bookmarks'] && loadScript("addons/Stephanowicz/js/bookmarks.js");
 
 
 		//-- Add new items to loaded page
@@ -186,6 +186,11 @@ var addonsCfg;
 				//-- remove "add to favorites" from button group
 			//	$("button.add-item-to-favorites").addClass("hide");
 				$("button.add-item-to-favorites").attr('style', 'display: none !important');
+			}
+			if(addonsCfg['bookmarks']){
+				tempstr = '<li><a href="#notarget" data-cmd="" data-addoncmd="add_bookmark"><i class="fal fa-bookmark sx"></i> Add Bookmark</a></li>';
+				tempstr += '<li><a href="#notarget" data-cmd="" data-addoncmd="load_bookmark"><i class="fal fa-book-bookmark sx"></i> Bookmarks</a></li>';				
+				$("#context-menu-playback ul li:eq(0)").before(tempstr);
 			}
 			//-- add "lrclib synced" to button group 
 			if(addonsCfg['lrclibsynced']){
@@ -494,9 +499,16 @@ $(document).on('click', '.context-menu a', function(e) {
                 });
             }
             break;
+		case 'add_bookmark':
+			$.getJSON('command/playback.php?cmd=get_mpd_status', function (result) {
+				if(result !="") {add_bookmark(result); }
+			});			
+			break;
+		case 'load_bookmark':
+			bookmarks();
+			break;
     }
 });
-
 //--------Playback preview-------------------------------------------------------
 var timerID_pbPrev,pbPrevData,pbPrevPLpos;
 async function playback_preview(songdata,path,img_src){
