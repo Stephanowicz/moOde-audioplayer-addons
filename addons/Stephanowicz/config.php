@@ -19,7 +19,8 @@
 			"token_perm" => false,
 			"geniustoken" => '',
 			"geniuslyrics" => false,
-			"lrcliblyrics" => false
+			"lrcliblyrics" => false,
+			"bookmarks" => false,
 		);
 		$cfg = dirname(__FILE__).'/config.json';
 		$json = file_get_contents($cfg); 
@@ -30,6 +31,9 @@
 		}
 		if(file_exists("/usr/local/bin/youtube-dl")){
 			$cfgCheck["ytdl"] = true;
+		}
+		if(is_dir("/var/lib/mpd/playlists/bookmarks")){
+			$cfgCheck["bookmarks"] = true;
 		}
 		if(file_exists("/var/www/inc/getid3/getid3.php")){
 			$cfgCheck["getid3"] = true;

@@ -1,5 +1,5 @@
 {
-    "albumart": false,
+    "albumart": true,
     "playqueue": true,
     "ytdl": true,
     "lyrics": true,
@@ -21,6 +21,7 @@
     "btn_last": false,
     "ssStyle": true,
     "uwStyle": true,
+    "pbmenue_fix": true,
     "browsertitle": true,
-    "pbmenue_fix": true
+    "bookmarks": true
 }

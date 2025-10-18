@@ -19,7 +19,7 @@
 		#playbarbuttons input,#lrcliblyrics, #lrclibsynced, #geniuslyrics {
 			vertical-align: text-bottom;
 		}
-		#youtube-dl, #eq, #albumart, #lyrics, #random, #favorites, #repeat, #single, #ssStyle, #uwStyle, #pbmenue_fix, #browsertitle, #playqueue, #browse2folder {
+		#youtube-dl, #eq, #albumart, #lyrics, #random, #favorites, #repeat, #single, #ssStyle, #uwStyle, #pbmenue_fix, #browsertitle, #playqueue, #bookmarks, #browse2folder {
 			width: 19px;
 			height: 19px;
 			margin: 5px;
@@ -282,6 +282,16 @@
 		<div class="settings">
 			<input type="checkbox" id="playqueue" name="playqueue" disabled> Show total and remaining playtime below playlist
 		</div>
+		<!-- bookmarks -->
+		<div class="settings">
+			<input type="checkbox" id="bookmarks" name="bookmarks" disabled> Option to save and load bookmarks for current playlist (resume playing at current position)
+			<div id="bookmarks_err">
+				<span id="bookmarks_text" style="font-size: small;padding-left: 19px;">Bookmarks folder missing! </span>
+				<span id="bookmarks_check"><i class="fa-regular fa-ban" aria-hidden="true" style="font-size: 18px;color: red;"></i><br></span>
+				<span id="bookmarks_check_text" style="font-size: small;padding-left: 19px;">Create with: <i>mkdir -m 775 /var/lib/mpd/playlists/bookmarks</i><br></span>
+			</div>
+
+		</div>
 
 		<!-- Modal -->
 		<div id="modal-popup" class="modal-popup">
@@ -384,6 +394,9 @@
 				$("#browsertitle").prop('checked', cfgJson['browsertitle']);
 				$("#playqueue").prop('disabled', false);
 				$("#playqueue").prop('checked', cfgJson['playqueue']);
+				$("#bookmarks").prop('disabled', !cfgCheck["bookmarks"]);
+				$("#bookmarks").prop('checked', cfgCheck["bookmarks"] ? cfgJson['bookmarks']:false);
+				cfgCheck["bookmarks"] ? $("#bookmarks_err").hide():$("#bookmarks_err").show();
 				$("#browse2folder").prop('disabled', false);
 				$("#browse2folder").prop('checked', cfgJson['browse2folder']);
 				$("#geniustoken")[0].style.width = $("#geniustoken")[0].value.length + "ch";
@@ -399,6 +412,7 @@
 				cfgArr.push({
 					albumart: $("#albumart").prop('checked'),
 					playqueue: $("#playqueue").prop('checked'),
+					bookmarks: $("#bookmarks").prop('checked'),
 					ytdl: $("#youtube-dl").prop('checked'),
 					lyrics: $("#lyrics").prop('checked'),
 					genius: $("#geniuslyrics").prop('checked'),

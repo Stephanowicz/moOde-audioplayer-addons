@@ -103,15 +103,140 @@ switch ($_GET['cmd']) {
 		echo json_encode($formattedStatus);
 		break;
 		
-	case 'preview_playback':
-		
+	case 'preview_playback':	
 		sendMpdCmd($sock, 'status');
 		$resp = readMpdResp($sock);
 		$formattedStatus=formatMpdStatus($resp);
 		echo json_encode($formattedStatus);
 		break;
 
-    default:
+	case 'save_pl':
+		$plName = html_entity_decode($_GET['pl']);
+		$plFile = MPD_PLAYLIST_ROOT . $plName . '.m3u';
+		if (file_exists($plFile)) {
+			sendMpdCmd($sock, 'rm "' . $plName . '"');
+			$resp = readMpdResp($sock);			
+		}
+        sendMpdCmd($sock, 'save "' . $plName . '"');
+		$resp = readMpdResp($sock);
+		workerLog('save_pl: ' . $resp);
+		sysCmd('chmod 0777 "' . $plFile . '"');
+		sysCmd('chown root:root "' . $plFile . '"');
+		echo json_encode("done");
+		break;
+
+	case 'add_bookmark':
+		$plName=html_entity_decode($_GET['pl']);
+		$bmName=html_entity_decode($_GET['bm']);
+		$elapsed=$_GET['elapsed'];
+		$song=$_GET['song'];
+		$plFolder = MPD_PLAYLIST_ROOT . 'bookmarks';
+		if (!file_exists($plFolder)) {
+			echo json_encode(['status' => 'error','msg' => '' .  $plFolder . ' does not exist! You need to create it first!']);
+			break;
+		}
+		
+		$plFile = MPD_PLAYLIST_ROOT . $plName . '.m3u';
+		if (file_exists($plFile)) {
+			sendMpdCmd($sock, 'rm "' . $plName . '"');
+			$resp = readMpdResp($sock);			
+		}
+        sendMpdCmd($sock, 'save "' . $plName . '"');
+		$resp = readMpdResp($sock);
+		workerLog('save_pl: ' . $resp);
+		sysCmd('chmod 0777 "' . $plFile . '"');
+		sysCmd('chown root:root "' . $plFile . '"');
+
+		
+		$bmFile = MPD_PLAYLIST_ROOT . 'bookmarks/' . $bmName;
+		if (!file_exists($bmFile)) {
+			sysCmd('touch "' . $bmFile . '"');
+			sysCmd('chmod 0777 "' . $bmFile . '"');
+			sysCmd('chown root:root "' . $bmFile . '"');
+		}
+		if (false === ($plItems = file($bmFile, FILE_IGNORE_NEW_LINES))) {
+			workerLog('add_bookmark: File read failed on ' . $bmFile);
+			echo json_encode(['status' => 'error','msg' => 'File read failed on ' . $bmFile]);
+
+		} else {
+			$contents = 'plName:' . $plName . "\n";
+			$contents .= 'elapsed:' . $elapsed . "\n";
+			$contents .= 'song:' . $song . "\n";
+			
+			if (false == (file_put_contents($bmFile, $contents))) {
+				workerLog('add_bookmark: File write failed on ' . $bmFile);
+				echo json_encode(['status' => 'error','msg' => 'File write failed on ' . $bmFile]);
+			}
+			else {
+				echo json_encode(['status' => 'ok','msg' => 'bookmark added to ' . $bmFile]);
+			}
+		}
+		break;
+
+	case 'del_bookmark':
+		$bmName=html_entity_decode($_GET['bm']);
+		$plFolder = MPD_PLAYLIST_ROOT . 'bookmarks';	
+		$bmFile = MPD_PLAYLIST_ROOT . 'bookmarks/' . $bmName;
+		if (file_exists($bmFile)) {
+			sysCmd('rm "' . $bmFile . '"');
+		}
+		if (false === ($plItems = file($bmFile, FILE_IGNORE_NEW_LINES))) {
+			workerLog('del_bookmark: File deleted ' . $bmFile);
+			echo json_encode(['status' => 'ok','msg' => 'Bookmark deleted - ' . $bmFile]);
+
+		} else {
+			echo json_encode(['status' => 'error','msg' => 'Bookmark could not be deleted - ' . $bmFile]);
+		}
+		break;
+
+	case 'load_bookmark':
+		$plName=$_GET['pl'];
+		$plFile = MPD_PLAYLIST_ROOT . 'bookmarks/' . $plName;
+		
+		if (false === ($fh = fopen($plFile, 'r'))) {
+			debugLog('load_bookmark: File open failed on ' . $plFile);
+			echo json_encode(['status' => 'error','msg' => 'File open failed on: ' . $plFile]);
+
+		} else {
+			while (false !== ($line = fgets($fh))) {
+				if (feof($fh)) break;
+				if (strpos($line, 'elapsed') !== false) {
+					$elapsed = explode(':', trim($line))[1];
+				} else if (strpos($line, 'song') !== false) {
+					$song = explode(':', trim($line))[1];
+				}
+			}
+			fclose($fh);
+			workerLog('load_bookmark: $plName: ' . $plName);
+			workerLog('load_bookmark: $elapsed: ' . $elapsed);
+			workerLog('load_bookmark: $song: ' . $song);
+			sendMpdCmd($sock, 'clear');
+			$resp = readMpdResp($sock);
+			sendMpdCmd($sock, 'load "' . $plName . '"');
+			$resp = readMpdResp($sock);
+			if(!str_contains(strtolower($resp),'ok')){
+				echo json_encode(['status' => 'error','msg' => 'bookmark loading failed - mpd returned error']);
+				workerLog('load_bookmark - load: resp: ' . $resp);
+				break;
+			}
+			sendMpdCmd($sock,'seek ' . $song . ' ' . $elapsed);
+			$resp = readMpdResp($sock);
+			workerLog('load_bookmark - seek: resp: ' . $resp);
+			echo json_encode(['status' => 'ok','msg' => 'bookmark loaded']);
+		}
+		break;
+		
+	case 'list_bookmarks':
+		$results = array();
+		$objDir = dir("/var/lib/mpd/playlists/bookmarks");
+		while (false !== ($entry = $objDir->read())) {
+			if ($entry != '.' && $entry != '..') $results[] = $entry;
+		}
+		$objDir->close();
+//		echo count($results)."\n";
+		echo json_encode($results);	
+		break;
+	default:
 		echo 'Unknown command';
 		break;
 }
