@@ -35,8 +35,10 @@ It consists of:
 
 11. Fix for playback context-menue out of scope for large menues
 
-12. Pre-listen audio-file without changing playlist and continue playback at current song-position
+12. Pre-listen audio-file without changing playlist and continue playback at current song-position   
 
+13. Bookmark current songposition for resuming playback later (e.g for long files like audiobooks)   
+   
 ## requirements & installation
 - Tested with moOde audioplayer v9.x  
 should also work with v8.x (will NOT work with v7.x)
@@ -104,7 +106,11 @@ after this add `<script src="addons/addons.js?t=1729607710734" defer></script>`
 		- finally generate a [client access token](https://genius.com/api-clients) by clicking "Generate Access Token"  
 	 	-> add the **client access token** to **clientaccesstoken.txt** in the lyrics folder */var/www/addons/Stephanowicz/lyrics*  
    
-  
+  13. Bookmarks  
+      You need to create the folder for storing the bookmark-files manually:  
+	  mkdir -m 755 /var/lib/mpd/playlists/bookmarks
+
+	  
      
 	The other addons don't have any further requirements
 
@@ -233,7 +239,33 @@ Worst case:
     <img width="335" height="330" alt="image" src="https://github.com/user-attachments/assets/2e4d3b36-247b-4c1b-a7ec-85286b3e1d81" />  
     <img width="646" height="334" alt="image" src="https://github.com/user-attachments/assets/a0fd1439-bde6-4253-bc5c-04db8fcb0a09" />
 
+13. Bookmarks
+    This will save the current sonposition and playlist for resuming playback at a later time.   
+	This might be helpful when listening to audiobooks.   
 
+    (Please don't forget that you need to create the bookmark-folder manually!)   
+    /var/lib/mpd/playlists/bookmarks  
+    
+    There will be 2 new options in the main playbackmenue:
+	- Add bookmark  
+    - Bookmarks   
+
+      ![bookmark_menue](https://github.com/user-attachments/assets/ca5b5441-59a4-4789-97b7-11fbda1f26cb)   
+
+	  'Add bookmark' will open a modal where you can enter the name of the bookmark to save and the name of the playlist to save  
+	  An existing playlist with the same name will be overwritten! 
+	  (As MPD only will load playlists from the configured location there is no workaround for this)   
+     
+      ![bookmark_save](https://github.com/user-attachments/assets/7a9b20e5-29d7-44f6-99e0-1defb3e8b311)
+
+	  'Bookmarks' will open a modal with a list of saved bookmarks.   
+	  Here one can load a saved bookmark or delete it.  
+	  'Delete' will only remove the bookmark file in '/var/lib/mpd/playlists/bookmarks'  
+	  To delete the associated playlist you have to use the option in the moode playlist browser   
+
+	     ![bookmark_list](https://github.com/user-attachments/assets/7c04822f-043f-422d-9dfd-ca3fbdc9a607)
+
+	
 That's it - have fun!
 
 
