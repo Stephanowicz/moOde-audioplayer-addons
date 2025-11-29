@@ -40,7 +40,7 @@ It consists of:
 13. Bookmark current songposition for resuming playback later (e.g for long files like audiobooks)   
    
 ## requirements & installation
-- Tested with moOde audioplayer v9.x  
+- Tested with moOde audioplayer v10.x and v9.x  
 should also work with v8.x (will NOT work with v7.x)
   
  
