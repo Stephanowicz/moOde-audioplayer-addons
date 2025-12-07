@@ -24,4 +24,10 @@ Tiny helper to skip forward/backward to next/previous album or folder in playlis
  	button = KEY_LEFT
  	config = python /var/www/addons/Stephanowicz/utils/mpd_pl_nextalbum.py back
  end
-```
+```  
+   
+# AddRemoveAddons.sh  
+Bashscript for adding / removing the Addonsscript to /var/www/header.php  
+needs to be run as root ->  
+``` sudo /var/www/addons/Stephanowicz/utils/AddRemoveAddons.sh  ```  
+
