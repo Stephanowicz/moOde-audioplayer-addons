@@ -56,9 +56,12 @@ the folder structure then should look like this:
 after this add `<script src="addons/addons.js?t=1729607710734" defer></script>`  
 (the *t=xxxx* can be different - you may copy the one from lib.min.js) 
 - make sure that /var/www/addons/Stephanowicz/**config.json** is writeable for all  
--> sudo chmod 666 /var/www/addons/Stephanowicz/config.json
+-> ``` sudo chmod 666 /var/www/addons/Stephanowicz/config.json ```  
 
- 
+ You can use the script *AddRemoveAddons.sh* in the utils folder for automatically adding/removing this entry  
+ The script needs to be executable and must be run as root  
+  ``` sudo chmod 644 /var/www/addons/Stephanowicz/utils/AddRemoveAddons.sh ```  
+  ``` sudo /var/www/addons/Stephanowicz/utils/AddRemoveAddons.sh ```  
 
 1. Extended Albumart
 	- requires [getid3](https://github.com/JamesHeinrich/getID3)  
