@@ -27,41 +27,40 @@
     $channels = channels();
         
 //    $this->preferences = $this->preferences();
-        
-    if(isset($_POST['command']) ) {
-        switch($_POST['command']) {
+    if(isset($_REQUEST['command']) ) {
+        switch($_REQUEST['command']) {
             case 'get':
                 echo json_encode(interfacer());
                 break;
             case 'set':
-                set($_POST);
+                set($_REQUEST);
                 break;
             case 'reset':
                 reset_defaults();
                 break;
             case 'setOutput':
-                setOutput($_POST['output']);
+                setOutput($_REQUEST['output']);
                 break;
             case 'getCurves':
-                get_curves($_POST['curvename']);
+                get_curves($_REQUEST['curvename']);
                 break;
             case 'getActiveCurve':
                 get_active();
                 break;
             case 'saveCurve':
-                save_curve($_POST);
+                save_curve($_REQUEST);
                 break;
             case 'loadCurve':
-                load_curve($_POST);
+                load_curve($_REQUEST);
                 break;
             case 'getCurveValues':
-                getCurveValues($_POST);
+                getCurveValues($_REQUEST);
                 break;
             case 'deleteCurve':
-                delete_curve($_POST);
+                delete_curve($_REQUEST);
                 break;
             case 'renameCurve':
-                rename_curve($_POST);
+                rename_curve($_REQUEST);
                 break;
             default:
                 echo "";
