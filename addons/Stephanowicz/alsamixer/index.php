@@ -26,14 +26,19 @@
 <!--        <div style="font: 1rem 'Fira Sans', sans-serif;"><input type="checkbox" id="linkchannels" name="linkchannels" style="margin: .4rem;"><label for="linkchannels">link L/R</label></div>
         <div style="font: 1rem 'Fira Sans', sans-serif;"><input type="button" id="reset" name="reset" style="margin: .4rem;" value="reset"></div>
 -->        
-<div style="
+<div id="main" style="
     display: grid;
-    justify-content: center;
     grid-template-columns: 140px 150px 140px;
-    grid-gap: 0px;
-    align-content: stretch;
-    align-items: start;
-    justify-items: stretch;
+    position: absolute;
+    width: max-content;
+    height: max-content;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    transform-origin: top;
+    transform: scale(1);
 ">        
 		<div id="mixer" data-device="alsaequal" style="
 	    	grid-column-start: 1;
@@ -331,10 +336,19 @@
 	            }, 'json');
 
             }
-           
+            function updateScaleFactor(){
+               var min=400;
+               var max=800;
+               var current = innerWidth < outerWidth ? innerWidth:outerWidth;
+               var x = Math.min(Math.max(current, min), max);
+               var scale = x/(min+80);
+               $('#main').css('transform', 'scale(' + scale + ')');
+            }
             init(); 
             get_curves();
             //get_activecurve();
+            window.addEventListener("resize", updateScaleFactor);
+            updateScaleFactor(); // Run on page load
         });  
         </script>
         

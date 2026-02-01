@@ -3,7 +3,8 @@ var tempstr = '<div id="ALSAGraphicsEQ-modal" class="hide" tabindex="-1" role="d
 	'left: 50%;' +
 	'position: fixed;' +
 	'z-index: 10001;' +
-	'box-shadow: 0 3px 7px rgba(0,0,0,.3);"></div>';
+	'box-shadow: 0 3px 7px rgba(0,0,0,.3);' +
+	'top:0px;"></div>';
 $("#shutdown").after(tempstr);
 
 tempstr = '<li><a href="#notarget" data-cmd="" data-addoncmd="ALSAgraphicEQ"><i class="fal fa-sliders fa-rotate-90 sx"></i>Graphic EQ</a></li>';
