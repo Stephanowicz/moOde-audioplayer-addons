@@ -37,8 +37,8 @@
     left: 0;
     right: 0;
     margin: 0 auto;
-    transform-origin: top;
-    transform: scale(1);
+    /*transform-origin: top;*/
+   /* transform: scale(1);*/
 ">        
 		<div id="mixer" data-device="alsaequal" style="
 	    	grid-column-start: 1;
@@ -114,7 +114,7 @@
 	            }, 'json');
                 
             }
-            
+
             function bind(){                
                 $(".slider", controls).each(function(){
                     var slide = $(this),
@@ -126,11 +126,8 @@
                                 level[options.channel].textContent=options.value;
                             },
                             slide: function (event, ui) {
-                                
-                               // level.text( ui.value); //  + "dB" );
                                 level[options.channel].textContent=ui.value;
                                 setControl(options, ui);
-                                
                             }, 
                             stop: function (event, ui) {
                                 level[options.channel].textContent=ui.value;
@@ -336,19 +333,8 @@
 	            }, 'json');
 
             }
-            function updateScaleFactor(){
-               var min=400;
-               var max=800;
-               var current = innerWidth < outerWidth ? innerWidth:outerWidth;
-               var x = Math.min(Math.max(current, min), max);
-               var scale = x/(min+80);
-               $('#main').css('transform', 'scale(' + scale + ')');
-            }
             init(); 
             get_curves();
-            //get_activecurve();
-            window.addEventListener("resize", updateScaleFactor);
-            updateScaleFactor(); // Run on page load
         });  
         </script>
         
