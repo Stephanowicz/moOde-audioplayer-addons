@@ -5,4 +5,17 @@
  * https://github.com/Stephanowicz/moOde-audioplayer-addons
 */
 -->
-<iframe src="addons/Stephanowicz/alsamixer/index.php" frameborder="0" style="min-width: 65vh;min-height: 64vh;height: clamp(380px, 70vh, 1000px);width: clamp(560px, 70vw, 1000px);"></iframe>
+<iframe id="ifMixer" src="addons/Stephanowicz/alsamixer/index.php" frameborder="0" style="min-width: 65vh;min-height: 64vh;height: clamp(380px, 70vh, 1000px);width: clamp(560px, 70vw, 1000px);transform-origin: top; transform: scale(1);"></iframe>
+<script>
+    var scale = 1;
+    function updateScaleFactor(){
+       var min=400;
+       var max=800;
+       var current = $('#ifMixer').width();
+       var x = Math.min(Math.max(current, min), max);
+       scale = x/(min+80);
+       $('#ifMixer').css('transform', 'scale(' + scale + ')');
+    }
+    window.addEventListener("resize", updateScaleFactor);
+    updateScaleFactor(); // Run on page load
+</script>
