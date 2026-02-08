@@ -48,7 +48,17 @@
             <div class="render_controls"></div>
             
         </div>
-		<div style="font: 1rem 'Fira Sans', sans-serif;"> output: <br /><select id="outputs" name="outputs" style="width: 130px;"></select></div>
+		<div style="font: 1rem 'Fira Sans', sans-serif;"> 
+            output: <br />
+            <select id="outputs" name="outputs" style="width: 130px;"></select>
+            <div style="margin-top: 0.4em;font-size: xx-small;">Channel select:</div>
+            <div style="display: flex;margin-top: -0.2em;">
+                <input type="radio" id="combi" name="channel_select" value="combi" style="height: 0.8em;margin: 0.4em 0 0;" checked="checked">
+                <span style="margin-top: 0.4em;font-size: xx-small;margin-right: 7px;">combined </span>
+                <input type="radio" id="single" name="channel_select" value="single" style="height: 0.8em;margin: 0.4em 0 0;">
+                <span style="margin-top: 0.4em;font-size: xx-small;">single</span>
+            </div>
+        </div>
         <div style="font: 1rem 'Fira Sans', sans-serif;"> presets: <br /><select id="curves" name="curves" style="width: 130px;"></select><br />
 		<input type="button" class="button" id="loadCurve" name="loadCurve" style="margin: .4rem;margin-left: 0px;" value="load">
         <input type="button" class="button" id="saveCurve" name="saveCurve" style="margin: .4rem;" value="save">
@@ -91,6 +101,8 @@
                 controls = $('.render_controls',page),
                 template = $.templates("#tpl_control");
                 updateSlide = false;
+                startValL=0;
+                startValR=0;
 
             function setControl(data, ui){
                 if(!updateSlide){
@@ -99,9 +111,18 @@
 	                $('.slider[data-id='+data.id+']', controls).each(function(){
 	                    values.push( $(this).slider("value") );
 	                });
-
+                //----------Combined channel or single L/R------------------------
+                    if(document.getElementById('combi').checked){
+                        var diff = data.channel==0 ? startValL - ui.value : startValR - ui.value;
+                        var newV = data.channel==0 ? startValR - diff:startValL - diff;
+                        newV = newV > 100 ? 100 : newV;
+                        newV = newV < 0 ? 0 : newV;
+                        data.channel==0 ? values[1] = newV:values[0] = newV;                  
+                        data.channel==0 ? $($('.slider[data-id='+data.id+'], controls')[1]).slider("value",newV):$($('.slider[data-id='+data.id+'], controls')[0]).slider("value",newV);                    
+                        data.channel==0 ? $($(".slider", controls)[2*data.id-1]).parents(".control").find(".control-level")[1].textContent=newV:$($(".slider", controls)[2*data.id-1]).parents(".control").find(".control-level")[0].textContent=newV; 
+                    }
+                //---------------------------------------------------------   
 		            $.post('alsadevice.php', {command:'set',device:device,id:data.id, channel:data.channel, value: values.join(",")}, function(response){
-	//	                console.log("set: ", response);
 						updateSlide = false;   
 		            }, 'json');
 				}
@@ -129,6 +150,10 @@
                                 level[options.channel].textContent=ui.value;
                                 setControl(options, ui);
                             }, 
+                            start: function (event, ui) {
+                                startValL=$($('.slider[data-id='+data.id+'], controls')[0]).slider("value");
+                                startValR=$($('.slider[data-id='+data.id+'], controls')[1]).slider("value");
+                            },
                             stop: function (event, ui) {
                                 level[options.channel].textContent=ui.value;
                                 setControl(options, ui);
