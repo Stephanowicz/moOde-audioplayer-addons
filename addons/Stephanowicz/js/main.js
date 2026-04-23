@@ -181,7 +181,7 @@ var addonsCfg;
 			}
 			//-- move 'add to favorites' in playback-menu
 			if(!addonsCfg['btn_fav']){
-				tempstr = '<li><a href="#notarget" data-cmd="favorite_playqueue_item"><i class="fal fa-heart sx"></i> Add To Favorites</a></li>';
+				tempstr = '<li><a href="#notarget" data-cmd= "" data-addoncmd="add-item-to-favorites"><i class="fal fa-heart sx"></i> Add To Favorites</a></li>';
 				$("#context-menu-playback ul li:eq(0)").before(tempstr);
 				//-- remove "add to favorites" from button group
 			//	$("button.add-item-to-favorites").addClass("hide");
@@ -506,6 +506,14 @@ $(document).on('click', '.context-menu a', function(e) {
 			break;
 		case 'load_bookmark':
 			bookmarks();
+			break;
+		case 'add-item-to-favorites':
+            $.getJSON('command/queue.php?cmd=get_playqueue_item&songpos=' + path, function(data) {
+                notify(NOTIFY_TITLE_INFO, 'adding_favorite', NOTIFY_DURATION_SHORT);
+                $.get('command/playlist.php?cmd=add_item_to_favorites&item=' + encodeURIComponent(data), function() {
+                    notify(NOTIFY_TITLE_INFO, 'favorite_added', NOTIFY_DURATION_SHORT);
+                });
+            });
 			break;
     }
 });
