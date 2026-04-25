@@ -364,7 +364,7 @@ var addonsCfg;
 				renderUI_extended();
 				(addonsCfg['playqueue'] && (typeof render_plstat === "function")) && render_plstat();
 				if(addonsCfg['albumart']){
-					if (MPD.json['file'] !== UI.currentFile && MPD.json['cover_art_hash'] !== UI.currentHash) {
+					if ((MPD.json['file'] !== UI.currentFile && MPD.json['cover_art_hash'] !== UI.currentHash)||(MPD.json['title'].indexOf('Webstreaming') !== -1)) {
 						(typeof multiAlbumArt === "function") && multiAlbumArt();
 					}
 				}
