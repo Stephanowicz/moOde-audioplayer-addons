@@ -23,7 +23,6 @@ function youtubeDL_render(){
 			else {
 				document.title = "moOde Audioplayer";
 			}
-			renderUI_extended();
 		}
 	});
 }
