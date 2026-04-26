@@ -110,6 +110,7 @@ function multiAlbumArt() {
                             imgArray.forEach(function (item) {
                                 $('#coverart-url').html('<img class="coverart" ' + 'src="' + item[0] + '" ' + 'data-adaptive-background="1" alt="Cover art not found"' + '>');
 								$('#ss-coverart-url').html('<img class="coverart" ' + 'src="' + item[0] + '" ' + 'alt="Cover art not found"' + '>');
+                                MPD.json['coverurl'] = item[0];
                             });
                         }
                     }
