@@ -508,12 +508,13 @@ $(document).on('click', '.context-menu a', function(e) {
 			bookmarks();
 			break;
 		case 'add-item-to-favorites':
-            $.getJSON('command/queue.php?cmd=get_playqueue_item&songpos=' + path, function(data) {
+//            $.getJSON('command/queue.php?cmd=get_playqueue_item&songpos=' + MPD.json['song'], function(data) {
                 notify(NOTIFY_TITLE_INFO, 'adding_favorite', NOTIFY_DURATION_SHORT);
-                $.get('command/playlist.php?cmd=add_item_to_favorites&item=' + encodeURIComponent(data), function() {
+//                $.get('command/playlist.php?cmd=add_item_to_favorites&item=' + encodeURIComponent(data), function() {
+                $.get('command/playlist.php?cmd=add_item_to_favorites&item=' + UI.currentFile, function() {
                     notify(NOTIFY_TITLE_INFO, 'favorite_added', NOTIFY_DURATION_SHORT);
                 });
-            });
+//            });
 			break;
     }
 });
