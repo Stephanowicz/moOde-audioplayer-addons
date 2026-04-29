@@ -361,13 +361,7 @@ var addonsCfg;
 				console.log("renderUI_extended");
 				(addonsCfg['ytdl'] && (typeof youtubeDL_render === "function")) && youtubeDL_render();
 				(addonsCfg['lrclibsynced'] && (typeof render_syncedLyrics === "function")) && render_syncedLyrics();
-				renderUI_extended();
 				(addonsCfg['playqueue'] && (typeof render_plstat === "function")) && render_plstat();
-				if(addonsCfg['albumart']){
-					if ((MPD.json['file'] !== UI.currentFile && MPD.json['cover_art_hash'] !== UI.currentHash)||(MPD.json['title'].indexOf('Webstreaming') !== -1)) {
-						(typeof multiAlbumArt === "function") && multiAlbumArt();
-					}
-				}
 				(addonsCfg['browsertitle'] && (typeof render_browsertitle === "function")) && render_browsertitle();
 				if(!addonsCfg['fav']){
 					//-- remove "add to favorites" from button group if it has been overwritten - yes, it's nasty :D		
@@ -376,6 +370,12 @@ var addonsCfg;
 				if(addonsCfg['ssStyle']){
 					if (SESSION.json['scnsaver_style'] == 'Gradient (Linear)') {
 							$('#screen-saver #ss-style').css('background', 'linear-gradient(rgb(0 0 0 / 47%) 0%, rgba(0, 0, 0, 0.75) 40%, rgba(0, 0, 0, 0.8) 60%, rgba(0, 0, 0) 100%)');
+					}
+				}
+				renderUI_extended();
+				if(addonsCfg['albumart']){
+					if ((MPD.json['file'] !== UI.currentFile && MPD.json['cover_art_hash'] !== UI.currentHash)||(MPD.json['title'].indexOf('Webstreaming') !== -1)) {
+						(typeof multiAlbumArt === "function") && multiAlbumArt();
 					}
 				}
 			}
@@ -551,15 +551,16 @@ async function playback_preview(songdata,path,img_src){
 
 	//await new Promise(r => setTimeout(r, 100));	
 	tempstr = '<div id="playback-preview-modal" class="hide" tabindex="-1" role="dialog" aria-hidden="true" style="transform: translate(-50%);' + 
-		'width:70%;height:33%;' +
+		'width:70%; height:max-content;' +
 		'border-radius: 6px;' +
 		'left: 50%;' +
+		'top: 10%;' +
 		'position: fixed;' +
 		'z-index: 10001;' +
 		'box-shadow: 0 3px 7px rgba(0,0,0,.3);">' +
 			'<div class="modal-content" style="margin: 40px;">' + 
-				'<div style="display: flex;"><img src="' + img + '" style="max-width:70px">' +
-				'<div style="margin-left: 10px;"><p style="font-size: x-large;">' + pbPrevData['albumartist'] + '</p><p>' + pbPrevData['title'] + '</p></div></div>' +
+				'<div style="display: flex;"><img src="' + img + '" style="max-width:80px;object-fit: contain;">' +
+				'<div style="margin-left: 10px;"><p style="font-size: x-large;">' + pbPrevData['albumartist'] + '</p><p style="font-size: large;">' + pbPrevData['title'] + '</p></div></div>' +
 				'<div id="pbar-timeline" ' +
 					'style="display: block;width: 64%;z-index: 999;position: fixed;left: 50%;transform: translate(-50%);font-size: .8rem;display: flex;flex-flow: column;height: 16px;margin-top:30px;">' +
 					'<div class="timeline-bg"></div>' +
@@ -573,7 +574,7 @@ async function playback_preview(songdata,path,img_src){
 						'<div id="playback-preview-playbar-total" style="font-size: .8rem;position: relative;float: right;left: 3rem;line-height: 15px;">00:00</div>' +
 					'</div>' +
 				'</div>' +
-				'<div class="modal-footer">' +
+				'<div class="modal-footer" style="margin-top: 12vw;">' +
 					'<button aria-label="Close" class="btn singleton" data-dismiss="modal" aria-hidden="true" style="bottom: 19px; position: fixed; transform: translate(-50%);">' + 
 					'Close</button>' +
 				'</div>' +
