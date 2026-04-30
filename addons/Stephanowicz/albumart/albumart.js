@@ -35,8 +35,9 @@ function trackinfo_albumart(path) {
         if (this.readyState === 4 && this.status === 200) {
             if (this.responseText && this.responseText != "") {
                 tInfoImgArray = JSON.parse(this.responseText);
+                waitVisible($('#audioinfo-modal'),trackinfo_albumart_disp,2000,tInfoImgArray);
+            //    trackinfo_albumart_disp(tInfoImgArray);
             }
-            trackinfo_albumart_disp(tInfoImgArray);
         }
     };
     xhttp.open("GET", "addons/Stephanowicz/albumart/albumart.php?filepath=" + encodeURI(path), true);
@@ -54,9 +55,28 @@ function trackinfo_albumart_disp(tInfoImgArray) {
                 lines += '<li><span class="left">' + item[2] + '<br />' + item[1] + '</span><span class="ralign"><img onClick="trackinfo_albumart_click(' + iIndex + ')" id="trackinfo_thumb" style="width:80px" src="' + item[0] + '"< /></span></li>';
                 iIndex++;
             });
+            
             document.getElementById('trackdata').innerHTML += lines;
         });
     }
+}
+//Function inspired by https://dev.to/kapantzak/waiting-for-visible-element-4ck9
+//MANY other ideas on waiting for an element can be found here:
+//https://stackoverflow.com/questions/5525071/how-to-wait-until-an-element-exists
+function waitVisible(elem, callback, timeout,arg) {
+	let timer = setInterval(() => {
+  	if (elem.is(':visible')) {
+    	clearInterval(timer);
+        timer = null;
+    	callback(arg);
+    }
+  }, 10);
+  const tm = timeout || 5000;
+  setTimeout(() => {
+  	if (timer) {
+    	clearInterval(timer);
+    }
+  }, tm);
 }
 
 function trackinfo_albumart_click(iIndex) {
