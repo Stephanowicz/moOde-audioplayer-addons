@@ -60,7 +60,7 @@ after this add `<script src="addons/addons.js?t=1729607710734" defer></script>`
 
  You can use the script *AddRemoveAddons.sh* in the utils folder for automatically adding/removing this entry  
  The script needs to be executable and must be run as root  
-  ``` sudo chmod 644 /var/www/addons/Stephanowicz/utils/AddRemoveAddons.sh ```  
+  ``` sudo chmod 744 /var/www/addons/Stephanowicz/utils/AddRemoveAddons.sh ```  
   ``` cd /var/www/addons/Stephanowicz/utils/ ```  
   ``` sudo /var/www/addons/Stephanowicz/utils/AddRemoveAddons.sh ```  
 
