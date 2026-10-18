@@ -246,7 +246,7 @@
 		<button type="button" id="loadPLentry" onclick="loadPLentry();buttonState(this,$('#ytpl'));">LOAD</button>
 		<button type="button" id="delPLentry" onclick="delPLentry()">DEL</button>
 		<button type="button" id="delPLentry" onclick="openPLentry()">OPEN</button>
-		<input size="40" type="text" placeholder="playlist title for new entry"  name="ytplTitle" style="width: 19vw;margin-left:10px;position: relative;top: 4px;" onkeyup="if(this.value.length > 0) document.getElementById('savePLentry').disabled = false; else document.getElementById('savePLentry').disabled = true;">
+		<input size="40" type="text" placeholder="title for new playlist entry"  name="ytplTitle" style="width: 19vw;margin-left:10px;position: relative;top: 4px;" onkeyup="if(this.value.length > 0) document.getElementById('savePLentry').disabled = false; else document.getElementById('savePLentry').disabled = true;">
 		<button type="button" id="savePLentry" onclick="savePLentry()" disabled>ADD</button>
 	</div>	
 </div>	
@@ -316,3 +316,65 @@
 	}
 	
 </script>
+<script type="text/javascript">
+function runUpdateCheck(event) {
+    if (event) event.stopPropagation();
+    
+    const btnText = document.querySelector('#update-check-btn span');
+    const originalText = btnText.innerText;
+    
+    const resultBox = document.getElementById('version-result-box');
+    const resultText = document.getElementById('version-result-text');
+    
+    btnText.innerText = "Checking...";
+    resultText.innerHTML = "Checking for update, please wait...";
+    resultBox.style.display = 'block'; 
+    
+    fetch('addons/Stephanowicz/youtubeDL/versioncheck.php')
+        .then(response => {
+            if (!response.ok) throw new Error('Networkerror');
+            return response.text(); 
+        })
+        .then(data => {
+            resultText.innerHTML = data; 
+            btnText.innerText = originalText;
+        })
+        .catch(error => {
+            resultText.innerHTML = `<span style="color:red; font-weight:bold;">Error: ${error.message}</span>`;
+            btnText.innerText = originalText;
+        });
+}
+function runUpdate(event) {
+    if (event) event.stopPropagation();
+    
+    const btnText = document.querySelector('#update-check-btn span');
+    const originalText = btnText.innerText;
+    
+    const resultBox = document.getElementById('version-result-box');
+    const resultText = document.getElementById('version-result-text');
+    
+	btnText.innerText = "Updating...";
+    resultText.innerHTML = "Updating, please wait...";
+    resultBox.style.display = 'block'; 
+    console.log("start update");
+    fetch('addons/Stephanowicz/youtubeDL/versioncheck.php?action=update')
+        .then(response => {
+            if (!response.ok) throw new Error('Networkerror');
+            return response.text(); 
+        })
+        .then(data => {
+            resultText.innerHTML = data; 
+            btnText.innerText = originalText;
+        })
+        .catch(error => {
+            resultText.innerHTML = `<span style="color:red; font-weight:bold;">Error: ${error.message}</span>`;
+            btnText.innerText = originalText;
+        });
+}
+
+</script>
+<div id="version-result-box" style="display: none; padding: 10px; background: #464646; border: 1px solid #dee2e6; border-radius: 4px; font-size: 13px; position: absolute;top:0px;width:80%">
+	<span onclick="document.getElementById('version-result-box').style.display='none'" style="position: absolute; top: 5px; right: 10px; cursor: pointer; font-weight: bold; color: #888;">&times;</span>
+	<h3>yt-dlp Update Manager</h3>
+	<div id="version-result-text">loading...</div>
+</div>

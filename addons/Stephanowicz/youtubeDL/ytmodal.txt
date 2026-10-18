@@ -1,6 +1,11 @@
-	<div class="modal-header">
-		<button aria-label="Close" type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-		<h3 id="YoutubeDL-modal-label">Youtube Audioplayback</h3>
+	<div class="modal-header" style="position: relative; padding-left: 50px;">
+		<!-- Update-Button oben links -->
+		<button id="update-check-btn" onclick="runUpdateCheck(event)" style="position: absolute; top: 10px; left: 15px; display: inline-flex; align-items: center; gap: 5px; font-size: 12px; cursor: pointer;background-color: transparent;color: inherit;"">
+			🔄 <span>Check for update</span>
+		</button>
+
+		<button aria-label="Close" type="button" class="close" data-dismiss="modal" aria-hidden="true" style="opacity: 0.5;">×</button>
+		<h3 id="YoutubeDL-modal-label" style="margin: 0;">Youtube Audioplayback</h3>
 	</div>
 	<div class="modal-body" style="max-height:80vh;">
 		<div id="YoutubeDL" style="max-height:80vh;"></div>
