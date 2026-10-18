@@ -21,7 +21,7 @@
 	}
 	else{
 	  $ARTIST_=shell_exec('mpc --format %artist% | head -n 1');
-	  $ARTIST =str_replace("\n","",$ARTIST_);
+	  $ARTIST = !is_null($ARTIST_) ? str_replace("\n","",$ARTIST_) : "";
 	//  $ARTIST=str_replace(" ","+",$ARTIST_);
 	}
 	if(isset($_GET['title'])){
@@ -29,7 +29,7 @@
 	}
 	else{
 	  $TITLE_=shell_exec('mpc --format %title% | head -n 1');
-	  $TITLE =str_replace("\n","",$TITLE_);
+	  $TITLE =!is_null($TITLE_) ? str_replace("\n","",$TITLE_) :"";
 	 // $TITLE=str_replace(" ","+",$TITLE_);
 	}
 	if(isset($_GET['album'])){
@@ -37,7 +37,7 @@
 	}
 	else{
 	  $ALBUM=shell_exec('mpc --format %album% | head -n 1');
-	  $ALBUM =str_replace("\n","",$ALBUM);
+	  $ALBUM =!is_null($ALBUM) ? str_replace("\n","",$ALBUM):"";
 	 // $TITLE=str_replace(" ","+",$TITLE_);
 	}
 	$filepath=shell_exec('mpc -f %file%|head -n 1');
