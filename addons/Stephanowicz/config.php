@@ -10,6 +10,7 @@
 		$cfgCheck = array(
 			"cfg" => false, 
 			"ytdl" => false, 
+			"ytdl_perm" => false, 
 			"getid3" => false,
 			"getid3_ex" => false,
 			"xml" => false,
@@ -31,6 +32,9 @@
 		}
 		if(file_exists("/usr/local/bin/youtube-dl")){
 			$cfgCheck["ytdl"] = true;
+			if(is_executable("/usr/local/bin/youtube-dl")){
+				$cfgCheck["ytdl_perm"] = true;
+			}			
 		}
 		if(is_dir("/var/lib/mpd/playlists/bookmarks")){
 			$cfgCheck["bookmarks"] = true;
@@ -115,7 +119,93 @@
 			echo "false";
 		}
 		break;
-		
+	case 'fixIt':
+		switch ($_GET['fix']) {
+			case 'cfg':
+				$command = 'sudo chmod 666 /var/www/addons/Stephanowicz/config.json 2>&1'; // 2>&1 leitet Fehler in die Ausgabe um
+				$error_output = [];
+				$exit_code = -1;
+				exec($command, $error_output, $exit_code);
+				if ($exit_code === 0) {echo "true";} 
+				else {echo implode("\n", $error_output);}
+				break;
+			case 'ytdlp':
+				$loaded_extensions = get_loaded_extensions();
+				if(in_array("curl",$loaded_extensions)){
+					$command = 'sudo curl -L https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -o /usr/local/bin/youtube-dl 2>&1'; // 2>&1 leitet Fehler in die Ausgabe um
+					$error_output = [];
+					$exit_code = -1;
+					exec($command, $error_output, $exit_code);
+					if ($exit_code === 0) {
+						$command = 'sudo chmod 755 /usr/local/bin/youtube-dl 2>&1'; // 2>&1 leitet Fehler in die Ausgabe um
+						exec($command, $error_output, $exit_code);
+						if ($exit_code === 0) {echo "true";}
+						else {echo implode("\n", $error_output);}
+					} 
+					else {echo implode("\n", $error_output);}
+				}
+				else {echo "CURL needs to be installed!";}
+				break;
+			case 'ytdlp_perm':
+				$command = 'sudo chmod 755 /usr/local/bin/youtube-dl 2>&1'; // 2>&1 leitet Fehler in die Ausgabe um
+				exec($command, $error_output, $exit_code);
+				if ($exit_code === 0) {echo "true";}
+				else {echo implode("\n", $error_output);}
+				break;
+			case 'getID3':
+				$command = 'sudo wget -O ~/getid3.zip https://github.com/JamesHeinrich/getID3/archive/master.zip 2>&1'; // 2>&1 leitet Fehler in die Ausgabe um
+				$error_output = [];
+				$exit_code = -1;
+				exec($command, $error_output, $exit_code);
+				if ($exit_code === 0) {
+					$command = 'sudo 7z e ~/getid3.zip -aoa -o/var/www/inc/getid3/ getID3-master/getid3/*.php 2>&1'; // 2>&1 leitet Fehler in die Ausgabe um
+					exec($command, $error_output, $exit_code);
+					if ($exit_code === 0) {
+						$command = 'sudo chmod -R 755 /var/www/inc/getid3/ 2>&1'; // 2>&1 leitet Fehler in die Ausgabe um
+						exec($command, $error_output, $exit_code);
+						if ($exit_code === 0) {echo "true";}
+						else {echo implode("\n", $error_output);}							
+					}
+					else {echo implode("\n", $error_output);}
+				} 
+				else {echo implode("\n", $error_output);}
+				break;
+			case 'getID3_perm':
+				$command = 'sudo chmod -R 755 /var/www/inc/getid3/ 2>&1'; // 2>&1 leitet Fehler in die Ausgabe um
+				exec($command, $error_output, $exit_code);
+				if ($exit_code === 0) {echo "true";}
+				else {echo implode("\n", $error_output);}
+				break;
+			case 'curl':
+				$command = 'sudo apt-get install php-curl 2>&1'; // 2>&1 leitet Fehler in die Ausgabe um
+				$error_output = [];
+				$exit_code = -1;
+				exec($command, $error_output, $exit_code);
+				if ($exit_code === 0) {echo "true";} 
+				else {echo implode("\n", $error_output);}
+				break;
+			case 'xml':
+				$command = 'sudo apt-get install php-xml 2>&1'; // 2>&1 leitet Fehler in die Ausgabe um
+				$error_output = [];
+				$exit_code = -1;
+				exec($command, $error_output, $exit_code);
+				if ($exit_code === 0) {echo "true";} 
+				else {echo implode("\n", $error_output);}
+				break;
+			case 'token_perm':
+				$command = 'sudo chmod 666 /var/www/addons/Stephanowicz/lyrics/clientaccesstoken.txt 2>&1'; // 2>&1 leitet Fehler in die Ausgabe um
+				exec($command, $error_output, $exit_code);
+				if ($exit_code === 0) {echo "true";}
+				else {echo implode("\n", $error_output);}
+				break;
+			case 'bookmarks':
+				$command = 'sudo mkdir -m 775 /var/lib/mpd/playlists/bookmarks 2>&1'; // 2>&1 leitet Fehler in die Ausgabe um
+				exec($command, $error_output, $exit_code);
+				if ($exit_code === 0) {echo "true";}
+				else {echo implode("\n", $error_output);}
+				break;
+		}
+		break;
     default:
 		echo 'Unknown command';
 		break;

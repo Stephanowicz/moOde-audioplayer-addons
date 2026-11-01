@@ -190,17 +190,19 @@ switch ($_GET['cmd']) {
 		break;
 
 	case 'load_bookmark':
-		$plName=$_GET['pl'];
-		$plFile = MPD_PLAYLIST_ROOT . 'bookmarks/' . $plName;
+		$bmName=$_GET['pl'];
+		$bmFile = MPD_PLAYLIST_ROOT . 'bookmarks/' . $bmName;
 		
-		if (false === ($fh = fopen($plFile, 'r'))) {
-			debugLog('load_bookmark: File open failed on ' . $plFile);
-			echo json_encode(['status' => 'error','msg' => 'File open failed on: ' . $plFile]);
+		if (false === ($fh = fopen($bmFile, 'r'))) {
+			debugLog('load_bookmark: File open failed on ' . $bmFile);
+			echo json_encode(['status' => 'error','msg' => 'File open failed on: ' . $bmFile]);
 
 		} else {
 			while (false !== ($line = fgets($fh))) {
 				if (feof($fh)) break;
-				if (strpos($line, 'elapsed') !== false) {
+				if (strpos($line, 'plName') !== false) {
+					$plName = explode(':', trim($line))[1];
+				}else if (strpos($line, 'elapsed') !== false) {
 					$elapsed = explode(':', trim($line))[1];
 				} else if (strpos($line, 'song') !== false) {
 					$song = explode(':', trim($line))[1];

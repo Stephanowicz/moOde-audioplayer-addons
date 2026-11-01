@@ -113,13 +113,14 @@
 			<div id="title">addons configuration</div>
 		</div>
 		<!-- Configfile -->
-		<div class="settings flex-container" id="cfg" style="padding-bottom: 10px;">
+		<div class="settings flex-container" id="cfg" style="padding-bottom: 10px;gap: 10px;">
 			<div><i class="fa-regular fa-ban" aria-hidden="true" style="font-size: 18px;color: red;"></i></div>
 			<div>
 				<span style="padding-left: 19px;"><i>/var/www/addons/Stephanowicz/config.json</i> is not writeable! </span><br>
 				<span style="padding-left: 19px;">Settings cannot be saved! </span><br>
 				<span style="font-size: small;padding-left: 19px;"><i>sudo chmod 666 /var/www/addons/Stephanowicz/config.json</i></span>
 			</div>
+			<button onclick="fix_config()" class="btn-fix" style="margin-left: 19px;padding: 2px 7px;">Fix it!</button>
 		</div>
 
 		
@@ -127,9 +128,16 @@
 		<div class="settings" id="ytdl">
 			<input type="checkbox" id="youtube-dl" name="youtube-dl" disabled> Youtube audio-playback
 			<div id="youtube-dl_err">
-				<span id="youtube-dl_text" style="font-size: small;padding-left: 19px;">/usr/local/bin/youtube-dl </span>
+				<span id="youtube-dl_text" style="font-size: small;padding-left: 19px;">/usr/local/bin/youtube-dl Filepermissions 755</span>
 				<span id="youtube-dl_check"><i class="fa-regular fa-ban" aria-hidden="true" style="font-size: 18px;color: red;"></i></span><br>
-				<span id="youtube-dl_check_text" style="font-size: small;padding-left: 19px;">Install with: <i>sudo curl -L https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -o /usr/local/bin/youtube-dl</i><br></span>
+				<span id="youtube-dl_check_text" style="font-size: small;padding-left: 19px;">Install with: <i>sudo curl -L https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -o /usr/local/bin/youtube-dl</i><br>and make it executable <i>sudo chmod 755 /usr/local/bin/youtube-dl</i><br></span>
+				<button onclick="install_ytdlp()" class="btn-fix" style="margin-left: 19px;padding: 2px 7px;">Install it!</button>
+			</div>
+			<div id="youtube-dl_err2">
+				<span id="youtube-dl_perm_text" style="font-size: small;padding-left: 19px;">/usr/local/bin/youtube-dl Filepermissions 755</span>
+				<span id="youtube-dl_perm_check"><i class="fa-regular fa-ban" aria-hidden="true" style="font-size: 18px;color: red;"></i></span><br>
+				<span id="youtube-dl_perm_check_text" style="font-size: small;padding-left: 19px;"><i>sudo chmod 755 /usr/local/bin/youtube-dl</i><br></span>
+				<button onclick="fix_ytdlp()" class="btn-fix" style="margin-left: 19px;padding: 2px 7px;">Fix it!</button>
 			</div>
 		</div>
 
@@ -141,11 +149,13 @@
 				<span id="getid3_check"><i class="fa-regular fa-ban" aria-hidden="true" style="font-size: 18px;color: red;"></i></span><br>
 				<span id="getid3_check_text" style="font-size: small;padding-left: 19px;">Install with: <i>wget -O ~/getid3.zip https://github.com/JamesHeinrich/getID3/archive/master.zip </i><br></span>
 				<span id="getid3_check_text1" style="font-size: small;padding-left: 19px;"><i>sudo 7z e ~/getid3.zip -aoa -o/var/www/inc/getid3/ getID3-master/getid3/*.php</i><br></span>
+				<button onclick="install_getID3()" class="btn-fix" style="margin-left: 19px;padding: 2px 7px;">Install it!</button>
 			</div>
 			<div id="getid3_check_err2">
 				<span id="getid3_check_mod_text" style="font-size: small;padding-left: 19px;">Filepermissions 755 </span>
 				<span id="getid3_check_mod"><i class="fa-regular fa-ban" aria-hidden="true" style="font-size: 18px;color: red;"></i><br></span>
 				<span id="getid3_check_text2" style="font-size: small;padding-left: 19px;"><i>sudo chmod -R 755 /var/www/inc/getid3/</i><br></span>
+				<button onclick="fix_getID3()" class="btn-fix" style="margin-left: 19px;padding: 2px 7px;">Fix it!</button>
 			</div>
 		</div>
 		
@@ -184,11 +194,13 @@
 				<span id="lyrics_curl_text" style="font-size: small;padding-left: 19px;">php-curl </span>
 				<span id="lyrics_curl_check"><i class="fa-regular fa-ban" aria-hidden="true" style="font-size: 18px;color: red;"></i><br></span>
 				<span id="lyrics_curl_check_text" style="font-size: small;padding-left: 19px;">Required by <b>LRCLIB</b> and <b>Genius-Lyrics</b><br>Install with: <i>sudo apt-get install php-curl</i><br></span>
+				<button onclick="fix_curl()" class="btn-fix" style="margin-left: 19px;padding: 2px 7px;">Fix it!</button>
 			</div>
 			<div id="lyrics_xml_err">
 				<span id="lyrics_xml_text" style="font-size: small;padding-left: 19px;">php-xml </span>
 				<span id="lyrics_xml_check"><i class="fa-regular fa-ban" aria-hidden="true" style="font-size: 18px;color: red;"></i><br></span>
 				<span id="lyrics_xml_check_text" style="font-size: small;padding-left: 19px;">Required by <b>Genius-Lyrics</b><br>Install with: <i>sudo apt-get install php-xml</i><br></span>
+				<button onclick="fix_xml()" class="btn-fix" style="margin-left: 19px;padding: 2px 7px;">Fix it!</button>
 			</div>
 				
 	<!-- 				
@@ -216,6 +228,7 @@
 				<span id="" style="font-size: small;padding-left: 19px;">File permissions - token can not be safed!</span>
 				<span id=""><i class="fa-regular fa-ban" aria-hidden="true" style="font-size: 18px;color: red;"></i><br></span>
 				<span id="" style="font-size: small;padding-left: 19px;">sudo chmod 666 /var/www/addons/Stephanowicz/lyrics/clientaccesstoken.txt</i><br></span>
+				<button onclick="fix_token_perm()" class="btn-fix" style="margin-left: 19px;padding: 2px 7px;">Fix it!</button>
 			</div>
 		</div>
 		<!-- Playbar-menu -->
@@ -286,9 +299,10 @@
 		<div class="settings">
 			<input type="checkbox" id="bookmarks" name="bookmarks" disabled> Option to save and load bookmarks for current playlist (resume playing at current position)
 			<div id="bookmarks_err">
-				<span id="bookmarks_text" style="font-size: small;padding-left: 19px;">Bookmarks folder missing! </span>
+				<span id="bookmarks_text" style="font-size: small;padding-left: 19px;">Bookmarks folder </span>
 				<span id="bookmarks_check"><i class="fa-regular fa-ban" aria-hidden="true" style="font-size: 18px;color: red;"></i><br></span>
-				<span id="bookmarks_check_text" style="font-size: small;padding-left: 19px;">Create with: <i>mkdir -m 775 /var/lib/mpd/playlists/bookmarks</i><br></span>
+				<span id="bookmarks_check_text" style="font-size: small;padding-left: 19px;">Create with: <i>sudo mkdir -m 775 /var/lib/mpd/playlists/bookmarks</i><br></span>
+				<button onclick="fix_bookmarks()" class="btn-fix" style="margin-left: 19px;padding: 2px 7px;">Fix it!</button>
 			</div>
 
 		</div>
@@ -332,8 +346,9 @@
 				$("#apply").prop('disabled', !cfgCheck["cfg"]);
 				cfgCheck["cfg"] && $("#cfg").hide();
 				$("#youtube-dl").prop('disabled', !cfgCheck["ytdl"]);
-				$("#youtube-dl").prop('checked', cfgCheck["ytdl"] ? cfgJson['ytdl']:false);
+				$("#youtube-dl").prop('checked', cfgCheck["ytdl"]&&cfgCheck["ytdl_perm"] ? cfgJson['ytdl']:false);
 				cfgCheck["ytdl"] ? $("#youtube-dl_err").hide():$("#youtube-dl_err").show();
+				cfgCheck["ytdl_perm"] ? $("#youtube-dl_err2").hide():$("#youtube-dl_err2").show();
 				cfgCheck["getid3"] ? $("#getid3_check_err1").hide() : $("#getid3_check_err1").show();
 				cfgCheck["getid3_ex"] ? $("#getid3_check_err2").hide() : $("#getid3_check_err2").show();
 				$("#albumart").prop('disabled', !(cfgCheck["getid3"] & cfgCheck["getid3_ex"]));
@@ -523,7 +538,135 @@
 					$("#lrclibsynced").prop('checked', false);				
 				}
 			});
+			function fix_config(){
+				$.post('config.php?cmd=fixIt&fix=cfg')
+					.done(function(data) {
+						if(data=="true"){
+							$("#modal-text").text("config is now writeable");
+						}
+						else{
+							$("#modal-text").html("Error!<br>"+data);
+						}
+						$(".modal-popup").css("display","block");
+						getCfg();
+					}
+				);
+			}
+			function install_ytdlp(){
+				$.post('config.php?cmd=fixIt&fix=ytdlp')
+					.done(function(data) {
+						if(data=="true"){
+							$("#modal-text").text("youtube-dlp installed!");
+						}
+						else{
+							$("#modal-text").html("Error!<br>"+data);
+						}
+						$(".modal-popup").css("display","block");
+						getCfg();
+					}
+				);
+			}
+			function fix_ytdlp(){
+				$.post('config.php?cmd=fixIt&fix=ytdlp_perm')
+					.done(function(data) {
+						if(data=="true"){
+							$("#modal-text").text("youtube-dlp is now executable!");
+						}
+						else{
+							$("#modal-text").html("Error!<br>"+data);
+						}
+						$(".modal-popup").css("display","block");
+						getCfg();
+					}
+				);
+			}
+			function install_getID3(){
+				$.post('config.php?cmd=fixIt&fix=getID3')
+					.done(function(data) {
+						if(data=="true"){
+							$("#modal-text").text("getID3 installed!");
+						}
+						else{
+							$("#modal-text").html("Error!<br>"+data);
+						}
+						$(".modal-popup").css("display","block");
+						getCfg();
+					}
+				);
+			}
+			function fix_getID3(){
+				$.post('config.php?cmd=fixIt&fix=getID3_perm')
+					.done(function(data) {
+						if(data=="true"){
+							$("#modal-text").text("Permissions for getID3 fixed!");
+						}
+						else{
+							$("#modal-text").html("Error!<br>"+data);
+						}
+						$(".modal-popup").css("display","block");
+						getCfg();
+					}
+				);
+			}
+			function fix_curl(){
+				$.post('config.php?cmd=fixIt&fix=curl')
+					.done(function(data) {
+						if(data=="true"){
+							$("#modal-text").text("PHP_CURL has been installed!");
+						}
+						else{
+							$("#modal-text").html("Error!<br>"+data);
+						}
+						$(".modal-popup").css("display","block");
+						getCfg();
+					}
+				);
+			}
+			function fix_xml(){
+				$.post('config.php?cmd=fixIt&fix=xml')
+					.done(function(data) {
+						if(data=="true"){
+							$("#modal-text").text("PHP_XML has been installed!");
+						}
+						else{
+							$("#modal-text").html("Error!<br>"+data);
+						}
+						$(".modal-popup").css("display","block");
+						getCfg();
+					}
+				);
+			}
+			function fix_token_perm(){
+				$.post('config.php?cmd=fixIt&fix=token_perm')
+					.done(function(data) {
+						if(data=="true"){
+							$("#modal-text").text("Genius Token now is writable!");
+						}
+						else{
+							$("#modal-text").html("Error!<br>"+data);
+						}
+						$(".modal-popup").css("display","block");
+						getCfg();
+					}
+				);
+			}
+			function fix_bookmarks(){
+				$.post('config.php?cmd=fixIt&fix=bookmarks')
+					.done(function(data) {
+						if(data=="true"){
+							$("#modal-text").text("Bookmarks-Folder created!");
+						}
+						else{
+							$("#modal-text").html("Error!<br>"+data);
+						}
+						$(".modal-popup").css("display","block");
+						getCfg();
+					}
+				);
+			}
 		</script>
+		
 		<button id="apply" onclick="setCfg()" disabled>Apply settings</button>
+		
 	</body>
 </html>
