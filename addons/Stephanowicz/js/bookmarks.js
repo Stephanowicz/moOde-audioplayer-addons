@@ -15,17 +15,17 @@ async function add_bookmark(songdata){
 				'<div style="margin-left: 10px;margin-bottom: 35px;"><p style="font-size: x-large;">Save current Playlist and Bookmark</p></div>' + 
 				'<label class="control-label">Current Song: <span id="currentSong">' + song + '</span></label>' +
 				'<label class="control-label">Elapsed: <span id="timeElapsed">' + elapsed + '</span></label>' +
-				'<label class="control-label" for="pl-save-name">Playlist name</label>' +
+				'<label class="control-label" for="pl-save-name">Playlist name (save the current playlist with this name)</label>' +
 				'<div class="controls">' +
 					'<input id="pl-save-name" type="text" value="' + playlist + '" autofocus style="width:50%;height:1.8em;">' +
 				'</div>' +
-				'<label class="control-label" for="bm-save-name">Bookmark name</label>' +
+				'<label class="control-label" for="bm-save-name">Bookmark name (Name to be shown in the bookmark-list)</label>' +
 				'<div class="controls">' +
 					'<input id="bm-save-name" type="text" value="' + playlist + '" autofocus style="width:50%;height:1.8em;">' +
 				'</div>' +
 				'<button id="savebm" class="btn singleton" style="font-size: 1.2em;width: 6em;height: 2em;padding: 0px;border-radius: 5rem;background-color: var(--btnshade4);margin:0;color: inherit;">SAVE</button>' +
 				'<div style="margin-top: 16px; width: 70%;">' + 
-					'Attention: an existing playlist of the same name will be overwritten!' +
+					'Attention: <br>an existing playlist with the same name will be overwritten!' +
 				'</div>' +	
 			'</div>' +			
 			'<div class="modal-footer">' +
